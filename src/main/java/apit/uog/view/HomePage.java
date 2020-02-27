@@ -15,8 +15,6 @@ public class HomePage extends JPanel {
 
         public HomePage() {
 
-
-
             setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
             setLayout(new GridBagLayout());
 

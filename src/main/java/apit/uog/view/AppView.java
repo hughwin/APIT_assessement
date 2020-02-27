@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 
 public class AppView extends JFrame {
 
-    private static final String WINDOW_TITLE = "Twenty One"; // Obvs can be changed later
+    private static final String WINDOW_TITLE = "Twenty One";
     private JPanel mainPanel = new HomePage();
 
 
