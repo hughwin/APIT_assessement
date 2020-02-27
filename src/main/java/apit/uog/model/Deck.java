@@ -41,8 +41,14 @@ public class Deck {
         }
     }
 
-    private void shuffle(){
+    protected void shuffle(){
         Collections.shuffle(cards);
+    }
+
+    protected Card getTopCard(){ // should never be null
+        Card cardToBeReturned = cards.get(0);
+        cards.remove(0);
+        return cardToBeReturned;
     }
 
 

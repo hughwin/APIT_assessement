@@ -5,18 +5,32 @@ import java.util.ArrayList;
 public class Dealer {
 
     private ArrayList<Player> players;
+    private Deck deck;
+    private int NUMBER_OF_PLAYERS;
 
-    public Dealer(int numberOfPlayers){
+    public Dealer(int numberOfPlayers) {
         players = new ArrayList<>();
+        generatePlayers(numberOfPlayers);
+        deck = new Deck();
+        deck.shuffle();
     }
 
-    public void generatePlayers(int numberOfPlayers){
-        for(int i = 0 ; i < numberOfPlayers ; i++){
-            new Player("Player " + (i +1 ));
+    public void generatePlayers(int numberOfPlayers) {
+        for (int i = 0; i < numberOfPlayers; i++) {
+            players.add(new Player("Player " + (i + 1)));
+
         }
     }
 
-    public void dealCardsToPlayers(){
+    public void dealCardsToPlayers() {
+        for (int i = 0; i < 2; i++) {
+            for (Player p : players) {
+                p.dealCard(deck.getTopCard());
+                System.out.println(p.getHand());
+            }
+        }
     }
-
 }
+
+
+
