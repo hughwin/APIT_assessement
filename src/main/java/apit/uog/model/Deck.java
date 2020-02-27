@@ -51,5 +51,9 @@ public class Deck {
         return cardToBeReturned;
     }
 
+    protected void addCardsBackToDeck(ArrayList<Card> returnedCards){
+        cards.addAll(returnedCards);
+    }
+
 
 }

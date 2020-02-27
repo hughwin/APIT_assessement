@@ -18,8 +18,10 @@ public class Player {
         this.hand.add(c);
     }
 
-    public void resetHand(Card c){
+    public ArrayList<Card> returnHandToDealer(){
+        ArrayList<Card> cardsToBeReturned = (ArrayList<Card>) hand.clone();
         this.hand.clear();
+        return  cardsToBeReturned;
     }
 
     public void placeCard(Card c){
