@@ -15,6 +15,7 @@ public class Dealer {
         deck.shuffle();
     }
 
+
     public void generatePlayers(int numberOfPlayers) {
         for (int i = 0; i < numberOfPlayers; i++) {
             players.add(new Player("Player " + (i + 1)));
