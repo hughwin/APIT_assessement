@@ -2,9 +2,8 @@ package main.java.apit.uog.view;
 
 import main.java.apit.uog.controller.AppController;
 
-import java.awt.CardLayout;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
 
 
 public class AppView extends JFrame {
@@ -22,8 +21,8 @@ public class AppView extends JFrame {
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(mainPanel);
-        mainPanel.add(new HomePage(appController), "home");
-        mainPanel.add(new GamePage(), "game");
+        mainPanel.add(new HomePage(this.appController), "home");
+        mainPanel.add(new GamePage(this.appController), "game");
         setVisible(true);
     }
 

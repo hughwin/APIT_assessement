@@ -2,11 +2,12 @@ package main.java.apit.uog.server;// Java implementation of  Server side
 // It contains two classes : Server and ClientHandler 
 // Save file as Server.java 
 
-import main.java.apit.uog.server.ClientHandler;
-
-import java.io.*;
-import java.util.*;
-import java.net.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Vector;
 
 // Server class 
 public class Server implements Runnable {

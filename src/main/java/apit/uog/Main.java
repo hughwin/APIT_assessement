@@ -7,8 +7,8 @@ import main.java.apit.uog.model.GameLogic;
 public class Main {
     public static void main(String[] args) {
 
-        GameLogic gameLogic = new GameLogic();
-        AppController appController = new AppController(gameLogic);
+
+        AppController appController = new AppController();
 
 
         // Possibly important

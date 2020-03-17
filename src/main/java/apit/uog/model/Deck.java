@@ -8,6 +8,30 @@ public class Deck {
     private ArrayList<Card> cards;
 
 
+    public Deck() {
+        cards = new ArrayList<>();
+        for (Suit s : Suit.values()) {
+            for (Rank r : Rank.values()) {
+                Card current = new Card(s, r);
+                cards.add(current);
+            }
+        }
+    }
+
+    protected void shuffle() {
+        Collections.shuffle(cards);
+    }
+
+    protected Card getTopCard() { // should never be null
+        Card cardToBeReturned = cards.get(0);
+        cards.remove(0);
+        return cardToBeReturned;
+    }
+
+    protected void addCardsBackToDeck(ArrayList<Card> returnedCards) {
+        cards.addAll(returnedCards);
+    }
+
     public enum Suit {
         SPADES,
         HEARTS,
@@ -29,30 +53,6 @@ public class Deck {
         QUEEN,
         KING,
         ACE
-    }
-
-    public Deck(){
-        cards = new ArrayList<>();
-        for (Suit s : Suit.values()){
-            for (Rank r : Rank.values()){
-                Card current = new Card(s, r);
-                cards.add(current);
-            }
-        }
-    }
-
-    protected void shuffle(){
-        Collections.shuffle(cards);
-    }
-
-    protected Card getTopCard(){ // should never be null
-        Card cardToBeReturned = cards.get(0);
-        cards.remove(0);
-        return cardToBeReturned;
-    }
-
-    protected void addCardsBackToDeck(ArrayList<Card> returnedCards){
-        cards.addAll(returnedCards);
     }
 
 

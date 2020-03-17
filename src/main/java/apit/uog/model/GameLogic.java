@@ -1,7 +1,5 @@
 package main.java.apit.uog.model;
 
-import main.java.apit.uog.view.AppView;
-
 import java.util.ArrayList;
 
 public class GameLogic implements Runnable {
@@ -11,8 +9,21 @@ public class GameLogic implements Runnable {
     private ArrayList<Player> activePlayer;
     private ArrayList<Player> eliminatedPlayers;
 
-    public GameLogic(){
-        activePlayer = new ArrayList<>();
+    public GameLogic() {
+        this.activePlayer = new ArrayList<>();
+        Player a = new Player("Player1");
+        Player b = new Player("Player2");
+        activePlayer.add(a);
+        activePlayer.add(b);
+    }
+
+    public ArrayList<Player> getActivePlayer() {
+
+        for(Player p : activePlayer){
+            System.out.println(p.toString());
+        }
+
+        return activePlayer;
     }
 
     @Override

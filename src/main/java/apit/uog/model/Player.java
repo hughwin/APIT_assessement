@@ -6,32 +6,32 @@ public class Player {
 
     private String name;
     private ArrayList<Card> hand;
-    private  ArrayList<Card> placedCards;
+    private ArrayList<Card> placedCards;
     private int balance;
 
-    public Player(String name){
+    public Player(String name) {
         this.name = name;
         this.hand = new ArrayList<>();
         this.placedCards = new ArrayList<>();
         this.balance = 100; // High stakes!
     }
 
-    public void dealCard(Card c){
+    public void dealCard(Card c) {
         this.hand.add(c);
     }
 
-    public ArrayList<Card> returnHandToDealer(){
+    public ArrayList<Card> returnHandToDealer() {
         ArrayList<Card> cardsToBeReturned = (ArrayList<Card>) hand.clone();
         this.hand.clear();
-        return  cardsToBeReturned;
+        return cardsToBeReturned;
     }
 
-    public void placeCard(Card c){
+    public void placeCard(Card c) {
         placedCards.add(c);
-        hand.remove(hand.size()-1);
+        hand.remove(hand.size() - 1);
     }
 
-    public void betOnRound(int bet){
+    public void betOnRound(int bet) {
         // TODO: Finish this method off.
     }
 

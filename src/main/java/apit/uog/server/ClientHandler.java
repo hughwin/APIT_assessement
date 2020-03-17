@@ -8,14 +8,13 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 
 // ClientHandler class
-class ClientHandler implements Runnable
-{
-    Scanner scn = new Scanner(System.in);
-    private String name;
+class ClientHandler implements Runnable {
     final DataInputStream dis;
     final DataOutputStream dos;
+    Scanner scn = new Scanner(System.in);
     Socket s;
     boolean isloggedin;
+    private String name;
 
     // constructor 
     public ClientHandler(Socket s, String name,
@@ -24,24 +23,22 @@ class ClientHandler implements Runnable
         this.dos = dos;
         this.name = name;
         this.s = s;
-        this.isloggedin=true;
+        this.isloggedin = true;
     }
 
     @Override
     public void run() {
 
         String received;
-        while (true)
-        {
-            try
-            {
+        while (true) {
+            try {
                 // receive the string 
                 received = dis.readUTF();
 
                 System.out.println(received);
 
-                if(received.equals("logout")){
-                    this.isloggedin=false;
+                if (received.equals("logout")) {
+                    this.isloggedin = false;
                     this.s.close();
                     break;
                 }
@@ -53,13 +50,11 @@ class ClientHandler implements Runnable
 
                 // search for the recipient in the connected devices list. 
                 // ar is the vector storing client of active users 
-                for (ClientHandler mc : Server.ar)
-                {
+                for (ClientHandler mc : Server.ar) {
                     // if the recipient is found, write on its 
                     // output stream 
-                    if (mc.name.equals(recipient) && mc.isloggedin==true)
-                    {
-                        mc.dos.writeUTF(this.name+" : "+MsgToSend);
+                    if (mc.name.equals(recipient) && mc.isloggedin == true) {
+                        mc.dos.writeUTF(this.name + " : " + MsgToSend);
                         break;
                     }
                 }
@@ -69,13 +64,12 @@ class ClientHandler implements Runnable
             }
 
         }
-        try
-        {
+        try {
             // closing resources 
             this.dis.close();
             this.dos.close();
 
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

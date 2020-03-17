@@ -32,8 +32,8 @@ public class Dealer {
         }
     }
 
-    public void collectCards(){
-        for (Player p : players){
+    public void collectCards() {
+        for (Player p : players) {
             ArrayList<Card> collectedCards = p.returnHandToDealer();
             deck.addCardsBackToDeck(collectedCards);
         }

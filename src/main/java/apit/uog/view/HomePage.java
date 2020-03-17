@@ -4,8 +4,6 @@ import main.java.apit.uog.controller.AppController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class HomePage extends JPanel {
 
