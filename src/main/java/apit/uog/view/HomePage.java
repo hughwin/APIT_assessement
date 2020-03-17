@@ -1,6 +1,6 @@
 package main.java.apit.uog.view;
 
-import main.java.apit.uog.controller.HomePageActionListener;
+import main.java.apit.uog.controller.HomePageController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,9 +11,11 @@ public class HomePage extends JPanel {
         // extra space necessary to stop it looking strange
         private static final String SUB_TITLE = "<html><i>Please select an option below! </i><html>";
 
-        private HomePageActionListener homePageActionListener = new HomePageActionListener();
+        private HomePageController homePageController;
 
-        public HomePage() {
+        public HomePage(AppView appView) {
+
+            homePageController = new HomePageController(appView);
 
             setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
             setLayout(new GridBagLayout());
@@ -30,11 +32,11 @@ public class HomePage extends JPanel {
 
             JPanel buttons = new JPanel(new GridBagLayout());
             JButton play = new JButton("Play Game");
-            play.addActionListener(homePageActionListener);
+            play.addActionListener(homePageController);
             buttons.add(play, gbc);
 
             JButton exit = new JButton("Exit");
-            exit.addActionListener(homePageActionListener);
+            exit.addActionListener(homePageController);
 
             buttons.add(exit, gbc);
 
