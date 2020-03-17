@@ -7,11 +7,13 @@ public class Player {
     private String name;
     private ArrayList<Card> hand;
     private  ArrayList<Card> placedCards;
+    private int balance;
 
     public Player(String name){
         this.name = name;
         this.hand = new ArrayList<>();
         this.placedCards = new ArrayList<>();
+        this.balance = 100; // High stakes!
     }
 
     public void dealCard(Card c){
@@ -27,6 +29,10 @@ public class Player {
     public void placeCard(Card c){
         placedCards.add(c);
         hand.remove(hand.size()-1);
+    }
+
+    public void betOnRound(int bet){
+        // TODO: Finish this method off.
     }
 
     public String getName() {

@@ -1,9 +1,11 @@
 package main.java.apit.uog.view;
 
-import main.java.apit.uog.controller.HomePageController;
+import main.java.apit.uog.controller.AppController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class HomePage extends JPanel {
 
@@ -11,40 +13,40 @@ public class HomePage extends JPanel {
         // extra space necessary to stop it looking strange
         private static final String SUB_TITLE = "<html><i>Please select an option below! </i><html>";
 
-        private HomePageController homePageController;
-
-        public HomePage(AppView appView) {
-
-            homePageController = new HomePageController(appView);
-
-            setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-            setLayout(new GridBagLayout());
-
-            GridBagConstraints gbc = new GridBagConstraints();
-            gbc.gridwidth = GridBagConstraints.REMAINDER;
-            gbc.anchor = GridBagConstraints.NORTH;
-
-            add(new JLabel(TITLE), gbc);
-            add(new JLabel(SUB_TITLE), gbc);
-
-            gbc.anchor = GridBagConstraints.CENTER;
-            gbc.fill = GridBagConstraints.HORIZONTAL;
-
-            JPanel buttons = new JPanel(new GridBagLayout());
-            JButton play = new JButton("Play Game");
-            play.addActionListener(homePageController);
-            buttons.add(play, gbc);
-
-            JButton exit = new JButton("Exit");
-            exit.addActionListener(homePageController);
-
-            buttons.add(exit, gbc);
+    private AppController appController;
 
 
-            gbc.weighty = 1;
-            add(buttons, gbc);
+    public HomePage(AppController appController) {
 
+        this.appController = appController;
 
-        }
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        setLayout(new GridBagLayout());
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.anchor = GridBagConstraints.NORTH;
+
+        add(new JLabel(TITLE), gbc);
+        add(new JLabel(SUB_TITLE), gbc);
+
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        JPanel buttons = new JPanel(new GridBagLayout());
+        JButton play = new JButton("Play Game");
+        play.addActionListener(e -> appController.startGame());
+        buttons.add(play, gbc);
+
+        JButton exit = new JButton("Exit");
+        exit.addActionListener(e -> System.exit(0));
+
+        buttons.add(exit, gbc);
+
+        gbc.weighty = 1;
+        add(buttons, gbc);
+
+    }
+
 
 }

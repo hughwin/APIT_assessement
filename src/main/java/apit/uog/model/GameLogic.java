@@ -9,10 +9,10 @@ public class GameLogic implements Runnable {
     private int round;
     private boolean roundComplete;
     private ArrayList<Player> activePlayer;
+    private ArrayList<Player> eliminatedPlayers;
 
     public GameLogic(){
         activePlayer = new ArrayList<>();
-        new AppView();
     }
 
     @Override
