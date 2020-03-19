@@ -2,87 +2,71 @@ package main.java.apit.uog.server;// Java implementation of  Server side
 // It contains two classes : Server and ClientHandler 
 // Save file as Server.java 
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Vector;
 
 // Server class 
 public class Server implements Runnable {
 
-    // Vector to store active clients 
-    static Vector<ClientHandler> ar = new Vector<>();
+    private class ClientRunner implements Runnable {
+        private Socket s = null;
+        private Server parent = null;
+        private ObjectInputStream inputStream = null;
+        private ObjectOutputStream outputStream = null;
 
-    // counter for clients 
-    static int i = 0;
 
-    private Socket s;
-    private ServerSocket ss;
+        public ClientRunner(Socket s, Server parent){
+            this.s = s;
+            this.parent = parent;
+            try {
+                outputStream = new ObjectOutputStream(this.s.getOutputStream());
+                inputStream = new ObjectInputStream((this.s.getInputStream()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void run() {
+            // receieve changes
+            try {
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private ServerSocket server;
+    private Vector<ClientRunner> clients = new Vector<ClientRunner>(); // Thread safe. Could be changed to ArrayList
 
     public Server() {
-
-        // server is listening on port 1234
-        this.ss = null;
         try {
-            ss = new ServerSocket(1235);
+            server = new ServerSocket(8888); // New Server socket on PORT 8888
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
     public void run() {
-        System.out.println("Running");
-        // running infinite loop for getting
-        // client request
-        while (true) {
-            // Accept the incoming request
-            try {
-                s = ss.accept();
-            } catch (IOException e) {
+        while (true){
+            Socket clientSocket = null;
+            try{
+                clientSocket = server.accept();
+                System.out.println("New client connected!");
+                ClientRunner client = new ClientRunner(clientSocket, this);
+                clients.add(client);
+                new Thread(client).start();
+            }
+            catch (IOException e){
                 e.printStackTrace();
             }
-
-            System.out.println("New client request received : " + s);
-
-            // obtain input and output streams
-            DataInputStream dis = null;
-            try {
-                dis = new DataInputStream(s.getInputStream());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            DataOutputStream dos = null;
-            try {
-                dos = new DataOutputStream(s.getOutputStream());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            System.out.println("Creating a new handler for this client...");
-
-            // Create a new handler object for handling this request.
-            ClientHandler mtch = new ClientHandler(s, "client " + i, dis, dos);
-
-            // Create a new Thread with this object.
-            Thread t = new Thread(mtch);
-
-            System.out.println("Adding this client to active client list");
-
-            // add this client to active clients list
-            ar.add(mtch);
-
-            // start the thread.
-            t.start();
-
-            // increment i for new client.
-            // i is used for naming only, and can be replaced
-            // by any naming scheme
-            i++;
 
         }
+
     }
 }
+

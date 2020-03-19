@@ -2,6 +2,7 @@ package main.java.apit.uog;
 
 import main.java.apit.uog.controller.AppController;
 import main.java.apit.uog.model.GameLogic;
+import main.java.apit.uog.server.Server;
 
 
 public class Main {
@@ -9,6 +10,9 @@ public class Main {
 
 
         AppController appController = new AppController();
+
+        Thread t = new Thread(new Server());
+        t.start();
 
 
         // Possibly important

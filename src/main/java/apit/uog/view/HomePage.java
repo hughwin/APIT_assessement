@@ -18,6 +18,8 @@ public class HomePage extends JPanel {
 
         this.appController = appController;
 
+        String name = JOptionPane.showInputDialog(this, "What's your name?");
+
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setLayout(new GridBagLayout());
 
@@ -33,7 +35,7 @@ public class HomePage extends JPanel {
 
         JPanel buttons = new JPanel(new GridBagLayout());
         JButton play = new JButton("Play Game");
-        play.addActionListener(e -> appController.startGame());
+        play.addActionListener(e -> appController.startGame(name));
         buttons.add(play, gbc);
 
         JButton exit = new JButton("Exit");

@@ -17,7 +17,7 @@ public class AppController {
         appView = new AppView(this);
     }
 
-    public void startGame() {
+    public void startGame(String name) {
         appView.setPageView("game");
     }
 
