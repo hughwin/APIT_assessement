@@ -7,6 +7,7 @@ import main.java.apit.uog.view.GamePage;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Vector;
 
 // Server class 
@@ -29,6 +30,13 @@ public class Server implements Runnable {
 
     public void addPlayer(Player player){
         gameLogic.addPlayer(player);
+        for(ClientRunner clientRunner : clients){
+            clientRunner.updatePlayers(player);
+        }
+    }
+
+    public ArrayList<Player> getActivePlayers(){
+        return gameLogic.getActivePlayer();
     }
 
     @Override

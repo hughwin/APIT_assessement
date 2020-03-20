@@ -28,28 +28,4 @@ public class GamePage extends JPanel {
         }
     }
 
-    private class ReadWorker extends SwingWorker<Void, Void>{
-
-        private Socket socket;
-        private ObjectInputStream inputStream = null;
-        private GamePage gamePage;
-
-        public ReadWorker(GamePage gamePage, Socket socket){
-            this.socket = socket;
-            this.gamePage = gamePage;
-            try{
-                inputStream = new ObjectInputStream(this.socket.getInputStream());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        protected Void doInBackground() throws Exception {
-            System.out.println("Started ReaderWorker in background!");
-            return null;
-        }
-    }
-
-
 }

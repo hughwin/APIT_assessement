@@ -39,7 +39,7 @@ public class HomePage extends JPanel {
         play.addActionListener(e -> {
             try {
                 appController.startGame(name);
-            } catch (IOException ex) {
+            } catch (IOException | ClassNotFoundException ex) {
                 ex.printStackTrace();
             }
         });

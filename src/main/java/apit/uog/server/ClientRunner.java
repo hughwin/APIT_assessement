@@ -30,18 +30,27 @@ public class ClientRunner implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Player player = new Player("Player 1");
     }
 
+    public void updatePlayers(Player playerInGame){
+        try {
+            outputStream.writeObject(playerInGame);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void run() {
         // receive changes
         try {
-            Player player = null;
-            while((player = (Player)inputStream.readObject())!=null) {
-                System.out.println(player.getName() + " hello!");
-                this.parent.addPlayer(player);
+            Object input = null;
+            while((input = inputStream.readObject())!=null) {
+                if (input instanceof Player) {
+                    Player player = (Player)input;
+                    System.out.println(player.getName() + " hello!");
+                    this.parent.addPlayer(player);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
