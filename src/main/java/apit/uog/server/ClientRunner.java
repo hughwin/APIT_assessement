@@ -33,10 +33,16 @@ public class ClientRunner implements Runnable {
         Player player = new Player("Player 1");
     }
 
+
     @Override
     public void run() {
-        // receieve changes
+        // receive changes
         try {
+            Player player = null;
+            while((player = (Player)inputStream.readObject())!=null) {
+                System.out.println(player.getName() + " hello!");
+                this.parent.addPlayer(player);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,14 +1,12 @@
-package main.java.apit.uog.server;// Java implementation of  Server side
-// It contains two classes : Server and ClientHandler 
-// Save file as Server.java 
+package main.java.apit.uog.server;
 
 import main.java.apit.uog.model.GameLogic;
 import main.java.apit.uog.model.Player;
+import main.java.apit.uog.view.GamePage;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Vector;
 
 // Server class 
@@ -17,14 +15,20 @@ public class Server implements Runnable {
     private int PORT;
     private ServerSocket server;
     private Vector<ClientRunner> clients = new Vector<ClientRunner>(); // Thread safe. Could be changed to ArrayList
+    private GameLogic gameLogic;
 
     public Server(int port) {
         PORT = port;
+        gameLogic = new GameLogic();
         try {
             server = new ServerSocket(PORT); // New Server socket on PORT 8888 if not already in use.
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addPlayer(Player player){
+        gameLogic.addPlayer(player);
     }
 
     @Override

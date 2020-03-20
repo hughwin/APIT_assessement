@@ -12,10 +12,6 @@ public class GameLogic implements Serializable {
 
     public GameLogic() {
         this.activePlayer = new ArrayList<>();
-        Player a = new Player("Player1");
-        Player b = new Player("Player2");
-        activePlayer.add(a);
-        activePlayer.add(b);
     }
 
     public ArrayList<Player> getActivePlayer() {
@@ -25,6 +21,10 @@ public class GameLogic implements Serializable {
         }
 
         return activePlayer;
+    }
+
+    public void addPlayer(Player player){
+        activePlayer.add(player);
     }
 
 }
