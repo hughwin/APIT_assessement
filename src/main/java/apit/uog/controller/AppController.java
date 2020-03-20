@@ -27,18 +27,10 @@ public class AppController {
 
     public void startGame(String name) throws IOException {
         appView.setPageView("game");
-        try {
-            Thread t = new Thread(new Server(PORT));
-            t.start();
-            System.out.print("Starting server and client!");
-            server = new Socket(LOCALHOST,PORT);
-        } catch (Exception e) {
-            System.out.println("Starting new client!");
-            server = new Socket(LOCALHOST,PORT);
+        System.out.print("Starting server and client!");
+        server = new Socket(LOCALHOST,PORT);
         }
 
-
-    }
 
     public ArrayList<Player> getPlayers(){
         return gameLogic.getActivePlayer();
