@@ -18,6 +18,7 @@ public class AppController {
     private GameLogic gameLogic;
     private Socket server;
     private int PORT = 8888;
+    private String LOCALHOST = "127.0.0.1";
 
     public AppController() {
         gameLogic = new GameLogic();
@@ -30,10 +31,10 @@ public class AppController {
             Thread t = new Thread(new Server(PORT));
             t.start();
             System.out.print("Starting server and client!");
-            server = new Socket("127.0.0.1",PORT);
+            server = new Socket(LOCALHOST,PORT);
         } catch (Exception e) {
             System.out.println("Starting new client!");
-            server = new Socket("127.0.0.1",PORT);
+            server = new Socket(LOCALHOST,PORT);
         }
 
 
