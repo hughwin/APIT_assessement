@@ -7,22 +7,6 @@ import main.java.apit.uog.server.Server;
 
 public class Main {
     public static void main(String[] args) {
-
-
         AppController appController = new AppController();
-
-        Thread t = new Thread(new Server());
-        t.start();
-
-
-        // Possibly important
-
-//        if(!HostAvailability.hostAvailabilityCheck()){
-//            Thread t = new Thread(new Server());
-//            t.start();
-//        }
-//        Thread t2 = new Thread(new GameLogic());
-
-      //  new AppView();
     }
 }

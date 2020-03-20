@@ -1,8 +1,9 @@
 package main.java.apit.uog.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Dealer {
+public class Dealer implements Serializable {
 
     private ArrayList<Player> players;
     private Deck deck;

@@ -1,8 +1,9 @@
 package main.java.apit.uog.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GameLogic implements Runnable {
+public class GameLogic implements Serializable {
 
     private int round;
     private boolean roundComplete;
@@ -26,8 +27,4 @@ public class GameLogic implements Runnable {
         return activePlayer;
     }
 
-    @Override
-    public void run() {
-        new GameLogic();
-    }
 }

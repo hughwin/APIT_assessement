@@ -1,6 +1,8 @@
 package main.java.apit.uog.model;
 
-public class Card {
+import java.io.Serializable;
+
+public class Card implements Serializable {
 
     private Deck.Suit suit;
     private Deck.Rank rank;
