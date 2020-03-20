@@ -2,9 +2,8 @@ package main.java.apit.uog.server;
 
 import main.java.apit.uog.model.GameLogic;
 import main.java.apit.uog.model.Player;
-import main.java.apit.uog.view.GamePage;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -15,12 +14,12 @@ public class Server implements Runnable {
 
     private int PORT;
     private ServerSocket server;
-    private Vector<ClientRunner> clients = new Vector<ClientRunner>(); // Thread safe. Could be changed to ArrayList
+    private Vector<ClientRunner> clients = new Vector<>(); // Thread safe. Could be changed to ArrayList
     private GameLogic gameLogic;
 
     public Server(int port) {
         PORT = port;
-        gameLogic = new GameLogic();
+        gameLogic = new GameLogic(this);
         try {
             server = new ServerSocket(PORT); // New Server socket on PORT 8888 if not already in use.
         } catch (IOException e) {
@@ -28,29 +27,31 @@ public class Server implements Runnable {
         }
     }
 
-    public void addPlayer(Player player){
+    public void addPlayer(Player player) {
         gameLogic.addPlayer(player);
-        for(ClientRunner clientRunner : clients){
-            clientRunner.updatePlayers(player);
+    }
+
+    public void updatePlayers(ArrayList<Player> players) {
+        for (ClientRunner client : clients) {
+            client.updatePlayers(players);
         }
     }
 
-    public ArrayList<Player> getActivePlayers(){
+    public ArrayList<Player> getActivePlayers() {
         return gameLogic.getActivePlayer();
     }
 
     @Override
     public void run() {
-        while (true){
-            Socket clientSocket = null;
-            try{
+        while (true) {
+            Socket clientSocket;
+            try {
                 clientSocket = server.accept();
                 System.out.println("New client connected!");
                 ClientRunner client = new ClientRunner(clientSocket, this);
                 clients.add(client);
                 new Thread(client).start();
-            }
-            catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 

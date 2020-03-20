@@ -7,15 +7,14 @@ import main.java.apit.uog.model.Player;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Vector;
+import java.util.ArrayList;
 
 // Server class 
 public class ClientRunner implements Runnable {
 
-    private Socket s = null;
-    private Server parent = null;
+    private Socket s;
+    private Server parent;
     private ObjectInputStream inputStream = null;
     private ObjectOutputStream outputStream = null;
     private Player player;
@@ -32,10 +31,11 @@ public class ClientRunner implements Runnable {
         }
     }
 
-    public void updatePlayers(Player playerInGame){
+    public void updatePlayers(ArrayList<Player> players) {
         try {
-            outputStream.writeObject(playerInGame);
-        }catch (IOException e){
+            outputStream.writeObject(players);
+            outputStream.reset();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -44,10 +44,10 @@ public class ClientRunner implements Runnable {
     public void run() {
         // receive changes
         try {
-            Object input = null;
-            while((input = inputStream.readObject())!=null) {
+            Object input;
+            while ((input = inputStream.readObject()) != null) {
                 if (input instanceof Player) {
-                    Player player = (Player)input;
+                    Player player = (Player) input;
                     System.out.println(player.getName() + " hello!");
                     this.parent.addPlayer(player);
                 }

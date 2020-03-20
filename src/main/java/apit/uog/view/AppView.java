@@ -8,13 +8,12 @@ import java.awt.*;
 
 public class AppView extends JFrame {
 
-    private AppController appController;
-
     private static final String WINDOW_TITLE = "Twenty One";
+    private AppController appController;
     private CardLayout cardLayout = new CardLayout();
     private JPanel mainPanel = new JPanel(cardLayout);
 
-    public AppView(AppController appController){
+    public AppView(AppController appController) {
         super();
         this.appController = appController;
         setTitle(WINDOW_TITLE);
@@ -26,7 +25,7 @@ public class AppView extends JFrame {
         setVisible(true);
     }
 
-    public void setPageView(String constraint){
+    public void setPageView(String constraint) {
         cardLayout.show(mainPanel, constraint);
     }
 }

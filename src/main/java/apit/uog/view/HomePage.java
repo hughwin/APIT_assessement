@@ -8,9 +8,9 @@ import java.io.IOException;
 
 public class HomePage extends JPanel {
 
-        private static final String TITLE = "<html><h1><strong><i>Twenty One</i></strong></h1><hr></html>";
-        // extra space necessary to stop it looking strange
-        private static final String SUB_TITLE = "<html><i>Please select an option below! </i><html>";
+    private static final String TITLE = "<html><h1><strong><i>Twenty One</i></strong></h1><hr></html>";
+    // extra space necessary to stop it looking strange
+    private static final String SUB_TITLE = "<html><i>Please select an option below! </i><html>";
 
     private AppController appController;
 
@@ -39,7 +39,7 @@ public class HomePage extends JPanel {
         play.addActionListener(e -> {
             try {
                 appController.startGame(name);
-            } catch (IOException | ClassNotFoundException ex) {
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
         });

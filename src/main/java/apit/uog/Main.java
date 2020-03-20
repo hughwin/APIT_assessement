@@ -4,6 +4,8 @@ import main.java.apit.uog.controller.AppController;
 import main.java.apit.uog.model.GameLogic;
 import main.java.apit.uog.server.Server;
 
+import java.io.IOException;
+
 
 public class Main {
     public static void main(String[] args) {
