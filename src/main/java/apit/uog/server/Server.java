@@ -27,7 +27,7 @@ public class Server implements Runnable {
         }
     }
 
-    public void addPlayer(Player player) {
+    public synchronized void addPlayer(Player player) {
         gameController.getGameState().addPlayer(player);
     }
 

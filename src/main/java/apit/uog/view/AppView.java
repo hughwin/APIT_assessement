@@ -12,6 +12,7 @@ public class AppView extends JFrame {
     private AppController appController;
     private CardLayout cardLayout = new CardLayout();
     private JPanel mainPanel = new JPanel(cardLayout);
+    private GamePage gamePage;
 
     public AppView(AppController appController) {
         super();
@@ -21,8 +22,14 @@ public class AppView extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(mainPanel);
         mainPanel.add(new HomePage(this.appController), "home");
-        mainPanel.add(new GamePage(this.appController), "game");
+
+        gamePage = new GamePage(appController);
+        mainPanel.add(gamePage, "game");
         setVisible(true);
+    }
+
+    public GamePage getGamePage() {
+        return gamePage;
     }
 
     public void setPageView(String constraint) {

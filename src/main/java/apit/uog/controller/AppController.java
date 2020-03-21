@@ -5,6 +5,7 @@ import main.java.apit.uog.model.GameState;
 import main.java.apit.uog.model.Player;
 import main.java.apit.uog.view.AppView;
 import main.java.apit.uog.view.GamePage;
+import main.java.apit.uog.view.PlayerView;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -17,13 +18,12 @@ import java.util.ArrayList;
 public class AppController {
 
     private AppView appView;
-    private GameController gameLogic;
     private Socket server;
     private int PORT = 8888;
     private String LOCALHOST = "127.0.0.1";
-    private String NAME;
-    private Player player;
     private ObjectOutputStream objectOutputStream;
+
+    private  GameState gameState;
 
     public AppController() {
         appView = new AppView(this);
@@ -36,18 +36,23 @@ public class AppController {
         server = new Socket(LOCALHOST, PORT);
         objectOutputStream = new ObjectOutputStream(server.getOutputStream());
         objectOutputStream.writeObject(new Player(name));
-        ReadWorker rw = new ReadWorker(server);
+        ReadWorker rw = new ReadWorker(server, this);
         rw.execute();
+    }
+
+    public GameState getGameState() {
+        return gameState;
     }
 
     private class ReadWorker extends SwingWorker<Void, Void> {
 
+        private final AppController parent;
         private Socket socket;
         private ObjectInputStream inputStream = null;
-        private GamePage gamePage;
 
-        public ReadWorker(Socket socket) {
+        public ReadWorker(Socket socket, AppController parent) {
             this.socket = socket;
+            this.parent = parent;
             try {
                 inputStream = new ObjectInputStream(this.socket.getInputStream());
             } catch (IOException e) {
@@ -61,9 +66,10 @@ public class AppController {
             System.out.println("Started swing worker!");
             Object input;
             while ((input = inputStream.readObject()) != null) {
-                GameState gameState = (GameState) input;
-                for (Player x : gameState.getActivePlayers()) {
-                    System.out.print(x.getName() + " ");
+                gameState = (GameState) input;
+                appView.getGamePage().removeAll();
+                for (Player player : gameState.getActivePlayers()){
+                    appView.getGamePage().addPlayerToView(player);
                 }
                 System.out.println("End of input");
             }

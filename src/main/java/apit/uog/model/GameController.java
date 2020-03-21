@@ -27,6 +27,5 @@ public class GameController implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
         server.sendGameState(gameState);
-        System.out.println("Should just do this server side");
     }
 }

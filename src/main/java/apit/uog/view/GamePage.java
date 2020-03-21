@@ -1,6 +1,7 @@
 package main.java.apit.uog.view;
 
 import main.java.apit.uog.controller.AppController;
+import main.java.apit.uog.model.Player;
 
 import javax.swing.*;
 
@@ -14,13 +15,16 @@ public class GamePage extends JPanel {
 
         BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
         this.setLayout(layout);
-
-
-//        for (Player p : appController.getPlayers()){
-//            PlayerView pv = new PlayerView(p);
-//            pv.setBorder(BorderFactory.createLoweredBevelBorder());
-//            add(pv);
-//        }
     }
 
-}
+
+        public void addPlayerToView(Player p){
+            PlayerView pv = new PlayerView(p);
+            pv.setBorder(BorderFactory.createLoweredBevelBorder());
+            this.add(pv);
+            this.revalidate();
+            this.repaint();
+        }
+    }
+
+
