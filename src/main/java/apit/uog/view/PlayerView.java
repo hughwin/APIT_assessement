@@ -17,6 +17,9 @@ public class PlayerView extends JPanel {
         add(readyLabel);
         readyLabel.setVisible(player.isReady());
 
+        JLabel cardsLabel = new JLabel("Cards: " + player.getHand().toString());
+        add(cardsLabel);
+
         setSize(80,40);
         add(nameLabel);
         add(balanceLabel);

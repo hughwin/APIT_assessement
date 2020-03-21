@@ -41,9 +41,7 @@ public class Player implements Serializable {
         return name;
     }
 
-    public String getHand() {
-        return hand.toString();
-    }
+    public String getHand() { return hand.toString(); }
 
     public int getBalance() {
         return balance;

@@ -11,11 +11,19 @@ public class GameState implements Serializable {
     private final Dealer dealer;
     private final HashMap<Integer, Player> activePlayers;
     private PropertyChangeSupport propertyChangeSupport;
+    private boolean roundInProgress = false;
 
     public GameState() {
-        this.dealer = new Dealer();
         this.activePlayers = new HashMap<>();
+        this.dealer = new Dealer(activePlayers);
         propertyChangeSupport = new PropertyChangeSupport(activePlayers);
+    }
+
+    public void startGame(){
+        dealer.dealCardsToPlayers();
+        roundInProgress = true;
+        propertyChangeSupport.firePropertyChange("activePlayers", null, activePlayers);
+
     }
 
     public void addPlayer(int id, Player player) {
@@ -27,9 +35,13 @@ public class GameState implements Serializable {
         activePlayers.forEach((key, value) -> out.println(key + " " + value.getName()));
     }
 
-    public void setPlayerReady(int id){
-        activePlayers.get(id).setReady(true);
+    public void setPlayerReady(int id, boolean ready){
+        activePlayers.get(id).setReady(ready);
         propertyChangeSupport.firePropertyChange("player", false, true);
+    }
+
+    public boolean isRoundInProgress() {
+        return roundInProgress;
     }
 
     public HashMap<Integer, Player> getActivePlayers() {

@@ -90,6 +90,7 @@ public class AppController {
                 gameState = (GameState) input;
                 appView.getGamePage().getOutPutPanel().removeAll();
                 gameState.getActivePlayers().forEach((key, value) -> appView.getGamePage().addPlayerToView(value));
+                appView.getGamePage().enableRoundInProgressButtons(gameState.isRoundInProgress());
             }
             return null;
         }

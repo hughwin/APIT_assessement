@@ -44,7 +44,7 @@ public class Server implements Runnable {
     }
 
     public synchronized void setPlayerReady(int id){
-        gameController.getGameState().setPlayerReady(id);
+        gameController.getGameState().setPlayerReady(id, true);
     }
 
     public void sendGameState(GameState gameState) {

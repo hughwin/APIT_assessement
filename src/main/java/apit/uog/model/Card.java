@@ -14,9 +14,6 @@ public class Card implements Serializable {
 
     @Override
     public String toString() {
-        return "Card{" +
-                "suit=" + suit +
-                ", rank=" + rank +
-                '}';
+        return rank + " of " + suit;
     }
 }

@@ -38,9 +38,11 @@ public class GameController implements PropertyChangeListener, Runnable {
 
     @Override
     public void run() {
-        System.out.println("Starting!");
         while(running) {
             if (checkPlayersReady()) {
+                gameState.startGame();
+                terminate();
+                gameState.getActivePlayers().forEach((key,value) -> gameState.setPlayerReady(key,false));
             }
             try {
                 Thread.sleep(1000);
@@ -53,8 +55,12 @@ public class GameController implements PropertyChangeListener, Runnable {
 
     public boolean checkPlayersReady() {
         List<Player> list = new ArrayList<>(gameState.getActivePlayers().values());
+
+        if(list.size() < 2){return false;}
+
+        // TODO: Add error message informing the player they can't play unless there is more than 2 players.
+
         for (Player player : list) {
-            System.out.println(player.isReady());
             if (!player.isReady()) {
                 return false;
             }

@@ -33,6 +33,7 @@ public class GamePage extends JPanel {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 appController.setReady();
+                playButton.setEnabled(false);
             }
         });
 
@@ -46,6 +47,7 @@ public class GamePage extends JPanel {
         outputPanel.add(playerArea, null);
         outputPanel.add(dealerArea, null);
         outputPanel.setAutoscrolls(true);
+
         hitButton.setEnabled(false);
         standButton.setEnabled(false);
 
@@ -57,6 +59,11 @@ public class GamePage extends JPanel {
         outputPanel.add(pv);
         outputPanel.revalidate();
         outputPanel.repaint();
+    }
+
+    public void enableRoundInProgressButtons(boolean roundInProgress){
+        hitButton.setEnabled(roundInProgress);
+        standButton.setEnabled(roundInProgress);
     }
 
     public JPanel getOutPutPanel(){
