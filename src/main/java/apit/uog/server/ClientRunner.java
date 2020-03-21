@@ -1,14 +1,16 @@
 package main.java.apit.uog.server;// Java implementation of  Server side
 // It contains two classes : Server and ClientHandler 
-// Save file as Server.java 
 
+
+
+
+import main.java.apit.uog.model.GameState;
 import main.java.apit.uog.model.Player;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 
 // Server class 
 public class ClientRunner implements Runnable {
@@ -31,9 +33,9 @@ public class ClientRunner implements Runnable {
         }
     }
 
-    public void updatePlayers(ArrayList<Player> players) {
+    public void updateGameState(GameState gameState) {
         try {
-            outputStream.writeObject(players);
+            outputStream.writeObject(gameState);
             outputStream.reset();
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,7 +50,7 @@ public class ClientRunner implements Runnable {
             while ((input = inputStream.readObject()) != null) {
                 if (input instanceof Player) {
                     Player player = (Player) input;
-                    System.out.println(player.getName() + " hello!");
+                    System.out.println("Hello " + player.getName() + "!");
                     this.parent.addPlayer(player);
                 }
             }

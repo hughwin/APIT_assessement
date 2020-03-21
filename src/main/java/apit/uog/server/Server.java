@@ -1,12 +1,12 @@
 package main.java.apit.uog.server;
 
-import main.java.apit.uog.model.GameLogic;
+import main.java.apit.uog.model.GameController;
+import main.java.apit.uog.model.GameState;
 import main.java.apit.uog.model.Player;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Vector;
 
 // Server class 
@@ -15,11 +15,11 @@ public class Server implements Runnable {
     private int PORT;
     private ServerSocket server;
     private Vector<ClientRunner> clients = new Vector<>(); // Thread safe. Could be changed to ArrayList
-    private GameLogic gameLogic;
+    private GameController gameController;
 
     public Server(int port) {
         PORT = port;
-        gameLogic = new GameLogic(this);
+        gameController = new GameController(this);
         try {
             server = new ServerSocket(PORT); // New Server socket on PORT 8888 if not already in use.
         } catch (IOException e) {
@@ -28,18 +28,15 @@ public class Server implements Runnable {
     }
 
     public void addPlayer(Player player) {
-        gameLogic.addPlayer(player);
+        gameController.getGameState().addPlayer(player);
     }
 
-    public void updatePlayers(ArrayList<Player> players) {
+    public void sendGameState(GameState gameState) {
         for (ClientRunner client : clients) {
-            client.updatePlayers(players);
+            client.updateGameState(gameState);
         }
     }
 
-    public ArrayList<Player> getActivePlayers() {
-        return gameLogic.getActivePlayer();
-    }
 
     @Override
     public void run() {
@@ -58,5 +55,6 @@ public class Server implements Runnable {
         }
 
     }
+
 }
 

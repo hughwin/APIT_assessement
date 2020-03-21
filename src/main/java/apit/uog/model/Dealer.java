@@ -7,22 +7,13 @@ public class Dealer implements Serializable {
 
     private ArrayList<Player> players;
     private Deck deck;
-    private int NUMBER_OF_PLAYERS;
 
-    public Dealer(int numberOfPlayers) {
+    public Dealer() {
         players = new ArrayList<>();
-        generatePlayers(numberOfPlayers);
         deck = new Deck();
         deck.shuffle();
     }
 
-
-    public void generatePlayers(int numberOfPlayers) {
-        for (int i = 0; i < numberOfPlayers; i++) {
-            players.add(new Player("Player " + (i + 1)));
-
-        }
-    }
 
     public void dealCardsToPlayers() {
         for (int i = 0; i < 2; i++) {

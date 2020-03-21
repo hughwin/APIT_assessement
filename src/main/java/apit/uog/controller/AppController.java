@@ -1,6 +1,7 @@
 package main.java.apit.uog.controller;
 
-import main.java.apit.uog.model.GameLogic;
+import main.java.apit.uog.model.GameController;
+import main.java.apit.uog.model.GameState;
 import main.java.apit.uog.model.Player;
 import main.java.apit.uog.view.AppView;
 import main.java.apit.uog.view.GamePage;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 public class AppController {
 
     private AppView appView;
-    private GameLogic gameLogic;
+    private GameController gameLogic;
     private Socket server;
     private int PORT = 8888;
     private String LOCALHOST = "127.0.0.1";
@@ -60,10 +61,11 @@ public class AppController {
             System.out.println("Started swing worker!");
             Object input;
             while ((input = inputStream.readObject()) != null) {
-                ArrayList<Player> p = (ArrayList<Player>) input;
-                for (Player x : p) {
-                    System.out.println(x.getName());
+                GameState gameState = (GameState) input;
+                for (Player x : gameState.getActivePlayers()) {
+                    System.out.print(x.getName() + " ");
                 }
+                System.out.println("End of input");
             }
             return null;
         }
