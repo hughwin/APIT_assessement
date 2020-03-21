@@ -24,11 +24,11 @@ public class GamePage extends JPanel {
     public GamePage(AppController appController) {
 
         this.appController = appController;
+        setLayout(new BorderLayout());
+        add(dealerLabel, BorderLayout.NORTH);
+        dealerLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
-        this.setLayout(layout);
-        outputPanel.setLayout(new BorderLayout());
-        add(buttonPanel,  BorderLayout.SOUTH);
+
         buttonPanel.add(playButton);
         playButton.addActionListener(new ActionListener() {
             @Override
@@ -42,11 +42,12 @@ public class GamePage extends JPanel {
         buttonPanel.add(hitButton, null);
         buttonPanel.add(standButton, null);
 
+        add(buttonPanel, BorderLayout.SOUTH);
+
 
         add(outputPanel, BorderLayout.CENTER);
         outputPanel.setLayout(new FlowLayout());
         outputPanel.add(playerArea, null);
-        add(dealerLabel);
         outputPanel.setAutoscrolls(true);
 
         hitButton.setEnabled(false);
