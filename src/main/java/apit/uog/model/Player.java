@@ -9,7 +9,7 @@ public class Player implements Serializable {
     private ArrayList<Card> hand;
     private ArrayList<Card> placedCards;
     private int balance;
-    private boolean ready;
+    private boolean ready = false;
 
     public Player(String name) {
         this.name = name;

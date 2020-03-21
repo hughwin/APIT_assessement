@@ -17,14 +17,20 @@ public class Server implements Runnable {
     private Vector<ClientRunner> clients = new Vector<>(); // Thread safe. Could be changed to ArrayList
     private GameController gameController;
     private int id;
+    private Thread readyThread;
 
     public Server(int port) {
         PORT = port;
+
         gameController = new GameController(this);
+        readyThread = new Thread(gameController);
+        readyThread.start();
+
         try {
             server = new ServerSocket(PORT); // New Server socket on PORT 8888 if not already in use.
         } catch (IOException e) {
             e.printStackTrace();
+            gameController.terminate();
         }
     }
 
@@ -38,7 +44,6 @@ public class Server implements Runnable {
     }
 
     public synchronized void setPlayerReady(int id){
-        System.out.println("Ready!");
         gameController.getGameState().setPlayerReady(id);
     }
 
