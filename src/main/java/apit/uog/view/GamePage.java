@@ -1,12 +1,14 @@
 package main.java.apit.uog.view;
 
 import main.java.apit.uog.controller.AppController;
+import main.java.apit.uog.model.Card;
 import main.java.apit.uog.model.Player;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class GamePage extends JPanel {
 
@@ -17,7 +19,7 @@ public class GamePage extends JPanel {
     private JButton standButton = new JButton("Stand");
     private JPanel outputPanel = new JPanel();
     private JTextArea playerArea = new JTextArea();
-    private JTextArea dealerArea = new JTextArea();
+    private JLabel dealerLabel = new JLabel("Dealer's hand: ");
 
     public GamePage(AppController appController) {
 
@@ -26,7 +28,6 @@ public class GamePage extends JPanel {
         BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
         this.setLayout(layout);
         outputPanel.setLayout(new BorderLayout());
-
         add(buttonPanel,  BorderLayout.SOUTH);
         buttonPanel.add(playButton);
         playButton.addActionListener(new ActionListener() {
@@ -45,7 +46,7 @@ public class GamePage extends JPanel {
         add(outputPanel, BorderLayout.CENTER);
         outputPanel.setLayout(new FlowLayout());
         outputPanel.add(playerArea, null);
-        outputPanel.add(dealerArea, null);
+        add(dealerLabel);
         outputPanel.setAutoscrolls(true);
 
         hitButton.setEnabled(false);
@@ -64,6 +65,10 @@ public class GamePage extends JPanel {
     public void enableRoundInProgressButtons(boolean roundInProgress){
         hitButton.setEnabled(roundInProgress);
         standButton.setEnabled(roundInProgress);
+    }
+
+    public void setDealerArea(ArrayList<Card> dealerHand) {
+        dealerLabel.setText("Dealer's hand: " + dealerHand.get(0).toString());
     }
 
     public JPanel getOutPutPanel(){

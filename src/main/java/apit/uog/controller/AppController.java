@@ -89,6 +89,11 @@ public class AppController {
             while ((input = inputStream.readObject()) != null) {
                 gameState = (GameState) input;
                 appView.getGamePage().getOutPutPanel().removeAll();
+
+                if (!gameState.getDealer().getHand().isEmpty()) {
+                    appView.getGamePage().setDealerArea(gameState.getDealer().getHand());
+                }
+
                 gameState.getActivePlayers().forEach((key, value) -> appView.getGamePage().addPlayerToView(value));
                 appView.getGamePage().enableRoundInProgressButtons(gameState.isRoundInProgress());
             }

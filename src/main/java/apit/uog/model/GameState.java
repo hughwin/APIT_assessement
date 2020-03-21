@@ -51,4 +51,8 @@ public class GameState implements Serializable {
     public PropertyChangeSupport getPropertyChangeSupport() {
         return propertyChangeSupport;
     }
+
+    public Dealer getDealer() {
+        return dealer;
+    }
 }

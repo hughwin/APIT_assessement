@@ -8,22 +8,31 @@ public class Dealer implements Serializable {
 
     private Deck deck;
     private HashMap<Integer, Player> activePlayers;
+    private ArrayList<Card> hand;
 
     public Dealer(HashMap<Integer, Player> activePlayers) {
         this.activePlayers = activePlayers;
+        this.hand = new ArrayList<>();
         deck = new Deck();
         deck.shuffle();
+
     }
 
     public void dealCardsToPlayers() {
         for (int i = 0; i < 2; i++){
+            hand.add(deck.getTopCard());
             activePlayers.forEach((key, value) -> {
                 value.dealCard(deck.getTopCard());
             });
         }
     }
 
-//    public void collectCards() {
+    public synchronized ArrayList<Card> getHand() {
+        System.out.println(hand.toString());
+        return hand;
+    }
+
+    //    public void collectCards() {
 //        for (Player p : players) {
 //            ArrayList<Card> collectedCards = p.returnHandToDealer();
 //            deck.addCardsBackToDeck(collectedCards);
