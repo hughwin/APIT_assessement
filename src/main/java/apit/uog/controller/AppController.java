@@ -34,9 +34,7 @@ public class AppController {
             System.out.println("Starting client!");
             server = new Socket(LOCALHOST, PORT);
             objectOutputStream = new ObjectOutputStream(server.getOutputStream());
-
             objectOutputStream.writeObject("getID");
-
             player = new Player(name);
             objectOutputStream.writeObject(player);
             objectOutputStream.reset();
@@ -49,9 +47,16 @@ public class AppController {
 
     public void quitGame() {
         try {
-            objectOutputStream.writeObject("quit ");
-            objectOutputStream.writeObject("closeClient");
+            objectOutputStream.writeObject("quit");
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setReady(){
+        try {
+            objectOutputStream.writeObject("ready");
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -83,11 +88,8 @@ public class AppController {
             Object input;
             while ((input = inputStream.readObject()) != null) {
                 gameState = (GameState) input;
-                appView.getGamePage().removeAll();
-
+                appView.getGamePage().getOutPutPanel().removeAll();
                 gameState.getActivePlayers().forEach((key, value) -> appView.getGamePage().addPlayerToView(value));
-
-                System.out.println("End of input");
             }
             return null;
         }

@@ -63,8 +63,8 @@ public class ClientRunner implements Runnable {
                         this.parent.removePlayer(ID);
                     }
 
-                    if (commandArray[0].equals("closeClient")) {
-                        this.parent.removeClient(ID);
+                    if (commandArray[0].equals("ready")) {
+                        this.parent.setPlayerReady(ID);
                     }
 
                 }

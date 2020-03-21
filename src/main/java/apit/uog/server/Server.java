@@ -34,10 +34,12 @@ public class Server implements Runnable {
 
     public synchronized void removePlayer(int id) {
         gameController.getGameState().removePlayer(id);
+        clients.removeIf(clientRunner -> clientRunner.getID() == id);
     }
 
-    public synchronized void removeClient(int clientId) {
-        clients.removeIf(clientRunner -> clientRunner.getID() == clientId);
+    public synchronized void setPlayerReady(int id){
+        System.out.println("Ready!");
+        gameController.getGameState().setPlayerReady(id);
     }
 
     public void sendGameState(GameState gameState) {

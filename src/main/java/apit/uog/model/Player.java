@@ -9,6 +9,7 @@ public class Player implements Serializable {
     private ArrayList<Card> hand;
     private ArrayList<Card> placedCards;
     private int balance;
+    private boolean ready;
 
     public Player(String name) {
         this.name = name;
@@ -42,5 +43,17 @@ public class Player implements Serializable {
 
     public String getHand() {
         return hand.toString();
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setReady(boolean ready) {
+        this.ready = ready;
+    }
+
+    public boolean isReady() {
+        return ready;
     }
 }

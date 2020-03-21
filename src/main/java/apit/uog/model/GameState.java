@@ -23,10 +23,13 @@ public class GameState implements Serializable {
     }
 
     public void removePlayer(int id) {
-
         propertyChangeSupport.firePropertyChange("activePlayers", activePlayers, activePlayers.remove(id));
         activePlayers.forEach((key, value) -> out.println(key + " " + value.getName()));
+    }
 
+    public void setPlayerReady(int id){
+        activePlayers.get(id).setReady(true);
+        propertyChangeSupport.firePropertyChange("player", false, true);
     }
 
     public HashMap<Integer, Player> getActivePlayers() {
