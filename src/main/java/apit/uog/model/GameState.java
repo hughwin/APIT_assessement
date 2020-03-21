@@ -21,8 +21,8 @@ public class GameState implements Serializable {
     }
 
     public void removePlayer(int id){
-        activePlayers.remove(id);
 
+        propertyChangeSupport.firePropertyChange("activePlayers", activePlayers, activePlayers.remove(id));
         activePlayers.entrySet().forEach(entry ->{System.out.println(entry.getKey() + " " + entry.getValue().getName());});
 
     }
