@@ -32,14 +32,12 @@ public class Server implements Runnable {
         gameController.getGameState().addPlayer(id, player);
     }
 
-    public synchronized void removePlayer(int id){ gameController.getGameState().removePlayer(id); }
+    public synchronized void removePlayer(int id) {
+        gameController.getGameState().removePlayer(id);
+    }
 
-    public synchronized void removeClient(int clientId){
-        for (ClientRunner clientRunner : clients){
-            if (clientRunner.getID() == clientId){
-                clients.remove(clientRunner);
-            }
-        }
+    public synchronized void removeClient(int clientId) {
+        clients.removeIf(clientRunner -> clientRunner.getID() == clientId);
     }
 
     public void sendGameState(GameState gameState) {
@@ -48,7 +46,7 @@ public class Server implements Runnable {
         }
     }
 
-
+    @SuppressWarnings("InfiniteLoopStatement")
     @Override
     public void run() {
         while (true) {

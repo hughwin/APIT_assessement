@@ -18,13 +18,13 @@ public class GamePage extends JPanel {
     }
 
 
-        public void addPlayerToView(Player p){
-            PlayerView pv = new PlayerView(p);
-            pv.setBorder(BorderFactory.createLoweredBevelBorder());
-            this.add(pv);
-            this.revalidate();
-            this.repaint();
-        }
+    public void addPlayerToView(Player p) {
+        PlayerView pv = new PlayerView(p);
+        pv.setBorder(BorderFactory.createLoweredBevelBorder());
+        this.add(pv);
+        this.revalidate();
+        this.repaint();
     }
+}
 
 

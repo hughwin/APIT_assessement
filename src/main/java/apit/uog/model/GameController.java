@@ -4,8 +4,7 @@ import main.java.apit.uog.server.Server;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.Serializable;
-import java.util.ArrayList;
+
 
 public class GameController implements PropertyChangeListener {
 

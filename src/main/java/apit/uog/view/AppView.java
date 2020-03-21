@@ -13,6 +13,24 @@ public class AppView extends JFrame {
 
     private static final String WINDOW_TITLE = "Twenty One";
     private AppController appController;
+    WindowListener exitListener = new WindowAdapter() {
+
+        @Override
+        public void windowClosing(WindowEvent e) {
+            int confirm = JOptionPane.showOptionDialog(
+                    null, "Are You Sure to Close Application?",
+                    "Exit Confirmation", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE, null, null, null);
+            if (confirm == 0) {
+                appController.quitGame();
+                try {
+                    AppView.this.wait(1000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    };
     private CardLayout cardLayout = new CardLayout();
     private JPanel mainPanel = new JPanel(cardLayout);
     private GamePage gamePage;
@@ -51,26 +69,6 @@ public class AppView extends JFrame {
     public GamePage getGamePage() {
         return gamePage;
     }
-
-    WindowListener exitListener = new WindowAdapter() {
-
-        @Override
-        public void windowClosing(WindowEvent e) {
-            int confirm = JOptionPane.showOptionDialog(
-                    null, "Are You Sure to Close Application?",
-                    "Exit Confirmation", JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE, null, null, null);
-            if (confirm == 0) {
-                appController.quitGame();
-                try {
-                    AppView.this.wait(1000);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-    };
-
 
     public void setPageView(String constraint) {
         cardLayout.show(mainPanel, constraint);

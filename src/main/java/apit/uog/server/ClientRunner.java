@@ -13,12 +13,12 @@ import java.net.Socket;
 // Server class 
 public class ClientRunner implements Runnable {
 
+    private final int ID;
     private Socket s;
     private Server parent;
     private ObjectInputStream inputStream = null;
     private ObjectOutputStream outputStream = null;
     private Player player;
-    private final int ID;
 
 
     public ClientRunner(Socket s, Server parent, int id) {
@@ -55,15 +55,15 @@ public class ClientRunner implements Runnable {
                     System.out.println("Hello " + player.getName() + "!");
                     this.parent.addPlayer(ID, player);
                 }
-                if (input instanceof String){
+                if (input instanceof String) {
                     String command = (String) input;
                     String[] commandArray = command.split(" ");
 
-                    if (commandArray[0].equals("quit")){
+                    if (commandArray[0].equals("quit")) {
                         this.parent.removePlayer(ID);
                     }
 
-                    if (commandArray.equals("closeClient")){
+                    if (commandArray[0].equals("closeClient")) {
                         this.parent.removeClient(ID);
                     }
 

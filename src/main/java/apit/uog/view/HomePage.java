@@ -4,7 +4,6 @@ import main.java.apit.uog.controller.AppController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
 public class HomePage extends JPanel {
 
@@ -36,9 +35,7 @@ public class HomePage extends JPanel {
 
         JPanel buttons = new JPanel(new GridBagLayout());
         JButton play = new JButton("Play Game");
-        play.addActionListener(e -> {
-            appController.startGame(name);
-        });
+        play.addActionListener(e -> appController.startGame(name));
         buttons.add(play, gbc);
 
         JButton exit = new JButton("Exit");

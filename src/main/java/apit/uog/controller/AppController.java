@@ -5,13 +5,11 @@ import main.java.apit.uog.model.GameState;
 import main.java.apit.uog.model.Player;
 import main.java.apit.uog.view.AppView;
 
-
 import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-
 
 
 public class AppController {
@@ -44,16 +42,16 @@ public class AppController {
             objectOutputStream.reset();
             ReadWorker rw = new ReadWorker(server, this);
             rw.execute();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void quitGame(){
+    public void quitGame() {
         try {
             objectOutputStream.writeObject("quit ");
             objectOutputStream.writeObject("closeClient");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -87,7 +85,7 @@ public class AppController {
                 gameState = (GameState) input;
                 appView.getGamePage().removeAll();
 
-                gameState.getActivePlayers().entrySet().forEach(entry ->{appView.getGamePage().addPlayerToView(entry.getValue());});
+                gameState.getActivePlayers().forEach((key, value) -> appView.getGamePage().addPlayerToView(value));
 
                 System.out.println("End of input");
             }
