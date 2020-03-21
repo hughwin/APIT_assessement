@@ -37,11 +37,7 @@ public class HomePage extends JPanel {
         JPanel buttons = new JPanel(new GridBagLayout());
         JButton play = new JButton("Play Game");
         play.addActionListener(e -> {
-            try {
-                appController.startGame(name);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            appController.startGame(name);
         });
         buttons.add(play, gbc);
 

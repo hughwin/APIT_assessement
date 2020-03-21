@@ -1,18 +1,17 @@
 package main.java.apit.uog.controller;
 
-import main.java.apit.uog.model.GameController;
+
 import main.java.apit.uog.model.GameState;
 import main.java.apit.uog.model.Player;
 import main.java.apit.uog.view.AppView;
-import main.java.apit.uog.view.GamePage;
-import main.java.apit.uog.view.PlayerView;
+
 
 import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
+
 
 
 public class AppController {
@@ -23,21 +22,40 @@ public class AppController {
     private String LOCALHOST = "127.0.0.1";
     private ObjectOutputStream objectOutputStream;
 
-    private  GameState gameState;
+    private GameState gameState;
+    private Player player;
 
     public AppController() {
         appView = new AppView(this);
     }
 
 
-    public void startGame(String name) throws IOException {
-        appView.setPageView("game");
-        System.out.println("Starting client!");
-        server = new Socket(LOCALHOST, PORT);
-        objectOutputStream = new ObjectOutputStream(server.getOutputStream());
-        objectOutputStream.writeObject(new Player(name));
-        ReadWorker rw = new ReadWorker(server, this);
-        rw.execute();
+    public void startGame(String name) {
+        try {
+            appView.setPageView("game");
+            System.out.println("Starting client!");
+            server = new Socket(LOCALHOST, PORT);
+            objectOutputStream = new ObjectOutputStream(server.getOutputStream());
+
+            objectOutputStream.writeObject("getID");
+
+            player = new Player(name);
+            objectOutputStream.writeObject(player);
+            objectOutputStream.reset();
+            ReadWorker rw = new ReadWorker(server, this);
+            rw.execute();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void quitGame(){
+        try {
+            objectOutputStream.writeObject("quit ");
+            objectOutputStream.writeObject("closeClient");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public GameState getGameState() {
@@ -68,9 +86,9 @@ public class AppController {
             while ((input = inputStream.readObject()) != null) {
                 gameState = (GameState) input;
                 appView.getGamePage().removeAll();
-                for (Player player : gameState.getActivePlayers()){
-                    appView.getGamePage().addPlayerToView(player);
-                }
+
+                gameState.getActivePlayers().entrySet().forEach(entry ->{appView.getGamePage().addPlayerToView(entry.getValue());});
+
                 System.out.println("End of input");
             }
             return null;

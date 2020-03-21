@@ -2,25 +2,32 @@ package main.java.apit.uog.model;
 
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GameState implements Serializable {
 
     private final Dealer dealer;
-    private final ArrayList<Player> activePlayers;
+    private final HashMap<Integer, Player> activePlayers;
     private PropertyChangeSupport propertyChangeSupport;
 
     public GameState(){
         this.dealer = new Dealer();
-        this.activePlayers = new ArrayList<Player>();
+        this.activePlayers = new HashMap<>();
         propertyChangeSupport = new PropertyChangeSupport(activePlayers);
     }
 
-    public void addPlayer(Player player) {
-        propertyChangeSupport.firePropertyChange("activePlayers", activePlayers,  activePlayers.add(player));
+    public void addPlayer(int id, Player player) {
+        propertyChangeSupport.firePropertyChange("activePlayers", activePlayers,  activePlayers.put(id, player));
     }
 
-    public ArrayList<Player> getActivePlayers() {
+    public void removePlayer(int id){
+        activePlayers.remove(id);
+
+        activePlayers.entrySet().forEach(entry ->{System.out.println(entry.getKey() + " " + entry.getValue().getName());});
+
+    }
+
+    public HashMap<Integer, Player> getActivePlayers() {
         return activePlayers;
     }
 

@@ -16,6 +16,7 @@ public class Server implements Runnable {
     private ServerSocket server;
     private Vector<ClientRunner> clients = new Vector<>(); // Thread safe. Could be changed to ArrayList
     private GameController gameController;
+    private int id;
 
     public Server(int port) {
         PORT = port;
@@ -27,8 +28,18 @@ public class Server implements Runnable {
         }
     }
 
-    public synchronized void addPlayer(Player player) {
-        gameController.getGameState().addPlayer(player);
+    public synchronized void addPlayer(int id, Player player) {
+        gameController.getGameState().addPlayer(id, player);
+    }
+
+    public synchronized void removePlayer(int id){ gameController.getGameState().removePlayer(id); }
+
+    public synchronized void removeClient(int clientId){
+        for (ClientRunner clientRunner : clients){
+            if (clientRunner.getID() == clientId){
+                clients.remove(clientRunner);
+            }
+        }
     }
 
     public void sendGameState(GameState gameState) {
@@ -45,8 +56,9 @@ public class Server implements Runnable {
             try {
                 clientSocket = server.accept();
                 System.out.println("New client connected!");
-                ClientRunner client = new ClientRunner(clientSocket, this);
+                ClientRunner client = new ClientRunner(clientSocket, this, id);
                 clients.add(client);
+                id++;
                 new Thread(client).start();
             } catch (IOException e) {
                 e.printStackTrace();
