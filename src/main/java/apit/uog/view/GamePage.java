@@ -6,6 +6,8 @@ import main.java.apit.uog.model.Player;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class GamePage extends JPanel {
@@ -27,7 +29,17 @@ public class GamePage extends JPanel {
         add(dealerLabel, BorderLayout.NORTH);
         dealerLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
+
+        hitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                
+            }
+        });
         buttonPanel.add(hitButton);
+
+
+
         buttonPanel.add(standButton);
         buttonPanel.add(betBeforeRoundButton);
         betBeforeRoundButton.addActionListener(actionEvent -> {

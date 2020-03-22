@@ -12,6 +12,7 @@ public class Player implements Serializable {
     private int bet;
     private int ID;
     private boolean ready = false;
+    private boolean standing = false;
 
     public Player(String name) {
         this.name = name;
@@ -28,11 +29,6 @@ public class Player implements Serializable {
         ArrayList<Card> cardsToBeReturned = (ArrayList<Card>) hand.clone();
         this.hand.clear();
         return cardsToBeReturned;
-    }
-
-    public void placeCard(Card c) {
-        placedCards.add(c);
-        hand.remove(hand.size() - 1);
     }
 
     public void betOnRound(int playerBet) {
@@ -66,5 +62,13 @@ public class Player implements Serializable {
 
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    public boolean isStanding() {
+        return standing;
+    }
+
+    public void setStanding(boolean standing) {
+        this.standing = standing;
     }
 }

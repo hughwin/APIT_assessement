@@ -1,10 +1,8 @@
 package main.java.apit.uog.model;
 
-import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import static java.lang.System.out;
 
 public class GameState implements Serializable {
 
