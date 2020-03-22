@@ -35,20 +35,20 @@ public class Server implements Runnable {
     }
 
     public synchronized void addPlayer(int id, Player player) {
-        gameController.getGameState().addPlayer(id, player);
+        gameController.addPlayer(id, player);
     }
 
     public synchronized void removePlayer(int id) {
-        gameController.getGameState().removePlayer(id);
+        gameController.removePlayer(id);
         clients.removeIf(clientRunner -> clientRunner.getID() == id);
     }
 
     public synchronized void setPlayerReady(int id) {
-        gameController.getGameState().setPlayerReady(id, true);
+        gameController.setPlayerReady(id, true);
     }
 
     public synchronized void placeBet(int id, int betAmount) {
-        gameController.getGameState().placeBet(id, betAmount);
+        gameController.placeBet(id, betAmount);
     }
 
     public void sendGameState(GameState gameState) {

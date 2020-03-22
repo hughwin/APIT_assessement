@@ -7,8 +7,10 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.System.out;
 
-public class GameController implements PropertyChangeListener, Runnable {
+
+public class GameController implements Runnable {
 
 
     private final GameState gameState;
@@ -19,15 +21,13 @@ public class GameController implements PropertyChangeListener, Runnable {
     public GameController(Server server) {
         this.server = server;
         this.gameState = new GameState();
-        gameState.getPropertyChangeSupport().addPropertyChangeListener(this);
     }
 
     public GameState getGameState() {
         return gameState;
     }
 
-    @Override
-    public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+    public void sendGameState() {
         server.sendGameState(gameState);
     }
 
@@ -35,14 +35,42 @@ public class GameController implements PropertyChangeListener, Runnable {
         running = false;
     }
 
+    public void startGame() {
+        gameState.getDealer().dealCardsToPlayers();
+        StandCheck standThread = new StandCheck(gameState);
+        Thread t2 = new Thread(standThread);
+        t2.start();
+        sendGameState();
+    }
+
+    public void addPlayer(int id, Player player) {
+        gameState.getActivePlayers().put(id, player);
+        sendGameState();
+    }
+
+    public void removePlayer(int id) {
+        gameState.getActivePlayers().forEach((key, value) -> out.println(key + " " + value.getName()));
+        sendGameState();
+    }
+
+    public void setPlayerReady(int id, boolean ready) {
+        gameState.getActivePlayers().get(id).setReady(ready);
+        sendGameState();
+    }
+
+    public void placeBet(int id, int betAmount){
+        gameState.getActivePlayers().get(id).betOnRound(betAmount);
+        sendGameState();
+    }
+
 
     @Override
     public void run() {
         while (running) {
             if (checkPlayersReady()) {
-                gameState.startGame();
+                startGame();
+                gameState.getActivePlayers().forEach((key, value) -> setPlayerReady(key, false));
                 terminate();
-                gameState.getActivePlayers().forEach((key, value) -> gameState.setPlayerReady(key, false));
             }
             try {
                 Thread.sleep(1000);
