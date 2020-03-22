@@ -62,8 +62,7 @@ public class GamePage extends JPanel {
         outputPanel.add(playerArea, null);
         outputPanel.setAutoscrolls(true);
 
-        hitButton.setEnabled(false);
-        standButton.setEnabled(false);
+        enableRoundInProgressButtons(false);
 
     }
 

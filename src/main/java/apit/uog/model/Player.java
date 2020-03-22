@@ -2,6 +2,7 @@ package main.java.apit.uog.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Player implements Serializable {
 
@@ -71,4 +72,11 @@ public class Player implements Serializable {
     public void setStanding(boolean standing) {
         this.standing = standing;
     }
+
+    public int totalOfHand(){
+        int total = 0;
+        for (Card card : hand) total += card.getValue();
+        return total;
+    }
+
 }

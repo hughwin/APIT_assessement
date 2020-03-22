@@ -78,15 +78,14 @@ public class AppController {
             isInt = false;
         }
 
-        if (!isInt){
+        if (!isInt) {
             appView.getGamePage().badBetPlaced();
             return;
         }
         int betInt = Integer.parseInt(betAmount);
         if (betInt < 1 || betInt > gameState.getActivePlayers().get(sessionID).getBalance()) {
             appView.getGamePage().badBetPlaced();
-        }
-        else {
+        } else {
             try {
                 objectOutputStream.writeObject("bet " + betAmount);
             } catch (IOException e) {
@@ -131,10 +130,12 @@ public class AppController {
                     if (gameState.getActivePlayers().get(sessionID).isStanding()) {
                         appView.getGamePage().enableRoundInProgressButtons(false);
                     } else {
-                        if (gameState.isRoundInProgress()) ;
-                        appView.getGamePage().enableRoundInProgressButtons(true);
+                        if (gameState.isRoundInProgress()) {
+                            appView.getGamePage().enableRoundInProgressButtons(true);
+                        }
+                        gameState.getActivePlayers().forEach((key, value) -> appView.getGamePage().addPlayerToView(value));
                     }
-                    gameState.getActivePlayers().forEach((key, value) -> appView.getGamePage().addPlayerToView(value));
+
                 }
             }
             return null;

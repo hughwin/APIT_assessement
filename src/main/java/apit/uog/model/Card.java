@@ -16,4 +16,9 @@ public class Card implements Serializable {
     public String toString() {
         return rank + " of " + suit;
     }
+
+    public int getValue() {
+        return rank.getValue();
+    }
+
 }
