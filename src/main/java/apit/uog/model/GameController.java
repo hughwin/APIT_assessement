@@ -1,14 +1,8 @@
 package main.java.apit.uog.model;
 
 import main.java.apit.uog.server.Server;
-
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.lang.System.out;
-
 
 public class GameController implements Runnable {
 
@@ -50,7 +44,7 @@ public class GameController implements Runnable {
     }
 
     public void removePlayer(int id) {
-        gameState.getActivePlayers().forEach((key, value) -> out.println(key + " " + value.getName()));
+        gameState.getActivePlayers().remove(id);
         sendGameState();
     }
 
@@ -71,7 +65,6 @@ public class GameController implements Runnable {
 
     public void setPlayerStanding(int id) {
         gameState.getActivePlayers().get(id).setStanding(true);
-        out.println("Sending player standing!");
         sendGameState();
     }
 
