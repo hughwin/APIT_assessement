@@ -63,6 +63,11 @@ public class GameController implements Runnable {
         sendGameState();
     }
 
+    public void hit(int id) {
+        gameState.getActivePlayers().get(id).dealCard(gameState.getDealer().hit());
+        sendGameState();
+    }
+
 
     @Override
     public void run() {
@@ -97,5 +102,4 @@ public class GameController implements Runnable {
         }
         return true;
     }
-
 }

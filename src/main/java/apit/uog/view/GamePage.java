@@ -33,7 +33,7 @@ public class GamePage extends JPanel {
         hitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                
+                appController.hit();
             }
         });
         buttonPanel.add(hitButton);
@@ -45,7 +45,6 @@ public class GamePage extends JPanel {
         betBeforeRoundButton.addActionListener(actionEvent -> {
             String betAmount = JOptionPane.showInputDialog("Place your bet", "Bet amount");
                 appController.placeBet(betAmount);
-                appController.setReady();
                 betBeforeRoundButton.setEnabled(false);
             });
 

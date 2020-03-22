@@ -52,9 +52,9 @@ public class AppController {
         }
     }
 
-    public void setReady() {
+    public void hit() {
         try {
-            objectOutputStream.writeObject("ready");
+            objectOutputStream.writeObject("hit");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -121,7 +121,7 @@ public class AppController {
                 }
 
                 gameState.getActivePlayers().forEach((key, value) -> appView.getGamePage().addPlayerToView(value));
-                appView.getGamePage().enableRoundInProgressButtons(gameState.isRoundInProgress());
+                appView.getGamePage().enableRoundInProgressButtons(true);
             }
             return null;
         }

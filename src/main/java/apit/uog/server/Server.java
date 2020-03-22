@@ -51,6 +51,10 @@ public class Server implements Runnable {
         gameController.placeBet(id, betAmount);
     }
 
+    public synchronized void hit(int id){
+        gameController.hit(id);
+    }
+
     public void sendGameState(GameState gameState) {
         for (ClientRunner client : clients) {
             client.updateGameState(gameState);

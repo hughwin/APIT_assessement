@@ -69,6 +69,10 @@ public class ClientRunner implements Runnable {
                         this.parent.setPlayerReady(ID);
                     }
 
+                    if (commandArray[0].equals("hit")) {
+                        this.parent.hit(ID);
+                    }
+
                 }
             }
         } catch (Exception e) {

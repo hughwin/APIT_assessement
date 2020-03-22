@@ -17,7 +17,6 @@ public class Dealer implements Serializable {
         this.hand = new ArrayList<>();
         deck = new Deck();
         deck.shuffle();
-
     }
 
     public void dealCardsToPlayers() {
@@ -27,6 +26,10 @@ public class Dealer implements Serializable {
         }
         firstCard = hand.get(0);
         secondCard = hand.get(1);
+    }
+
+    public Card hit(){
+        return deck.getTopCard();
     }
 
     public synchronized ArrayList<Card> getHand() {
