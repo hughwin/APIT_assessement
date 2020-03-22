@@ -38,15 +38,21 @@ public class GamePage extends JPanel {
         });
         buttonPanel.add(hitButton);
 
+        standButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                appController.stand();
+            }
+        });
 
 
         buttonPanel.add(standButton);
         buttonPanel.add(betBeforeRoundButton);
         betBeforeRoundButton.addActionListener(actionEvent -> {
             String betAmount = JOptionPane.showInputDialog("Place your bet", "Bet amount");
-                appController.placeBet(betAmount);
-                betBeforeRoundButton.setEnabled(false);
-            });
+            appController.placeBet(betAmount);
+            betBeforeRoundButton.setEnabled(false);
+        });
 
         add(buttonPanel, BorderLayout.SOUTH);
 
@@ -69,9 +75,9 @@ public class GamePage extends JPanel {
         outputPanel.repaint();
     }
 
-    public void enableRoundInProgressButtons(boolean roundInProgress) {
-        hitButton.setEnabled(roundInProgress);
-        standButton.setEnabled(roundInProgress);
+    public void enableRoundInProgressButtons(boolean boo) {
+        hitButton.setEnabled(boo);
+        standButton.setEnabled(boo);
     }
 
     public void setDealerArea(ArrayList<Card> dealerHand) {

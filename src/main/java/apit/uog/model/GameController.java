@@ -37,6 +37,7 @@ public class GameController implements Runnable {
 
     public void startGame() {
         gameState.getDealer().dealCardsToPlayers();
+        gameState.setRoundInProgress(true);
         StandCheck standThread = new StandCheck(gameState);
         Thread t2 = new Thread(standThread);
         t2.start();
@@ -65,6 +66,12 @@ public class GameController implements Runnable {
 
     public void hit(int id) {
         gameState.getActivePlayers().get(id).dealCard(gameState.getDealer().hit());
+        sendGameState();
+    }
+
+    public void setPlayerStanding(int id) {
+        gameState.getActivePlayers().get(id).setStanding(true);
+        out.println("Sending player standing!");
         sendGameState();
     }
 
@@ -102,4 +109,5 @@ public class GameController implements Runnable {
         }
         return true;
     }
+
 }

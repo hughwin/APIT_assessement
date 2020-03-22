@@ -42,6 +42,15 @@ public class ClientRunner implements Runnable {
         }
     }
 
+    public void updateLocalSessionId(int id){
+        try{
+            System.out.println("SessionID" + id);
+            outputStream.writeObject(id);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void run() {
@@ -72,6 +81,11 @@ public class ClientRunner implements Runnable {
                     if (commandArray[0].equals("hit")) {
                         this.parent.hit(ID);
                     }
+
+                    if (commandArray[0].equals("stand")) {
+                        this.parent.setPlayerStanding(ID);
+                    }
+
 
                 }
             }

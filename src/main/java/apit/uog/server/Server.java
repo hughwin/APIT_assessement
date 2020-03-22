@@ -36,6 +36,7 @@ public class Server implements Runnable {
 
     public synchronized void addPlayer(int id, Player player) {
         gameController.addPlayer(id, player);
+        clients.get(id).updateLocalSessionId(id);
     }
 
     public synchronized void removePlayer(int id) {
@@ -55,7 +56,11 @@ public class Server implements Runnable {
         gameController.hit(id);
     }
 
-    public void sendGameState(GameState gameState) {
+    public synchronized void setPlayerStanding(int id){
+        gameController.setPlayerStanding(id);
+    }
+
+    public synchronized void sendGameState(GameState gameState) {
         for (ClientRunner client : clients) {
             client.updateGameState(gameState);
         }
@@ -80,6 +85,5 @@ public class Server implements Runnable {
         }
 
     }
-
 }
 

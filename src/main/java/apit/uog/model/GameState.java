@@ -19,6 +19,10 @@ public class GameState implements Serializable {
         return roundInProgress;
     }
 
+    public void setRoundInProgress(Boolean inProgress) {
+        roundInProgress = inProgress;
+    }
+
     public HashMap<Integer, Player> getActivePlayers() {
         return activePlayers;
     }
