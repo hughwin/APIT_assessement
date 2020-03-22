@@ -6,8 +6,6 @@ import main.java.apit.uog.model.Player;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class GamePage extends JPanel {
@@ -74,7 +72,9 @@ public class GamePage extends JPanel {
     }
 
     public void badBetPlaced() {
-        JOptionPane.showMessageDialog(null, "You're bet either exceeded your balance, or was entered incorrectly! Please enter a positive whole number.", "Error!", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "You're bet either exceeded your balance, or was entered incorrectly! " +
+                "Please enter a positive whole number.", "Error!", JOptionPane.INFORMATION_MESSAGE);
+        betBeforeRoundButton.setEnabled(true);
     }
 }
 

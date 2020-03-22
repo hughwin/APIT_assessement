@@ -40,6 +40,10 @@ public class GameState implements Serializable {
         propertyChangeSupport.firePropertyChange("player", false, true);
     }
 
+    public void placeBet(int id, int betAmount){
+        activePlayers.get(id).betOnRound(betAmount);
+    }
+
     public boolean isRoundInProgress() {
         return roundInProgress;
     }

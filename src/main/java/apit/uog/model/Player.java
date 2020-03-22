@@ -35,8 +35,9 @@ public class Player implements Serializable {
         hand.remove(hand.size() - 1);
     }
 
-    public void betOnRound(int bet) {
-        bet += bet;
+    public void betOnRound(int playerBet) {
+        bet = playerBet;
+        balance -= playerBet;
     }
 
     public String getName() {

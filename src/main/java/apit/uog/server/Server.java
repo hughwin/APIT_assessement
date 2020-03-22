@@ -48,6 +48,7 @@ public class Server implements Runnable {
     }
 
     public synchronized void placeBet(int id, int betAmount) {
+        gameController.getGameState().placeBet(id, betAmount);
     }
 
     public void sendGameState(GameState gameState) {
