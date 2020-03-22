@@ -43,8 +43,11 @@ public class Server implements Runnable {
         clients.removeIf(clientRunner -> clientRunner.getID() == id);
     }
 
-    public synchronized void setPlayerReady(int id){
+    public synchronized void setPlayerReady(int id) {
         gameController.getGameState().setPlayerReady(id, true);
+    }
+
+    public synchronized void placeBet(int id, int betAmount) {
     }
 
     public void sendGameState(GameState gameState) {

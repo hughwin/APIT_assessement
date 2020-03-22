@@ -53,6 +53,7 @@ public class ClientRunner implements Runnable {
                 if (input instanceof Player) {
                     player = (Player) input;
                     System.out.println("Hello " + player.getName() + "!");
+                    player.setID(ID);
                     this.parent.addPlayer(ID, player);
                 }
                 if (input instanceof String) {
@@ -63,7 +64,8 @@ public class ClientRunner implements Runnable {
                         this.parent.removePlayer(ID);
                     }
 
-                    if (commandArray[0].equals("ready")) {
+                    if (commandArray[0].equals("bet")) {
+                        //this.parent.commandArray[1]
                         this.parent.setPlayerReady(ID);
                     }
 

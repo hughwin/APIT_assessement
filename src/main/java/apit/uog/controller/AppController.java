@@ -34,7 +34,6 @@ public class AppController {
             System.out.println("Starting client!");
             server = new Socket(LOCALHOST, PORT);
             objectOutputStream = new ObjectOutputStream(server.getOutputStream());
-            objectOutputStream.writeObject("getID");
             player = new Player(name);
             objectOutputStream.writeObject(player);
             objectOutputStream.reset();
@@ -53,11 +52,38 @@ public class AppController {
         }
     }
 
-    public void setReady(){
+    public void setReady() {
         try {
             objectOutputStream.writeObject("ready");
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void placeBet(String betAmount) {
+
+        boolean isInt = true;
+
+        try {
+            Integer.parseInt(betAmount);
+        } catch (NumberFormatException e) {
+            isInt = false;
+        }
+
+        if (!isInt){
+            appView.getGamePage().badBetPlaced();
+            return;
+        }
+        int betInt = Integer.parseInt(betAmount);
+        if (betInt < 1 || betInt > gameState.getActivePlayers().get(player.getID()).getBalance()) {
+            appView.getGamePage().badBetPlaced();
+        }
+        else {
+            try {
+                objectOutputStream.writeObject("bet " + betAmount);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

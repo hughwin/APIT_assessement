@@ -17,6 +17,7 @@ public class GamePage extends JPanel {
     private JButton playButton = new JButton("Play ");
     private JButton hitButton = new JButton("Hit  ");
     private JButton standButton = new JButton("Stand");
+    private JButton betBeforeRoundButton = new JButton("Bet  ");
     private JPanel outputPanel = new JPanel();
     private JTextArea playerArea = new JTextArea();
     private JLabel dealerLabel = new JLabel("Dealer's hand: ");
@@ -28,19 +29,15 @@ public class GamePage extends JPanel {
         add(dealerLabel, BorderLayout.NORTH);
         dealerLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-
-        buttonPanel.add(playButton);
-        playButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        buttonPanel.add(hitButton);
+        buttonPanel.add(standButton);
+        buttonPanel.add(betBeforeRoundButton);
+        betBeforeRoundButton.addActionListener(actionEvent -> {
+            String betAmount = JOptionPane.showInputDialog("Place your bet", "Bet amount");
+                appController.placeBet(betAmount);
                 appController.setReady();
-                playButton.setEnabled(false);
-            }
-        });
-
-
-        buttonPanel.add(hitButton, null);
-        buttonPanel.add(standButton, null);
+                betBeforeRoundButton.setEnabled(false);
+            });
 
         add(buttonPanel, BorderLayout.SOUTH);
 
@@ -63,7 +60,7 @@ public class GamePage extends JPanel {
         outputPanel.repaint();
     }
 
-    public void enableRoundInProgressButtons(boolean roundInProgress){
+    public void enableRoundInProgressButtons(boolean roundInProgress) {
         hitButton.setEnabled(roundInProgress);
         standButton.setEnabled(roundInProgress);
     }
@@ -72,8 +69,12 @@ public class GamePage extends JPanel {
         dealerLabel.setText("Dealer's hand: " + dealerHand.get(0).toString());
     }
 
-    public JPanel getOutPutPanel(){
+    public JPanel getOutPutPanel() {
         return outputPanel;
+    }
+
+    public void badBetPlaced() {
+        JOptionPane.showMessageDialog(null, "You're bet either exceeded your balance, or was entered incorrectly! Please enter a positive whole number.", "Error!", JOptionPane.INFORMATION_MESSAGE);
     }
 }
 

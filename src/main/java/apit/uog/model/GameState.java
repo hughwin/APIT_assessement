@@ -4,7 +4,7 @@ import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import static java.lang.System.*;
+import static java.lang.System.out;
 
 public class GameState implements Serializable {
 
@@ -19,7 +19,7 @@ public class GameState implements Serializable {
         propertyChangeSupport = new PropertyChangeSupport(activePlayers);
     }
 
-    public void startGame(){
+    public void startGame() {
         dealer.dealCardsToPlayers();
         roundInProgress = true;
         propertyChangeSupport.firePropertyChange("activePlayers", null, activePlayers);
@@ -35,7 +35,7 @@ public class GameState implements Serializable {
         activePlayers.forEach((key, value) -> out.println(key + " " + value.getName()));
     }
 
-    public void setPlayerReady(int id, boolean ready){
+    public void setPlayerReady(int id, boolean ready) {
         activePlayers.get(id).setReady(ready);
         propertyChangeSupport.firePropertyChange("player", false, true);
     }

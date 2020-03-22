@@ -52,7 +52,7 @@ public class AppView extends JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
                 int confirm = JOptionPane.showOptionDialog(
-                        null, "Are You Sure to Close Application?",
+                        null, "Are you sure you want to quit?",
                         "Exit Confirmation", JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE, null, null, null);
                 if (confirm == 0) {

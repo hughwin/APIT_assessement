@@ -3,7 +3,6 @@ package main.java.apit.uog.view;
 import main.java.apit.uog.model.Player;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class PlayerView extends JPanel {
 
@@ -17,10 +16,10 @@ public class PlayerView extends JPanel {
         add(readyLabel);
         readyLabel.setVisible(player.isReady());
 
-        JLabel cardsLabel = new JLabel("Cards: " + player.getHand().toString());
+        JLabel cardsLabel = new JLabel("Cards: " + player.getHand());
         add(cardsLabel);
 
-        setSize(80,40);
+        setSize(80, 40);
         add(nameLabel);
         add(balanceLabel);
         nameLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));

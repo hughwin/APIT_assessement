@@ -9,6 +9,8 @@ public class Player implements Serializable {
     private ArrayList<Card> hand;
     private ArrayList<Card> placedCards;
     private int balance;
+    private int bet;
+    private int ID;
     private boolean ready = false;
 
     public Player(String name) {
@@ -34,24 +36,34 @@ public class Player implements Serializable {
     }
 
     public void betOnRound(int bet) {
-        // TODO: Finish this method off.
+        bet += bet;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getHand() { return hand.toString(); }
+    public String getHand() {
+        return hand.toString();
+    }
 
     public int getBalance() {
         return balance;
+    }
+
+    public boolean isReady() {
+        return ready;
     }
 
     public void setReady(boolean ready) {
         this.ready = ready;
     }
 
-    public boolean isReady() {
-        return ready;
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 }
