@@ -32,7 +32,7 @@ public class GameController implements Runnable {
     public void startGame() {
         gameState.getDealer().dealCardsToPlayers();
         gameState.setRoundInProgress(true);
-        StandCheck standThread = new StandCheck(gameState);
+        GameLoop standThread = new GameLoop(this);
         Thread t2 = new Thread(standThread);
         t2.start();
         sendGameState();

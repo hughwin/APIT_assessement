@@ -127,15 +127,18 @@ public class AppController {
                     if (!gameState.getDealer().getHand().isEmpty()) {
                         appView.getGamePage().setDealerArea(gameState.getDealer().getHand());
                     }
+
                     if (gameState.getActivePlayers().get(sessionID).isStanding()) {
                         appView.getGamePage().enableRoundInProgressButtons(false);
                     } else {
                         if (gameState.isRoundInProgress()) {
                             appView.getGamePage().enableRoundInProgressButtons(true);
                         }
-                        gameState.getActivePlayers().forEach((key, value) -> appView.getGamePage().addPlayerToView(value));
-                    }
+                        gameState.getActivePlayers().forEach((key, player) -> {
+                                appView.getGamePage().addPlayerToView(player, player.isBust());
 
+                        });
+                    }
                 }
             }
             return null;

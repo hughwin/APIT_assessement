@@ -14,7 +14,11 @@ public class Player implements Serializable {
     private int ID;
     private boolean ready = false;
     private boolean standing = false;
+    private boolean bust = false;
 
+    /**
+     * The Player class contains the object representation of each individual Player.
+     */
     public Player(String name) {
         this.name = name;
         this.hand = new ArrayList<>();
@@ -76,7 +80,15 @@ public class Player implements Serializable {
     public int totalOfHand(){
         int total = 0;
         for (Card card : hand) total += card.getValue();
+        if (total > 21){bust = true;}
         return total;
     }
 
+    public void setBust(boolean bust) {
+        this.bust = bust;
+    }
+
+    public boolean isBust() {
+        return bust;
+    }
 }

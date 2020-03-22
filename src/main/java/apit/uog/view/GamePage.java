@@ -66,10 +66,14 @@ public class GamePage extends JPanel {
 
     }
 
-    public void addPlayerToView(Player p) {
+    public void addPlayerToView(Player p, boolean eliminated) {
+
         PlayerView pv = new PlayerView(p);
-        pv.setBorder(BorderFactory.createLoweredBevelBorder());
         outputPanel.add(pv);
+        if (eliminated) {
+            pv.showBustMessage();
+        }
+        pv.setBorder(BorderFactory.createLoweredBevelBorder());
         outputPanel.revalidate();
         outputPanel.repaint();
     }

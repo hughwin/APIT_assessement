@@ -3,7 +3,11 @@ package main.java.apit.uog.model;
 import java.io.Serializable;
 import java.util.HashMap;
 
-
+/**
+ * This class's function is to act as an encapsulating class for Player classes in
+ * activePlayers, and the Dealer class. This allows all the information about the state of the
+ * game to be returned neatly to the clients.
+ */
 public class GameState implements Serializable {
 
     private final Dealer dealer;
