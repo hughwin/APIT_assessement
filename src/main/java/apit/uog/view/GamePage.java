@@ -21,13 +21,19 @@ public class GamePage extends JPanel {
     private JPanel outputPanel = new JPanel();
     private JTextArea playerArea = new JTextArea();
     private JLabel dealerLabel = new JLabel("Dealer's hand: ");
+    private JLabel playerTurnLabel = new JLabel();
 
     public GamePage(AppController appController) {
 
         this.appController = appController;
         setLayout(new BorderLayout());
+
         add(dealerLabel, BorderLayout.NORTH);
         dealerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        add(playerTurnLabel, BorderLayout.NORTH);
+        playerTurnLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        playerTurnLabel.setVisible(false);
 
 
         hitButton.addActionListener(new ActionListener() {
@@ -85,6 +91,13 @@ public class GamePage extends JPanel {
 
     public void setDealerArea(ArrayList<Card> dealerHand) {
         dealerLabel.setText("Dealer's hand: " + dealerHand.get(0).toString());
+    }
+
+    public void setPlayerTurnLabelText(String activePlayer) {
+        System.out.println(activePlayer);
+        playerTurnLabel.setVisible(true);
+        playerTurnLabel.setText(activePlayer + "'s turn");
+        System.out.println(activePlayer + "'s turn");
     }
 
     public JPanel getOutPutPanel() {

@@ -14,6 +14,7 @@ public class Player implements Serializable {
     private boolean ready = false;
     private boolean standing = false;
     private boolean bust = false;
+    private boolean winner = false;
 
     /**
      * The Player class contains the object representation of each individual Player.
@@ -87,11 +88,22 @@ public class Player implements Serializable {
         return total;
     }
 
-    public void setBust(boolean bust) {
-        this.bust = bust;
-    }
-
     public boolean isBust() {
         return bust;
+    }
+
+    public void setBust(boolean bust) {
+        this.bust = bust;
+        bet = 0;
+    }
+
+    public boolean isWinner() {
+        return winner;
+    }
+
+    public void setWinner(boolean winner) {
+        this.winner = winner;
+        balance += bet;
+        bet = 0;
     }
 }

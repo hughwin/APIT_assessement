@@ -13,6 +13,8 @@ public class GameState implements Serializable {
     private final Dealer dealer;
     private final HashMap<Integer, Player> activePlayers;
     private boolean roundInProgress = false;
+    private Player activePlayer;
+
 
     public GameState() {
         this.activePlayers = new HashMap<>();
@@ -34,4 +36,13 @@ public class GameState implements Serializable {
     public Dealer getDealer() {
         return dealer;
     }
+
+    public Player getActivePlayer() {
+        return activePlayer;
+    }
+
+    public void setActivePlayer(Player activePlayer) {
+        this.activePlayer = activePlayer;
+    }
+
 }

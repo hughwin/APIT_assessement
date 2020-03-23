@@ -8,39 +8,38 @@ public class GameLoop implements Runnable {
     private volatile boolean running = true;
     private GameController gameController;
     private List<Player> playersInRound;
+    private int activePlayerIndex = 0;
 
     public GameLoop(GameController gameController) {
         this.gameController = gameController;
         playersInRound = new ArrayList<>(gameController.getGameState().getActivePlayers().values());
     }
 
-    public void terminate() { running = false; }
+    public void terminate() {
+        running = false;
+    }
 
 
     @Override
     public void run() {
-        while (true) {
-
-
-            checkPlayersStanding();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        gameController.setActivePlayer(playersInRound.get(0));
+        while (!playersInRound.isEmpty()) {
+                playRound(playersInRound.get(activePlayerIndex));
+            System.out.println(playersInRound.get(activePlayerIndex).getName());
             }
         }
-    }
 
 
-    public void checkPlayersStanding() {
-        System.out.println("Working!");
-
-        for (Player player : playersInRound) {
-            if(player.totalOfHand() > 21){
-                gameController.playerExceeded21(player);
-                playersInRound.remove(player);
-            }
-
+    public void playRound(Player player) {
+        if (player.totalOfHand() == 21) {
+            player.setWinner(true);
+            activePlayerIndex++;
         }
+        if (player.totalOfHand() > 21) {
+            gameController.playerExceeded21(player);
+            activePlayerIndex++;
+        }
+
     }
 }
+

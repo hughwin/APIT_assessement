@@ -73,6 +73,15 @@ public class GameController implements Runnable {
         sendGameState();
     }
 
+    public void playerWonHand(Player player){
+        //
+    }
+
+    public void setActivePlayer(Player player){
+        gameState.setActivePlayer(player);
+        sendGameState();
+    }
+
 
     @Override
     public void run() {
