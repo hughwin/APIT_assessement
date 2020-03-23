@@ -52,11 +52,11 @@ public class Server implements Runnable {
         gameController.placeBet(id, betAmount);
     }
 
-    public synchronized void hit(int id){
+    public synchronized void hit(int id) {
         gameController.hit(id);
     }
 
-    public synchronized void setPlayerStanding(int id){
+    public synchronized void setPlayerStanding(int id) {
         gameController.setPlayerStanding(id);
     }
 

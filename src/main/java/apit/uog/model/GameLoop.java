@@ -19,10 +19,10 @@ public class GameLoop implements Runnable {
         running = false;
     }
 
-    public void removePlayerFromRound(int id){
+    public void removePlayerFromRound(int id) {
         Player toBeRemoved = null;
-        for (Player player : playersInRound){
-            if(player.getID() == id){
+        for (Player player : playersInRound) {
+            if (player.getID() == id) {
                 toBeRemoved = player;
             }
         }
@@ -43,19 +43,20 @@ public class GameLoop implements Runnable {
         }
 
         int dealerScore = gameController.getGameState().getDealer().getDealerScore();
+        System.out.println("Dealer score: " + dealerScore);
 
-        for(Player player: playersInRound){
+        for (Player player : playersInRound) {
             if (!player.isBust()) {
                 if (dealerScore > 21 && player.totalOfHand() < 21) {
-                    player.setWinner(true);
-                } else if (dealerScore < player.totalOfHand()){
-                    player.setWinner(true);
+                    gameController.setWinner(player);
+                } else if (dealerScore < player.totalOfHand()) {
+                    gameController.setWinner(player);
                 }
             }
 
         }
 
-        gameController.endRound();
+ //       gameController.endRound();
         terminate();
     }
 

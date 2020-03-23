@@ -36,7 +36,7 @@ public class Dealer implements Serializable {
         return hand;
     }
 
-    public int getDealerScore(){
+    public int getDealerScore() {
         return firstCard.getValue() + secondCard.getValue();
     }
 

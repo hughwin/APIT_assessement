@@ -116,7 +116,7 @@ public class AppController {
             Object input;
             while ((input = inputStream.readObject()) != null) {
 
-                if (Integer.class.isInstance(input)) {
+                if (input instanceof Integer) {
                     sessionID = (int) input;
                 } else {
 
@@ -144,7 +144,7 @@ public class AppController {
                     }
 
                     gameState.getActivePlayers().forEach((key, player) -> {
-                        appView.getGamePage().addPlayerToView(player, player.isBust());
+                        appView.getGamePage().addPlayerToView(player, player.isBust(), player.isWinner());
                     });
                 }
 

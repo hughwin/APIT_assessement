@@ -49,7 +49,7 @@ public class GamePage extends JPanel {
 
     }
 
-    public void setGamePage(){
+    public void setGamePage() {
         removeAll();
         setLayout(new BorderLayout());
 
@@ -69,12 +69,15 @@ public class GamePage extends JPanel {
 
     }
 
-    public void addPlayerToView(Player p, boolean eliminated) {
+    public void addPlayerToView(Player player, boolean bust, boolean winner) {
 
-        PlayerView pv = new PlayerView(p);
+        PlayerView pv = new PlayerView(player);
         outputPanel.add(pv);
-        if (eliminated) {
-            pv.showBustMessage();
+        if (bust) {
+            pv.showOutcomeMessage(" has gone bust with the cards \n" + player.getHand() + " totalling " + player.totalOfHand());
+        }
+        if (winner) {
+            pv.showOutcomeMessage(" has won with the cards \n" + player.getHand() + " totalling " + player.totalOfHand());
         }
         pv.setBorder(BorderFactory.createLoweredBevelBorder());
         outputPanel.revalidate();

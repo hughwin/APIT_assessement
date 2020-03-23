@@ -29,12 +29,14 @@ public class PlayerView extends JPanel {
         setBorder(BorderFactory.createBevelBorder(10));
     }
 
-    public void showBustMessage() {
+    public void showOutcomeMessage(String message) {
         removeAll();
-        System.out.println("Bust message!");
-        JLabel bustMessage = new JLabel(player.getName() + " has gone bust with the cards \n" + player.getHand() + " totalling " + player.totalOfHand());
-        add(bustMessage);
-        bustMessage.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        JLabel outcomeLabel = new JLabel(player.getName() + message);
+        add(outcomeLabel);
+        outcomeLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     }
 
+
 }
+
+

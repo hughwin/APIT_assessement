@@ -52,7 +52,7 @@ public class GameController implements Runnable {
         sendGameState();
     }
 
-    public void endRound(){
+    public void endRound() {
         gameState.getActivePlayers().forEach((key, player) -> {
             player.returnHandToDealer();
             player.setReady(false);
@@ -65,7 +65,6 @@ public class GameController implements Runnable {
         });
 
     }
-
 
 
     public void setPlayerReady(int id, boolean ready) {
@@ -85,6 +84,11 @@ public class GameController implements Runnable {
 
     public void setPlayerStanding(int id) {
         gameState.getActivePlayers().get(id).setStanding(true);
+        sendGameState();
+    }
+
+    public void setWinner(Player player){
+        player.setWinner(true);
         sendGameState();
     }
 

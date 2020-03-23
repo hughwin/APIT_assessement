@@ -47,8 +47,8 @@ public class ClientRunner implements Runnable {
      * By maintaining a sessionID in AppController, the game is able to extract pertinent information from
      * that instance from the returned GameState data.
      */
-    public void updateLocalSessionId(int id){
-        try{
+    public void updateLocalSessionId(int id) {
+        try {
             System.out.println("SessionID" + id);
             outputStream.writeObject(id);
         } catch (IOException e) {
