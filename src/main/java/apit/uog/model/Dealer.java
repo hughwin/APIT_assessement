@@ -33,7 +33,6 @@ public class Dealer implements Serializable {
     }
 
     public synchronized ArrayList<Card> getHand() {
-        System.out.println(hand.toString());
         return hand;
     }
 

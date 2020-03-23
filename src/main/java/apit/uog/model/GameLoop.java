@@ -22,15 +22,25 @@ public class GameLoop implements Runnable {
 
     @Override
     public void run() {
-        gameController.setActivePlayer(playersInRound.get(0));
-        while (!playersInRound.isEmpty()) {
+        gameController.setActivePlayer(playersInRound.get(activePlayerIndex));
+        while (activePlayerIndex < playersInRound.size()) {
                 playRound(playersInRound.get(activePlayerIndex));
-            System.out.println(playersInRound.get(activePlayerIndex).getName());
-            }
+
+                try{
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+        }
         }
 
 
     public void playRound(Player player) {
+
+        gameController.setActivePlayer(player);
+
+
         if (player.totalOfHand() == 21) {
             player.setWinner(true);
             activePlayerIndex++;

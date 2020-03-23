@@ -17,10 +17,9 @@ public class AppController {
     private AppView appView;
     private Socket server;
     private int PORT = 8888;
-    private int sessionID;
+    private int sessionID = -1;
     private String LOCALHOST = "127.0.0.1";
     private ObjectOutputStream objectOutputStream;
-
     private GameState gameState;
 
 
@@ -124,30 +123,30 @@ public class AppController {
                     gameState = (GameState) input;
                     appView.getGamePage().getOutPutPanel().removeAll();
 
+                    if(gameState.getActivePlayer() != null){
+                        System.err.println(gameState.getActivePlayer().getName());
+                        appView.getGamePage().setPlayerTurnLabelText(gameState.getActivePlayer().getName());
+
+                        if (gameState.getActivePlayer().getID() == sessionID){
+                            appView.getGamePage().enableRoundInProgressButtons(true);
+                        }
+                        else{
+                            appView.getGamePage().enableRoundInProgressButtons(false);
+                        }
+                    }
+
                     if (!gameState.getDealer().getHand().isEmpty()) {
                         appView.getGamePage().setDealerArea(gameState.getDealer().getHand());
                     }
                     gameState.getActivePlayers().forEach((key, player) -> {
                         appView.getGamePage().addPlayerToView(player, player.isBust());
-                    });
-//                    if (gameState.isRoundInProgress()) {
-//                        appView.getGamePage().setPlayerTurnLabelText(gameState.getActivePlayer().getName());
-//                    }
-//                    if (gameState.getActivePlayer().getID() == sessionID) {
-//                        appView.getGamePage().enableRoundInProgressButtons(true);
-//                    } else {
-//                        appView.getGamePage().enableRoundInProgressButtons(false);
-//                    }
-                    appView.getGamePage().enableRoundInProgressButtons(true);
-                }
+                    }); }
 
             }
             return null;
+
         }
-
     }
-
-
 }
 
 
