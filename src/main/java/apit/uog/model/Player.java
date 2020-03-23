@@ -2,7 +2,6 @@ package main.java.apit.uog.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Player implements Serializable {
 
@@ -77,10 +76,14 @@ public class Player implements Serializable {
         this.standing = standing;
     }
 
-    public int totalOfHand(){
+    public int totalOfHand() {
         int total = 0;
         for (Card card : hand) total += card.getValue();
-        if (total > 21){bust = true;}
+        if (total > 21) {
+                for (Card card : hand) {
+                    if (card.getValue() == Deck.Rank.ACE.getValue()) total -= 10;
+                }
+        }
         return total;
     }
 

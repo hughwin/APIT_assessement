@@ -7,9 +7,11 @@ public class GameLoop implements Runnable {
 
     private volatile boolean running = true;
     private GameController gameController;
+    private List<Player> playersInRound;
 
     public GameLoop(GameController gameController) {
         this.gameController = gameController;
+        playersInRound = new ArrayList<>(gameController.getGameState().getActivePlayers().values());
     }
 
     public void terminate() { running = false; }
@@ -18,10 +20,9 @@ public class GameLoop implements Runnable {
     @Override
     public void run() {
         while (true) {
-            if (checkPlayersStanding()) {
-                terminate();
-            }
 
+
+            checkPlayersStanding();
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -31,17 +32,15 @@ public class GameLoop implements Runnable {
     }
 
 
-    public boolean checkPlayersStanding() {
-        List<Player> list = new ArrayList<>(gameController.getGameState().getActivePlayers().values());
+    public void checkPlayersStanding() {
         System.out.println("Working!");
 
-        for (Player player : list) {
+        for (Player player : playersInRound) {
             if(player.totalOfHand() > 21){
+                gameController.playerExceeded21(player);
+                playersInRound.remove(player);
             }
-            if (!player.isStanding()) {
-                return false;
-            }
+
         }
-        return true;
     }
 }

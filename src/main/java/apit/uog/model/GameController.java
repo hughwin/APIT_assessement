@@ -68,6 +68,11 @@ public class GameController implements Runnable {
         sendGameState();
     }
 
+    public void playerExceeded21(Player player){
+        player.setBust(true);
+        sendGameState();
+    }
+
 
     @Override
     public void run() {

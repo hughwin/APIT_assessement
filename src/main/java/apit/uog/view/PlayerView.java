@@ -33,7 +33,7 @@ public class PlayerView extends JPanel {
     public void showBustMessage(){
         removeAll();
         System.out.println("Bust message!");
-        JLabel bustMessage = new JLabel(player.getName() + "has gone bust with the cards " + player.getHand() + " totalling " + player.totalOfHand());
+        JLabel bustMessage = new JLabel(player.getName() + " has gone bust with the cards \n" + player.getHand() + " totalling " + player.totalOfHand());
         add(bustMessage);
         bustMessage.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     }
