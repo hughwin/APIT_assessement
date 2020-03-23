@@ -1,6 +1,7 @@
 package main.java.apit.uog.model;
 
 import main.java.apit.uog.server.Server;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class GameController implements Runnable {
         sendGameState();
     }
 
-    public void placeBet(int id, int betAmount){
+    public void placeBet(int id, int betAmount) {
         gameState.getActivePlayers().get(id).betOnRound(betAmount);
         sendGameState();
     }
@@ -68,16 +69,16 @@ public class GameController implements Runnable {
         sendGameState();
     }
 
-    public void playerExceeded21(Player player){
+    public void playerExceeded21(Player player) {
         player.setBust(true);
         sendGameState();
     }
 
-    public void playerWonHand(Player player){
+    public void playerWonHand(Player player) {
         //
     }
 
-    public void setActivePlayer(Player player){
+    public void setActivePlayer(Player player) {
         gameState.setActivePlayer(player);
         sendGameState();
     }

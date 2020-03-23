@@ -24,22 +24,21 @@ public class GameLoop implements Runnable {
     public void run() {
         gameController.setActivePlayer(playersInRound.get(activePlayerIndex));
         while (activePlayerIndex < playersInRound.size()) {
-                playRound(playersInRound.get(activePlayerIndex));
+            playRound(playersInRound.get(activePlayerIndex));
 
-                try{
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
         }
-        }
+    }
 
 
     public void playRound(Player player) {
 
         gameController.setActivePlayer(player);
-
 
         if (player.totalOfHand() == 21) {
             player.setWinner(true);
@@ -49,6 +48,11 @@ public class GameLoop implements Runnable {
             gameController.playerExceeded21(player);
             activePlayerIndex++;
         }
+        if (player.isStanding()) {
+            player.setStanding(true);
+            activePlayerIndex++;
+        }
+
 
     }
 }

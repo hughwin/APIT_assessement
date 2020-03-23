@@ -28,7 +28,7 @@ public class Dealer implements Serializable {
         secondCard = hand.get(1);
     }
 
-    public Card hit(){
+    public Card hit() {
         return deck.getTopCard();
     }
 

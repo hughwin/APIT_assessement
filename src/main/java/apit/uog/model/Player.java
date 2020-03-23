@@ -81,9 +81,9 @@ public class Player implements Serializable {
         int total = 0;
         for (Card card : hand) total += card.getValue();
         if (total > 21) {
-                for (Card card : hand) {
-                    if (card.getValue() == Deck.Rank.ACE.getValue()) total -= 10;
-                }
+            for (Card card : hand) {
+                if (card.getValue() == Deck.Rank.ACE.getValue()) total -= 10;
+            }
         }
         return total;
     }

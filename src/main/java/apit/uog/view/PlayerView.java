@@ -3,7 +3,6 @@ package main.java.apit.uog.view;
 import main.java.apit.uog.model.Player;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class PlayerView extends JPanel {
 
@@ -30,7 +29,7 @@ public class PlayerView extends JPanel {
         setBorder(BorderFactory.createBevelBorder(10));
     }
 
-    public void showBustMessage(){
+    public void showBustMessage() {
         removeAll();
         System.out.println("Bust message!");
         JLabel bustMessage = new JLabel(player.getName() + " has gone bust with the cards \n" + player.getHand() + " totalling " + player.totalOfHand());
