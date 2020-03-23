@@ -36,20 +36,19 @@ public class Dealer implements Serializable {
         return hand;
     }
 
-    public void setFirstCard(Card firstCard) {
+    public int getDealerScore(){
+        return firstCard.getValue() + secondCard.getValue();
+    }
+
+    public void getFirstCard(Card firstCard) {
         this.firstCard = firstCard;
     }
 
-    public void setSecondCard(Card secondCard) {
+    public void getSecondCard(Card secondCard) {
         this.secondCard = secondCard;
     }
 
-    //    public void collectCards() {
-//        for (Player p : players) {
-//            ArrayList<Card> collectedCards = p.returnHandToDealer();
-//            deck.addCardsBackToDeck(collectedCards);
-//        }
-//    }
+
 }
 
 

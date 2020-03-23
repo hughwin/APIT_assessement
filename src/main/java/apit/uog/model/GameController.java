@@ -93,9 +93,6 @@ public class GameController implements Runnable {
         sendGameState();
     }
 
-    public void playerWonHand(Player player) {
-        player.setWinner(true);
-    }
 
     public void setActivePlayer(Player player) {
         gameState.setActivePlayer(player);

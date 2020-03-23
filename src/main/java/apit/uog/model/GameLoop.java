@@ -36,11 +36,25 @@ public class GameLoop implements Runnable {
             playRound(playersInRound.get(activePlayerIndex));
 
             try {
-                Thread.sleep(500); // Stops the swing interface madly flickering.
+                Thread.sleep(200); // Stops the swing interface madly flickering.
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+
+        int dealerScore = gameController.getGameState().getDealer().getDealerScore();
+
+        for(Player player: playersInRound){
+            if (!player.isBust()) {
+                if (dealerScore > 21 && player.totalOfHand() < 21) {
+                    player.setWinner(true);
+                } else if (dealerScore < player.totalOfHand()){
+                    player.setWinner(true);
+                }
+            }
+
+        }
+
         gameController.endRound();
         terminate();
     }
