@@ -124,6 +124,7 @@ public class AppController {
                     appView.getGamePage().getOutPutPanel().removeAll();
 
                     if (gameState.getActivePlayer() != null) {
+                        appView.getGamePage().setScoreLabel(gameState.getActivePlayers().get(sessionID).totalOfHand());
                         System.err.println(gameState.getActivePlayer().getName());
                         appView.getGamePage().setPlayerTurnLabelText(gameState.getActivePlayer().getName());
 

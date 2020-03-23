@@ -18,9 +18,11 @@ public class GamePage extends JPanel {
     private JButton standButton = new JButton("Stand");
     private JButton betBeforeRoundButton = new JButton("Bet");
     private JPanel outputPanel = new JPanel();
-    private JTextArea playerArea = new JTextArea();
     private JLabel dealerLabel = new JLabel("Dealer's hand: ");
     private JLabel playerTurnLabel = new JLabel();
+    private JLabel scoreLabel = new JLabel();
+    private JPanel infoBar = new JPanel();
+
 
     public GamePage(AppController appController) {
 
@@ -53,12 +55,17 @@ public class GamePage extends JPanel {
         removeAll();
         setLayout(new BorderLayout());
 
-        add(dealerLabel, BorderLayout.NORTH);
-        dealerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        infoBar.setLayout(new GridLayout(0,2));
 
-        add(playerTurnLabel, BorderLayout.NORTH);
+        infoBar.add(playerTurnLabel);
+
+        infoBar.add(scoreLabel);
+
+        add(infoBar, BorderLayout.NORTH);
+        infoBar.setBorder(BorderFactory.createRaisedBevelBorder());
+
         playerTurnLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        playerTurnLabel.setVisible(false);
+        scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         add(outputPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
@@ -66,6 +73,7 @@ public class GamePage extends JPanel {
 
         buttonPanel.add(standButton);
         buttonPanel.add(betBeforeRoundButton);
+        buttonPanel.setBorder(BorderFactory.createRaisedBevelBorder());
 
     }
 
@@ -114,6 +122,9 @@ public class GamePage extends JPanel {
         betBeforeRoundButton.setEnabled(true);
     }
 
+    public void setScoreLabel(int score) {
+        this.scoreLabel.setText("Score: " + score + "");
+    }
 }
 
 
