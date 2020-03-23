@@ -32,8 +32,16 @@ public class Dealer implements Serializable {
         return deck.getTopCard();
     }
 
-    public synchronized ArrayList<Card> getHand() {
+    public ArrayList<Card> getHand() {
         return hand;
+    }
+
+    public void setFirstCard(Card firstCard) {
+        this.firstCard = firstCard;
+    }
+
+    public void setSecondCard(Card secondCard) {
+        this.secondCard = secondCard;
     }
 
     //    public void collectCards() {

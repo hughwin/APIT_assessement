@@ -107,8 +107,8 @@ public class AppController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
+
 
         @Override
         protected Void doInBackground() throws Exception {
@@ -123,14 +123,13 @@ public class AppController {
                     gameState = (GameState) input;
                     appView.getGamePage().getOutPutPanel().removeAll();
 
-                    if(gameState.getActivePlayer() != null){
+                    if (gameState.getActivePlayer() != null) {
                         System.err.println(gameState.getActivePlayer().getName());
                         appView.getGamePage().setPlayerTurnLabelText(gameState.getActivePlayer().getName());
 
-                        if (gameState.getActivePlayer().getID() == sessionID){
+                        if (gameState.getActivePlayer().getID() == sessionID) {
                             appView.getGamePage().enableRoundInProgressButtons(true);
-                        }
-                        else{
+                        } else {
                             appView.getGamePage().enableRoundInProgressButtons(false);
                         }
                     }
@@ -138,9 +137,16 @@ public class AppController {
                     if (!gameState.getDealer().getHand().isEmpty()) {
                         appView.getGamePage().setDealerArea(gameState.getDealer().getHand());
                     }
+
+                    if (gameState.isRoundOver()) {
+                        appView.getGamePage().setGamePage();
+                        appView.getGamePage().getBetBeforeRoundButton().setEnabled(true);
+                    }
+
                     gameState.getActivePlayers().forEach((key, player) -> {
                         appView.getGamePage().addPlayerToView(player, player.isBust());
-                    }); }
+                    });
+                }
 
             }
             return null;

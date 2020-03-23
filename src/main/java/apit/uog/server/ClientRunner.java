@@ -91,7 +91,6 @@ public class ClientRunner implements Runnable {
                         this.parent.setPlayerStanding(ID);
                     }
 
-
                 }
             }
         } catch (Exception e) {

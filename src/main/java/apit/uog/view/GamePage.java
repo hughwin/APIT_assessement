@@ -14,10 +14,9 @@ public class GamePage extends JPanel {
 
     private AppController appController;
     private JPanel buttonPanel = new JPanel();
-    private JButton playButton = new JButton("Play ");
-    private JButton hitButton = new JButton("Hit  ");
+    private JButton hitButton = new JButton("Hit");
     private JButton standButton = new JButton("Stand");
-    private JButton betBeforeRoundButton = new JButton("Bet  ");
+    private JButton betBeforeRoundButton = new JButton("Bet");
     private JPanel outputPanel = new JPanel();
     private JTextArea playerArea = new JTextArea();
     private JLabel dealerLabel = new JLabel("Dealer's hand: ");
@@ -25,16 +24,7 @@ public class GamePage extends JPanel {
 
     public GamePage(AppController appController) {
 
-        this.appController = appController;
-        setLayout(new BorderLayout());
-
-        add(dealerLabel, BorderLayout.NORTH);
-        dealerLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-        add(playerTurnLabel, BorderLayout.NORTH);
-        playerTurnLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        playerTurnLabel.setVisible(false);
-
+        setGamePage();
 
         hitButton.addActionListener(new ActionListener() {
             @Override
@@ -51,24 +41,31 @@ public class GamePage extends JPanel {
             }
         });
 
+        betBeforeRoundButton.addActionListener(actionEvent -> {
+            String betAmount = JOptionPane.showInputDialog("Place your bet", "Bet amount");
+            betBeforeRoundButton.setEnabled(false);
+            appController.placeBet(betAmount);
+        });
+
+    }
+
+    public void setGamePage(){
+        removeAll();
+        setLayout(new BorderLayout());
+
+        add(dealerLabel, BorderLayout.NORTH);
+        dealerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        add(playerTurnLabel, BorderLayout.NORTH);
+        playerTurnLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        playerTurnLabel.setVisible(false);
+
+        add(outputPanel, BorderLayout.CENTER);
+        add(buttonPanel, BorderLayout.SOUTH);
+        enableRoundInProgressButtons(false);
 
         buttonPanel.add(standButton);
         buttonPanel.add(betBeforeRoundButton);
-        betBeforeRoundButton.addActionListener(actionEvent -> {
-            String betAmount = JOptionPane.showInputDialog("Place your bet", "Bet amount");
-            appController.placeBet(betAmount);
-            betBeforeRoundButton.setEnabled(false);
-        });
-
-        add(buttonPanel, BorderLayout.SOUTH);
-
-
-        add(outputPanel, BorderLayout.CENTER);
-        outputPanel.setLayout(new FlowLayout());
-        outputPanel.add(playerArea, null);
-        outputPanel.setAutoscrolls(true);
-
-        enableRoundInProgressButtons(false);
 
     }
 
@@ -104,11 +101,16 @@ public class GamePage extends JPanel {
         return outputPanel;
     }
 
+    public JButton getBetBeforeRoundButton() {
+        return betBeforeRoundButton;
+    }
+
     public void badBetPlaced() {
         JOptionPane.showMessageDialog(null, "You're bet either exceeded your balance, or was entered incorrectly! " +
                 "Please enter a positive whole number.", "Error!", JOptionPane.INFORMATION_MESSAGE);
         betBeforeRoundButton.setEnabled(true);
     }
+
 }
 
 

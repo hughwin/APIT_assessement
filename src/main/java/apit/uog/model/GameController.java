@@ -11,6 +11,7 @@ public class GameController implements Runnable {
     private final GameState gameState;
     private Server server;
     private volatile boolean running = true;
+    private GameLoop gameLoop;
 
 
     public GameController(Server server) {
@@ -33,11 +34,12 @@ public class GameController implements Runnable {
     public void startGame() {
         gameState.getDealer().dealCardsToPlayers();
         gameState.setRoundInProgress(true);
-        GameLoop standThread = new GameLoop(this);
-        Thread t2 = new Thread(standThread);
+        gameLoop = new GameLoop(this);
+        Thread t2 = new Thread(gameLoop);
         t2.start();
         sendGameState();
     }
+
 
     public void addPlayer(int id, Player player) {
         gameState.getActivePlayers().put(id, player);
@@ -46,8 +48,25 @@ public class GameController implements Runnable {
 
     public void removePlayer(int id) {
         gameState.getActivePlayers().remove(id);
+        gameLoop.removePlayerFromRound(id);
         sendGameState();
     }
+
+    public void endRound(){
+        gameState.getActivePlayers().forEach((key, player) -> {
+            player.returnHandToDealer();
+            player.setReady(false);
+            player.setStanding(false);
+            player.setWinner(false);
+            player.setBust(false);
+            gameState.setRoundOver(true);
+            sendGameState();
+            gameState.setRoundOver(false);
+        });
+
+    }
+
+
 
     public void setPlayerReady(int id, boolean ready) {
         gameState.getActivePlayers().get(id).setReady(ready);
@@ -75,7 +94,7 @@ public class GameController implements Runnable {
     }
 
     public void playerWonHand(Player player) {
-        //
+        player.setWinner(true);
     }
 
     public void setActivePlayer(Player player) {
@@ -90,7 +109,6 @@ public class GameController implements Runnable {
             if (checkPlayersReady()) {
                 startGame();
                 gameState.getActivePlayers().forEach((key, value) -> setPlayerReady(key, false));
-                terminate();
             }
             try {
                 Thread.sleep(1000);

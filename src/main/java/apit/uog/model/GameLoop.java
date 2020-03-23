@@ -19,20 +19,30 @@ public class GameLoop implements Runnable {
         running = false;
     }
 
+    public void removePlayerFromRound(int id){
+        Player toBeRemoved = null;
+        for (Player player : playersInRound){
+            if(player.getID() == id){
+                toBeRemoved = player;
+            }
+        }
+        playersInRound.remove(toBeRemoved);
+    }
 
     @Override
     public void run() {
         gameController.setActivePlayer(playersInRound.get(activePlayerIndex));
-        while (activePlayerIndex < playersInRound.size()) {
+        while (activePlayerIndex < playersInRound.size() || playersInRound.size() > 2) {
             playRound(playersInRound.get(activePlayerIndex));
 
             try {
-                Thread.sleep(500);
+                Thread.sleep(500); // Stops the swing interface madly flickering.
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
         }
+        gameController.endRound();
+        terminate();
     }
 
 
@@ -52,7 +62,6 @@ public class GameLoop implements Runnable {
             player.setStanding(true);
             activePlayerIndex++;
         }
-
 
     }
 }
