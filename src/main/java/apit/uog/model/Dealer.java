@@ -9,8 +9,10 @@ public class Dealer implements Serializable {
     private Deck deck;
     private HashMap<Integer, Player> activePlayers;
     private ArrayList<Card> hand;
-    private Card firstCard;
-    private Card secondCard;
+
+    public Deck getDeck() {
+        return deck;
+    }
 
     public Dealer(HashMap<Integer, Player> activePlayers) {
         this.activePlayers = activePlayers;
@@ -24,8 +26,6 @@ public class Dealer implements Serializable {
             hand.add(deck.getTopCard());
             activePlayers.forEach((key, value) -> value.dealCard(deck.getTopCard()));
         }
-        firstCard = hand.get(0);
-        secondCard = hand.get(1);
     }
 
     public Card hit() {
@@ -37,17 +37,16 @@ public class Dealer implements Serializable {
     }
 
     public int getDealerScore() {
-        return firstCard.getValue() + secondCard.getValue();
+        int total = 0;
+        for(Card card : hand){
+            total += card.getValue();
+        }
+        return total;
     }
 
-    public void getFirstCard(Card firstCard) {
-        this.firstCard = firstCard;
+    public void returnCardsToDeck(){
+        deck.addCardsBackToDeck(hand);
     }
-
-    public void getSecondCard(Card secondCard) {
-        this.secondCard = secondCard;
-    }
-
 
 }
 

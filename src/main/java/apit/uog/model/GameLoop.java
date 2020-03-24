@@ -32,7 +32,7 @@ public class GameLoop implements Runnable {
     @Override
     public void run() {
         gameController.setActivePlayer(playersInRound.get(activePlayerIndex));
-        while (activePlayerIndex < playersInRound.size() || playersInRound.size() > 2) {
+        while (activePlayerIndex < playersInRound.size() || playersInRound.size() < 2) {
             playRound(playersInRound.get(activePlayerIndex));
 
             try {
@@ -56,7 +56,14 @@ public class GameLoop implements Runnable {
 
         }
 
- //       gameController.endRound();
+        gameController.endRound();
+
+        try {
+            Thread.sleep(5000); // Allows the results to be shown for 5 seconds before the game moves on.
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         terminate();
     }
 

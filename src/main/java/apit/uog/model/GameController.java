@@ -33,6 +33,7 @@ public class GameController implements Runnable {
 
     public void startGame() {
         gameState.getDealer().dealCardsToPlayers();
+        gameState.setRoundOver(false);
         gameState.setRoundInProgress(true);
         gameLoop = new GameLoop(this);
         Thread t2 = new Thread(gameLoop);
@@ -59,10 +60,18 @@ public class GameController implements Runnable {
             player.setStanding(false);
             player.setWinner(false);
             player.setBust(false);
-            gameState.setRoundOver(true);
-            sendGameState();
-            gameState.setRoundOver(false);
         });
+        gameState.setActivePlayer(null);
+        gameState.setRoundInProgress(false);
+        gameState.setRoundOver(true);
+        if (gameState.getDealer().getDealerScore() > 16){
+            gameState.getDealer().getHand().add(gameState.getDealer().getDeck().getTopCard()); // Adds an extra card to the dealer's hand if score us under 16.
+        }
+        sendGameState();
+
+        gameState.getDealer().returnCardsToDeck();
+        gameState.setRoundOver(false);
+
 
     }
 
@@ -112,7 +121,7 @@ public class GameController implements Runnable {
                 gameState.getActivePlayers().forEach((key, value) -> setPlayerReady(key, false));
             }
             try {
-                Thread.sleep(1000);
+                Thread.sleep(1000); // Checks every 1 second
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -56,9 +56,7 @@ public class GamePage extends JPanel {
         setLayout(new BorderLayout());
 
         infoBar.setLayout(new GridLayout(0,2));
-
         infoBar.add(playerTurnLabel);
-
         infoBar.add(scoreLabel);
 
         add(infoBar, BorderLayout.NORTH);
@@ -67,9 +65,13 @@ public class GamePage extends JPanel {
         playerTurnLabel.setHorizontalAlignment(SwingConstants.CENTER);
         scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        add(outputPanel, BorderLayout.CENTER);
+
         add(buttonPanel, BorderLayout.SOUTH);
         enableRoundInProgressButtons(false);
+
+        outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.Y_AXIS));
+        JScrollPane jScrollPane = new JScrollPane(outputPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        add(jScrollPane, BorderLayout.CENTER);
 
         buttonPanel.add(standButton);
         buttonPanel.add(betBeforeRoundButton);
@@ -85,7 +87,7 @@ public class GamePage extends JPanel {
             pv.showOutcomeMessage(" has gone bust with the cards \n" + player.getHand() + " totalling " + player.totalOfHand());
         }
         if (winner) {
-            pv.showOutcomeMessage(" has won with the cards \n" + player.getHand() + " totalling " + player.totalOfHand());
+            pv.showOutcomeMessage(" has won with the cards \n" + player.getHand() + "\n totalling " + player.totalOfHand());
         }
         pv.setBorder(BorderFactory.createLoweredBevelBorder());
         outputPanel.revalidate();
