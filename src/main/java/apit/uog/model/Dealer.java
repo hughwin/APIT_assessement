@@ -26,6 +26,7 @@ public class Dealer implements Serializable {
             hand.add(deck.getTopCard());
             activePlayers.forEach((key, value) -> value.dealCard(deck.getTopCard()));
         }
+        hand.add(deck.getTopCard());
     }
 
     public Card hit() {

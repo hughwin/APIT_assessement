@@ -59,7 +59,7 @@ public class GameLoop implements Runnable {
         gameController.endRound();
 
         try {
-            Thread.sleep(5000); // Allows the results to be shown for 5 seconds before the game moves on.
+            Thread.sleep(2000); // Allows the results to be shown for 5 seconds before the game moves on.
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
