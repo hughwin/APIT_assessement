@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 public class GamePage extends JPanel {
 
-    private AppController appController;
     private JPanel buttonPanel = new JPanel();
     private JButton hitButton = new JButton("Hit");
     private JButton standButton = new JButton("Stand");
@@ -22,6 +21,7 @@ public class GamePage extends JPanel {
     private JLabel playerTurnLabel = new JLabel();
     private JLabel scoreLabel = new JLabel();
     private JPanel infoBar = new JPanel();
+    private ArrayList<PlayerView> playerViews = new ArrayList<PlayerView>();
 
 
     public GamePage(AppController appController) {
@@ -52,6 +52,7 @@ public class GamePage extends JPanel {
     }
 
     public void setGamePage() {
+
         removeAll();
         setLayout(new BorderLayout());
 
@@ -66,12 +67,22 @@ public class GamePage extends JPanel {
         scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
 
-        add(buttonPanel, BorderLayout.SOUTH);
-        enableRoundInProgressButtons(false);
+
 
         outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.Y_AXIS));
         JScrollPane jScrollPane = new JScrollPane(outputPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         add(jScrollPane, BorderLayout.CENTER);
+
+        JPanel centrePanel = new JPanel();
+        centrePanel.setLayout(new GridLayout(2, 1));
+
+        centrePanel.add(dealerLabel);
+        centrePanel.add(jScrollPane);
+
+        add(centrePanel);
+
+        add(buttonPanel, BorderLayout.SOUTH);
+        enableRoundInProgressButtons(false);
 
         buttonPanel.add(standButton);
         buttonPanel.add(betBeforeRoundButton);
@@ -79,16 +90,12 @@ public class GamePage extends JPanel {
 
     }
 
-    public void addPlayerToView(Player player, boolean bust, boolean winner) {
+    public void addPlayerToView(Player player) {
+
+
 
         PlayerView pv = new PlayerView(player);
         outputPanel.add(pv);
-        if (bust) {
-            pv.showOutcomeMessage(" has gone bust with the cards \n" + player.getHand() + " totalling " + player.totalOfHand());
-        }
-        if (winner) {
-            pv.showOutcomeMessage(" has won with the cards \n" + player.getHand() + "\n totalling " + player.totalOfHand());
-        }
         pv.setBorder(BorderFactory.createLoweredBevelBorder());
         outputPanel.revalidate();
         outputPanel.repaint();

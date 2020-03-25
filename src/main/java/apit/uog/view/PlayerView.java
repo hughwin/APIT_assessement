@@ -34,6 +34,15 @@ public class PlayerView extends JPanel {
 
     public void showOutcomeMessage(String message) {
         removeAll();
+
+//                if (bust) {
+//            pv.showOutcomeMessage(" has gone bust with the cards \n" + player.getHand() + " totalling " + player.totalOfHand());
+//        }
+//        if (winner) {
+//            pv.showOutcomeMessage(" has won with the cards \n" + player.getHand() + "\n totalling " + player.totalOfHand());
+//        }
+
+
         JLabel outcomeLabel = new JLabel(player.getName() + message);
         add(outcomeLabel);
         outcomeLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));

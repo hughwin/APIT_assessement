@@ -143,9 +143,9 @@ public class AppController {
                         appView.getGamePage().setGamePage();
                         appView.getGamePage().getBetBeforeRoundButton().setEnabled(true);
                     }
-
+                    appView.getGamePage().getOutPutPanel().removeAll();
                     gameState.getActivePlayers().forEach((key, player) -> {
-                        appView.getGamePage().addPlayerToView(player, player.isBust(), player.isWinner());
+                        appView.getGamePage().addPlayerToView(player);
                     });
                 }
 

@@ -36,7 +36,7 @@ public class GameLoop implements Runnable {
             playRound(playersInRound.get(activePlayerIndex));
 
             try {
-                Thread.sleep(300); // Stops the swing interface madly flickering.
+                Thread.sleep(500); // Stops the swing interface madly flickering.
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
