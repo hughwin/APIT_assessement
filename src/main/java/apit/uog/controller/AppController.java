@@ -113,15 +113,33 @@ public class AppController {
             }
         }
 
-        public void changePlayerView(){
-            for(PlayerView playerView : appView.getGamePage().getPlayerViews()){
+        public void changePlayerView() {
+            for (PlayerView playerView : appView.getGamePage().getPlayerViews()) {
 
-                System.out.println("Changing player view!" + sessionID);
-                playerView.setBalanceLabelText(gameState.getActivePlayers().get(sessionID).getBalance() + "");
-                playerView.setCardsLabelText(gameState.getActivePlayers().get(sessionID).getHand());
+                System.out.println("Changing player view!" + playerView.getPlayerID());
+                playerView.setBalanceLabelText(gameState.getActivePlayers().get(playerView.getPlayerID()).getBalance() + "");
+                playerView.setCardsLabelText(gameState.getActivePlayers().get(playerView.getPlayerID()).getHand());
 
-                if(gameState.getActivePlayers().get(playerView.getPlayerID()).isReady()){
+                if (gameState.getActivePlayers().get(playerView.getPlayerID()).isReady()) {
                     playerView.setReadyLabelText("Ready!");
+                } else {
+                    playerView.setReadyLabelText("");
+                }
+
+                if (gameState.getActivePlayers().get(playerView.getPlayerID()).isBust()) {
+                    playerView.setReadyLabelText(gameState.getActivePlayers().get(playerView.getPlayerID()).getName() +
+                            "is bust with a score of " + gameState.getActivePlayers().get(playerView.getPlayerID()).totalOfHand());
+                    appView.getGamePage().enableRoundInProgressButtons(false);
+                }
+                if (gameState.getActivePlayers().get(playerView.getPlayerID()).isWinner()) {
+                    playerView.setReadyLabelText(gameState.getActivePlayers().get(playerView.getPlayerID()).getName() +
+                            "has won with a score of " + gameState.getActivePlayers().get(playerView.getPlayerID()).totalOfHand());
+                    appView.getGamePage().enableRoundInProgressButtons(false);
+
+                }
+                if (gameState.getActivePlayers().get(playerView.getPlayerID()).isStanding()) {
+                    playerView.setReadyLabelText(gameState.getActivePlayers().get(playerView.getPlayerID()).getName() +
+                            "is standing with a score of " + gameState.getActivePlayers().get(playerView.getPlayerID()).totalOfHand());
                 }
 
             }
@@ -138,21 +156,22 @@ public class AppController {
                     sessionID = (int) input;
                 } else {
 
-                    changePlayerView();
-
                     gameState = (GameState) input;
 
-                    if (gameState.getActivePlayers().size() != numberOfPlayers){
+
+                    // Create new player view if a player joins
+                    if (gameState.getActivePlayers().size() != numberOfPlayers) {
                         numberOfPlayers = gameState.getActivePlayers().size();
                         appView.getGamePage().getOutPutPanel().removeAll();
                         gameState.getActivePlayers().forEach((key, player) -> appView.getGamePage().addPlayerToView(player));
-
                     }
 
+                    // If the active player is not null, set it to the active player and show the player's score.
                     if (gameState.getActivePlayer() != null) {
                         appView.getGamePage().setScoreLabel(gameState.getActivePlayers().get(sessionID).totalOfHand());
                         appView.getGamePage().setPlayerTurnLabelText(gameState.getActivePlayer().getName());
 
+                        // If it is the player's go, enable the round in progress buttons
                         if (gameState.getActivePlayer().getID() == sessionID) {
                             appView.getGamePage().enableRoundInProgressButtons(true);
                         } else {
@@ -160,16 +179,27 @@ public class AppController {
                         }
                     }
 
+                    // Show the dealer's hand if they have cards
                     if (!gameState.getDealer().getHand().isEmpty()) {
-                        appView.getGamePage().setDealerArea(gameState.getDealer());
+
+                        //Show only first card if game is in progress.
+                        if (gameState.isRoundInProgress()) {
+                            appView.getGamePage().setFirstCard(gameState.getDealer().getHand().get(0));
+                            appView.getGamePage().setDealerScore(gameState.getDealer().getHand().get(0).getValue());
+                        }
+                        if (gameState.isRoundOver()) {
+                            appView.getGamePage().setDealerRoundOver(gameState.getDealer());
+                        }
                     }
 
+                    // If the round is over, reset the game
                     if (gameState.isRoundOver()) {
-                        // reset
                         appView.getGamePage().getBetBeforeRoundButton().setEnabled(true);
                     }
                 }
-            appView.getGamePage().revalidateAndRepaint();
+                // Refreshes the gamepage.
+                changePlayerView();
+                appView.getGamePage().revalidateAndRepaint();
             }
             return null;
 

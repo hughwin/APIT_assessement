@@ -80,7 +80,6 @@ public class ClientRunner implements Runnable {
 
                     if (commandArray[0].equals("bet")) {
                         this.parent.placeBet(ID, Integer.parseInt(commandArray[1]));
-                        this.parent.setPlayerReady(ID);
                     }
 
                     if (commandArray[0].equals("hit")) {

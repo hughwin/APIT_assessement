@@ -74,9 +74,6 @@ public class Player implements Serializable {
     }
 
     public void setStanding(boolean standing) {
-        if (!standing) {
-            bet = 0;
-        }
         this.standing = standing;
     }
 

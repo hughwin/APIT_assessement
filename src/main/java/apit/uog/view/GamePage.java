@@ -7,8 +7,7 @@ import main.java.apit.uog.model.Player;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.util.ArrayList;
 
 public class GamePage extends JPanel {
@@ -18,7 +17,9 @@ public class GamePage extends JPanel {
     private JButton standButton = new JButton("Stand");
     private JButton betBeforeRoundButton = new JButton("Bet");
     private JPanel outputPanel = new JPanel();
+    private JPanel dealerPanel = new JPanel();
     private JLabel dealerLabel = new JLabel("Dealer's hand: ");
+    private JLabel dealerScore = new JLabel("Dealer's score: ");
     private JLabel playerTurnLabel = new JLabel();
     private JLabel scoreLabel = new JLabel();
     private JPanel infoBar = new JPanel();
@@ -46,7 +47,15 @@ public class GamePage extends JPanel {
         JPanel centrePanel = new JPanel();
         centrePanel.setLayout(new GridLayout(2, 1));
 
-        centrePanel.add(dealerLabel);
+        dealerPanel.setLayout(new BoxLayout(dealerPanel, BoxLayout.Y_AXIS));
+
+        dealerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        dealerScore.setHorizontalAlignment(SwingConstants.CENTER);
+
+        dealerPanel.add(dealerLabel);
+        dealerPanel.add(dealerScore);
+
+        centrePanel.add(dealerPanel);
         centrePanel.add(jScrollPane);
 
         add(centrePanel);
@@ -107,11 +116,19 @@ public class GamePage extends JPanel {
     }
 
     public void setScoreLabel(int score) {
-        this.scoreLabel.setText("Score: " + score + "");
+        scoreLabel.setText("Score: " + score + "");
     }
 
-    public void setDealerArea(Dealer dealer) {
+    public void setDealerScore(int score){ dealerScore.setText(score + "");}
+
+    public void setFirstCard(Card card) {
+        dealerLabel.setText(card.toString());
+        dealerScore.setText(card.getValue() + "");
+    }
+
+    public void setDealerRoundOver(Dealer dealer){
         dealerLabel.setText(dealer.getHand().toString());
+        dealerLabel.setText(dealer.getDealerScore() + "");
     }
 
     public ArrayList<PlayerView> getPlayerViews() {

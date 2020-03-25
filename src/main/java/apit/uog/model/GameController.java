@@ -75,7 +75,6 @@ public class GameController implements Runnable {
 
     }
 
-
     public void setPlayerReady(int id, boolean ready) {
         gameState.getActivePlayers().get(id).setReady(ready);
         sendGameState();
@@ -83,6 +82,7 @@ public class GameController implements Runnable {
 
     public void placeBet(int id, int betAmount) {
         gameState.getActivePlayers().get(id).betOnRound(betAmount);
+        gameState.getActivePlayers().get(id).setReady(true);
         sendGameState();
     }
 
