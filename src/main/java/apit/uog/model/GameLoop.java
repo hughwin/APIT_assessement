@@ -24,6 +24,9 @@ public class GameLoop implements Runnable {
         for (Player player : playersInRound) {
             if (player.getID() == id) {
                 toBeRemoved = player;
+                if(id == playersInRound.size() -1){
+                    gameController.endRound();
+                }
             }
         }
         playersInRound.remove(toBeRemoved);

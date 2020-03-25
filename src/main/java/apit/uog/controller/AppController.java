@@ -4,6 +4,7 @@ package main.java.apit.uog.controller;
 import main.java.apit.uog.model.GameState;
 import main.java.apit.uog.model.Player;
 import main.java.apit.uog.view.AppView;
+import main.java.apit.uog.view.PlayerView;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -21,6 +22,7 @@ public class AppController {
     private String LOCALHOST = "127.0.0.1";
     private ObjectOutputStream objectOutputStream;
     private GameState gameState;
+    private int numberOfPlayers;
 
 
     public AppController() {
@@ -33,11 +35,13 @@ public class AppController {
             appView.setPageView("game");
             System.out.println("Starting client!");
             server = new Socket(LOCALHOST, PORT);
+
+            ReadWorker rw = new ReadWorker(server, this);
+            rw.execute();
+
             objectOutputStream = new ObjectOutputStream(server.getOutputStream());
             objectOutputStream.writeObject(new Player(name));
             objectOutputStream.reset();
-            ReadWorker rw = new ReadWorker(server, this);
-            rw.execute();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -109,23 +113,44 @@ public class AppController {
             }
         }
 
+        public void changePlayerView(){
+            for(PlayerView playerView : appView.getGamePage().getPlayerViews()){
+
+                System.out.println("Changing player view!" + sessionID);
+                playerView.setBalanceLabelText(gameState.getActivePlayers().get(sessionID).getBalance() + "");
+                playerView.setCardsLabelText(gameState.getActivePlayers().get(sessionID).getHand());
+
+                if(gameState.getActivePlayers().get(playerView.getPlayerID()).isReady()){
+                    playerView.setReadyLabelText("Ready!");
+                }
+
+            }
+
+        }
+
 
         @Override
         protected Void doInBackground() throws Exception {
             System.out.println("Started swing worker!");
             Object input;
             while ((input = inputStream.readObject()) != null) {
-
                 if (input instanceof Integer) {
                     sessionID = (int) input;
                 } else {
 
+                    changePlayerView();
+
                     gameState = (GameState) input;
-                    appView.getGamePage().getOutPutPanel().removeAll();
+
+                    if (gameState.getActivePlayers().size() != numberOfPlayers){
+                        numberOfPlayers = gameState.getActivePlayers().size();
+                        appView.getGamePage().getOutPutPanel().removeAll();
+                        gameState.getActivePlayers().forEach((key, player) -> appView.getGamePage().addPlayerToView(player));
+
+                    }
 
                     if (gameState.getActivePlayer() != null) {
                         appView.getGamePage().setScoreLabel(gameState.getActivePlayers().get(sessionID).totalOfHand());
-                        System.err.println(gameState.getActivePlayer().getName());
                         appView.getGamePage().setPlayerTurnLabelText(gameState.getActivePlayer().getName());
 
                         if (gameState.getActivePlayer().getID() == sessionID) {
@@ -136,19 +161,15 @@ public class AppController {
                     }
 
                     if (!gameState.getDealer().getHand().isEmpty()) {
-                        appView.getGamePage().setDealerArea(gameState.getDealer().getHand());
+                        appView.getGamePage().setDealerArea(gameState.getDealer());
                     }
 
                     if (gameState.isRoundOver()) {
-                        appView.getGamePage().setGamePage();
+                        // reset
                         appView.getGamePage().getBetBeforeRoundButton().setEnabled(true);
                     }
-                    appView.getGamePage().getOutPutPanel().removeAll();
-                    gameState.getActivePlayers().forEach((key, player) -> {
-                        appView.getGamePage().addPlayerToView(player);
-                    });
                 }
-
+            appView.getGamePage().revalidateAndRepaint();
             }
             return null;
 

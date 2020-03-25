@@ -2,6 +2,7 @@ package main.java.apit.uog.view;
 
 import main.java.apit.uog.controller.AppController;
 import main.java.apit.uog.model.Card;
+import main.java.apit.uog.model.Dealer;
 import main.java.apit.uog.model.Player;
 
 import javax.swing.*;
@@ -21,39 +22,11 @@ public class GamePage extends JPanel {
     private JLabel playerTurnLabel = new JLabel();
     private JLabel scoreLabel = new JLabel();
     private JPanel infoBar = new JPanel();
-    private ArrayList<PlayerView> playerViews = new ArrayList<PlayerView>();
+    private ArrayList<PlayerView> playerViews = new ArrayList<>();
 
 
     public GamePage(AppController appController) {
 
-        setGamePage();
-
-        hitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                appController.hit();
-            }
-        });
-        buttonPanel.add(hitButton);
-
-        standButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                appController.stand();
-            }
-        });
-
-        betBeforeRoundButton.addActionListener(actionEvent -> {
-            String betAmount = JOptionPane.showInputDialog("Place your bet", "Bet amount");
-            betBeforeRoundButton.setEnabled(false);
-            appController.placeBet(betAmount);
-        });
-
-    }
-
-    public void setGamePage() {
-
-        removeAll();
         setLayout(new BorderLayout());
 
         infoBar.setLayout(new GridLayout(0,2));
@@ -65,9 +38,6 @@ public class GamePage extends JPanel {
 
         playerTurnLabel.setHorizontalAlignment(SwingConstants.CENTER);
         scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-
-
 
         outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.Y_AXIS));
         JScrollPane jScrollPane = new JScrollPane(outputPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -88,13 +58,22 @@ public class GamePage extends JPanel {
         buttonPanel.add(betBeforeRoundButton);
         buttonPanel.setBorder(BorderFactory.createRaisedBevelBorder());
 
+        hitButton.addActionListener(actionEvent -> appController.hit());
+        buttonPanel.add(hitButton);
+
+        standButton.addActionListener(actionEvent -> appController.stand());
+
+        betBeforeRoundButton.addActionListener(actionEvent -> {
+            String betAmount = JOptionPane.showInputDialog("Place your bet", "Bet amount");
+            betBeforeRoundButton.setEnabled(false);
+            appController.placeBet(betAmount);
+        });
+
     }
 
     public void addPlayerToView(Player player) {
-
-
-
         PlayerView pv = new PlayerView(player);
+        playerViews.add(pv);
         outputPanel.add(pv);
         pv.setBorder(BorderFactory.createLoweredBevelBorder());
         outputPanel.revalidate();
@@ -104,10 +83,6 @@ public class GamePage extends JPanel {
     public void enableRoundInProgressButtons(boolean boo) {
         hitButton.setEnabled(boo);
         standButton.setEnabled(boo);
-    }
-
-    public void setDealerArea(ArrayList<Card> dealerHand) {
-        dealerLabel.setText("Dealer's hand: " + dealerHand.get(0).toString());
     }
 
     public void setPlayerTurnLabelText(String activePlayer) {
@@ -133,6 +108,19 @@ public class GamePage extends JPanel {
 
     public void setScoreLabel(int score) {
         this.scoreLabel.setText("Score: " + score + "");
+    }
+
+    public void setDealerArea(Dealer dealer) {
+        dealerLabel.setText(dealer.getHand().toString());
+    }
+
+    public ArrayList<PlayerView> getPlayerViews() {
+        return playerViews;
+    }
+
+    public void revalidateAndRepaint(){
+        revalidate();
+        repaint();
     }
 }
 

@@ -35,8 +35,8 @@ public class Server implements Runnable {
     }
 
     public synchronized void addPlayer(int id, Player player) {
-        gameController.addPlayer(id, player);
         clients.get(id).updateLocalSessionId(id);
+        gameController.addPlayer(id, player);
     }
 
     public synchronized void removePlayer(int id) {

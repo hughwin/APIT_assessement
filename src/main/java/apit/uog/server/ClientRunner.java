@@ -68,7 +68,7 @@ public class ClientRunner implements Runnable {
                     player = (Player) input;
                     System.out.println("Hello " + player.getName() + "!");
                     player.setID(ID);
-                    this.parent.addPlayer(ID, player);
+                    parent.addPlayer(ID, player);
                 }
                 if (input instanceof String) {
                     String command = (String) input;
