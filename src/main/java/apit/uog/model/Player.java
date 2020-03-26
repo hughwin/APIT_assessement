@@ -27,12 +27,12 @@ public class Player implements Serializable {
     }
 
     public void dealCard(Card c) {
-        this.hand.add(c);
+        hand.add(c);
     }
 
     public ArrayList<Card> returnHandToDealer() {
         ArrayList<Card> cardsToBeReturned = (ArrayList<Card>) hand.clone();
-        this.hand.clear();
+        hand.clear();
         return cardsToBeReturned;
     }
 
@@ -45,8 +45,8 @@ public class Player implements Serializable {
         return name;
     }
 
-    public String getHand() {
-        return hand.toString();
+    public ArrayList<Card> getHand() {
+        return hand;
     }
 
     public int getBalance() {
@@ -103,7 +103,7 @@ public class Player implements Serializable {
 
     public void setWinner(boolean winner) {
         this.winner = winner;
-        balance += bet;
+        balance += (bet * 2);
         bet = 0;
     }
 }

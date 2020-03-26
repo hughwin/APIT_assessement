@@ -54,6 +54,14 @@ public class GameController implements Runnable {
     }
 
     public void endRound() {
+        gameState.setActivePlayer(null);
+        gameState.setRoundInProgress(false);
+        gameState.setRoundOver(true);
+        if (gameState.getDealer().getDealerScore() < 16){
+            gameState.getDealer().getHand().add(gameState.getDealer().getDeck().getTopCard()); // Adds an extra card to the dealer's hand if score us under 16.
+        }
+        sendGameState();
+
         gameState.getActivePlayers().forEach((key, player) -> {
             player.returnHandToDealer();
             player.setReady(false);
@@ -61,13 +69,6 @@ public class GameController implements Runnable {
             player.setWinner(false);
             player.setBust(false);
         });
-        gameState.setActivePlayer(null);
-        gameState.setRoundInProgress(false);
-        gameState.setRoundOver(true);
-        if (gameState.getDealer().getDealerScore() > 16){
-            gameState.getDealer().getHand().add(gameState.getDealer().getDeck().getTopCard()); // Adds an extra card to the dealer's hand if score us under 16.
-        }
-        sendGameState();
 
         gameState.getDealer().returnCardsToDeck();
         gameState.setRoundOver(false);

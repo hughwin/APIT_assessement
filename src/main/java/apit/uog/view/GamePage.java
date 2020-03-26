@@ -24,6 +24,9 @@ public class GamePage extends JPanel {
     private JLabel scoreLabel = new JLabel();
     private JPanel infoBar = new JPanel();
     private ArrayList<PlayerView> playerViews = new ArrayList<>();
+    private final String SCORE_STRING = "Score: ";
+    private final String HAND_SRING = "hand: ";
+    private final String DEALER_STRING = "Dealer's ";
 
 
     public GamePage(AppController appController) {
@@ -98,7 +101,6 @@ public class GamePage extends JPanel {
         System.out.println(activePlayer);
         playerTurnLabel.setVisible(true);
         playerTurnLabel.setText(activePlayer + "'s turn");
-        System.out.println(activePlayer + "'s turn");
     }
 
     public JPanel getOutPutPanel() {
@@ -116,19 +118,19 @@ public class GamePage extends JPanel {
     }
 
     public void setScoreLabel(int score) {
-        scoreLabel.setText("Score: " + score + "");
+        scoreLabel.setText(SCORE_STRING + score + "");
     }
 
-    public void setDealerScore(int score){ dealerScore.setText(score + "");}
+    public void setDealerScore(int score){ dealerScore.setText(SCORE_STRING + score);}
 
     public void setFirstCard(Card card) {
-        dealerLabel.setText(card.toString());
-        dealerScore.setText(card.getValue() + "");
+        dealerLabel.setText(DEALER_STRING + HAND_SRING + card.toString());
+        dealerScore.setText(DEALER_STRING + SCORE_STRING + card.getValue());
     }
 
     public void setDealerRoundOver(Dealer dealer){
-        dealerLabel.setText(dealer.getHand().toString());
-        dealerLabel.setText(dealer.getDealerScore() + "");
+        dealerLabel.setText(DEALER_STRING + HAND_SRING + dealer.getHand().toString());
+        dealerScore.setText(DEALER_STRING + SCORE_STRING + dealer.getDealerScore());
     }
 
     public ArrayList<PlayerView> getPlayerViews() {

@@ -116,9 +116,12 @@ public class AppController {
         public void changePlayerView() {
             for (PlayerView playerView : appView.getGamePage().getPlayerViews()) {
 
+                if (gameState.isRoundOver()){}
+
                 System.out.println("Changing player view!" + playerView.getPlayerID());
+                System.out.println(gameState.getActivePlayers().get(playerView.getPlayerID()).getBalance());
                 playerView.setBalanceLabelText(gameState.getActivePlayers().get(playerView.getPlayerID()).getBalance() + "");
-                playerView.setCardsLabelText(gameState.getActivePlayers().get(playerView.getPlayerID()).getHand());
+                playerView.setCardsLabelText(gameState.getActivePlayers().get(playerView.getPlayerID()).getHand().toString());
 
                 if (gameState.getActivePlayers().get(playerView.getPlayerID()).isReady()) {
                     playerView.setReadyLabelText("Ready!");
@@ -126,24 +129,33 @@ public class AppController {
                     playerView.setReadyLabelText("");
                 }
 
-                if (gameState.getActivePlayers().get(playerView.getPlayerID()).isBust()) {
-                    playerView.setReadyLabelText(gameState.getActivePlayers().get(playerView.getPlayerID()).getName() +
-                            "is bust with a score of " + gameState.getActivePlayers().get(playerView.getPlayerID()).totalOfHand());
-                    appView.getGamePage().enableRoundInProgressButtons(false);
-                }
-                if (gameState.getActivePlayers().get(playerView.getPlayerID()).isWinner()) {
-                    playerView.setReadyLabelText(gameState.getActivePlayers().get(playerView.getPlayerID()).getName() +
-                            "has won with a score of " + gameState.getActivePlayers().get(playerView.getPlayerID()).totalOfHand());
-                    appView.getGamePage().enableRoundInProgressButtons(false);
-
-                }
                 if (gameState.getActivePlayers().get(playerView.getPlayerID()).isStanding()) {
                     playerView.setReadyLabelText(gameState.getActivePlayers().get(playerView.getPlayerID()).getName() +
-                            "is standing with a score of " + gameState.getActivePlayers().get(playerView.getPlayerID()).totalOfHand());
+                            " is standing with a score of " + gameState.getActivePlayers().get(playerView.getPlayerID()).totalOfHand());
+                }
+
+                if (gameState.getActivePlayers().get(playerView.getPlayerID()).isBust()) {
+                    playerView.setReadyLabelText(gameState.getActivePlayers().get(playerView.getPlayerID()).getName() +
+                            " is bust with a score of " + gameState.getActivePlayers().get(playerView.getPlayerID()).totalOfHand());
+                }
+
+                if (gameState.getActivePlayers().get(playerView.getPlayerID()).isWinner()) {
+                    playerView.setReadyLabelText(gameState.getActivePlayers().get(playerView.getPlayerID()).getName() +
+                            " has won with a score of " + gameState.getActivePlayers().get(playerView.getPlayerID()).totalOfHand());
+                }
+                if (gameState.isRoundOver() && !gameState.getActivePlayers().get(playerView.getPlayerID()).isWinner()){
+                    playerView.setReadyLabelText(gameState.getActivePlayers().get(playerView.getPlayerID()).getName() +
+                            " has lost their stake with a score of " + gameState.getActivePlayers().get(playerView.getPlayerID()).totalOfHand());
                 }
 
             }
 
+        }
+
+        public void setViewRounndOver(){
+            appView.getGamePage().setDealerRoundOver(gameState.getDealer());
+            appView.getGamePage().enableRoundInProgressButtons(false);
+            appView.getGamePage().getBetBeforeRoundButton().setEnabled(true);
         }
 
 
@@ -194,11 +206,12 @@ public class AppController {
 
                     // If the round is over, reset the game
                     if (gameState.isRoundOver()) {
-                        appView.getGamePage().getBetBeforeRoundButton().setEnabled(true);
+                        setViewRounndOver();
+                    } else {
+                        changePlayerView();
                     }
                 }
                 // Refreshes the gamepage.
-                changePlayerView();
                 appView.getGamePage().revalidateAndRepaint();
             }
             return null;
