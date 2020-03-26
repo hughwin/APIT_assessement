@@ -1,18 +1,17 @@
 package main.java.apit.uog.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Vector;
 
 public class GameLoop implements Runnable {
 
     private volatile boolean running = true;
     private GameController gameController;
-    private List<Player> playersInRound;
+    private Vector<Player> playersInRound;
     private int activePlayerIndex = 0;
 
     public GameLoop(GameController gameController) {
         this.gameController = gameController;
-        playersInRound = new ArrayList<>(gameController.getGameState().getActivePlayers().values());
+        playersInRound = new Vector<>(gameController.getGameState().getActivePlayers().values());
     }
 
     public void terminate() {
@@ -24,26 +23,30 @@ public class GameLoop implements Runnable {
         for (Player player : playersInRound) {
             if (player.getID() == id) {
                 toBeRemoved = player;
-                if(id == (playersInRound.size() -1)){
-                    gameController.endRound();
-                }
             }
         }
+
         playersInRound.remove(toBeRemoved);
+        gameController.setActivePlayer(playersInRound.get(activePlayerIndex));
+        gameController.sendGameState();
     }
 
     @Override
     public void run() {
         gameController.setActivePlayer(playersInRound.get(activePlayerIndex));
         while (activePlayerIndex < playersInRound.size() || playersInRound.size() < 2) {
-            playRound(playersInRound.get(activePlayerIndex));
+            System.out.println(activePlayerIndex + " " + playersInRound.get(activePlayerIndex).getName());
+            System.err.println(activePlayerIndex + " " + playersInRound.get(activePlayerIndex).getName());
 
+            playRound(playersInRound.get(activePlayerIndex));
             try {
                 Thread.sleep(350); // Stops the swing interface madly flickering.
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+
+        System.out.println("Ending!");
 
         int dealerScore = gameController.getGameState().getDealer().getDealerScore();
 
@@ -80,7 +83,7 @@ public class GameLoop implements Runnable {
             player.setStanding(true);
             activePlayerIndex++;
         }
-
+        gameController.sendGameState();
     }
 }
 

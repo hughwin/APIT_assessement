@@ -70,10 +70,16 @@ public class GamePage extends JPanel {
         buttonPanel.add(betBeforeRoundButton);
         buttonPanel.setBorder(BorderFactory.createRaisedBevelBorder());
 
-        hitButton.addActionListener(actionEvent -> appController.hit());
+        hitButton.addActionListener(actionEvent -> {
+            enableRoundInProgressButtons(false);
+            appController.hit();
+        });
         buttonPanel.add(hitButton);
 
-        standButton.addActionListener(actionEvent -> appController.stand());
+        standButton.addActionListener(actionEvent -> {
+            enableRoundInProgressButtons(false);
+            appController.stand();
+        });
 
         betBeforeRoundButton.addActionListener(actionEvent -> {
             String betAmount = JOptionPane.showInputDialog("Place your bet", "Bet amount");
@@ -98,7 +104,6 @@ public class GamePage extends JPanel {
     }
 
     public void setPlayerTurnLabelText(String activePlayer) {
-        System.out.println(activePlayer);
         playerTurnLabel.setVisible(true);
         playerTurnLabel.setText(activePlayer + "'s turn");
     }

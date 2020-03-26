@@ -1,5 +1,6 @@
 package main.java.apit.uog.server;
 
+import main.java.apit.uog.controller.AppController;
 import main.java.apit.uog.model.GameController;
 import main.java.apit.uog.model.GameState;
 import main.java.apit.uog.model.Player;
@@ -40,8 +41,8 @@ public class Server implements Runnable {
     }
 
     public synchronized void removePlayer(int id) {
-        gameController.removePlayer(id);
         clients.removeIf(clientRunner -> clientRunner.getID() == id);
+        gameController.removePlayer(id);
     }
 
     public synchronized void placeBet(int id, int betAmount) {
@@ -81,5 +82,16 @@ public class Server implements Runnable {
         }
 
     }
+
+    public static void main(String[] args) {
+        Thread t = new Thread(new Server(8888)); // Connection will immediately fail if server is already running.
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 

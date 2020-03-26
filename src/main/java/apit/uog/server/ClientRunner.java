@@ -49,7 +49,6 @@ public class ClientRunner implements Runnable {
      */
     public void updateLocalSessionId(int id) {
         try {
-            System.out.println("SessionID" + id);
             outputStream.writeObject(id);
         } catch (IOException e) {
             e.printStackTrace();
@@ -76,6 +75,7 @@ public class ClientRunner implements Runnable {
 
                     if (commandArray[0].equals("quit")) {
                         this.parent.removePlayer(ID);
+                        break;
                     }
 
                     if (commandArray[0].equals("bet")) {

@@ -116,10 +116,6 @@ public class AppController {
         public void changePlayerView() {
             for (PlayerView playerView : appView.getGamePage().getPlayerViews()) {
 
-                if (gameState.isRoundOver()){}
-
-                System.out.println("Changing player view!" + playerView.getPlayerID());
-                System.out.println(gameState.getActivePlayers().get(playerView.getPlayerID()).getBalance());
                 playerView.setBalanceLabelText(gameState.getActivePlayers().get(playerView.getPlayerID()).getBalance() + "");
                 playerView.setCardsLabelText(gameState.getActivePlayers().get(playerView.getPlayerID()).getHand().toString());
 
@@ -152,10 +148,11 @@ public class AppController {
 
         }
 
-        public void setViewRounndOver(){
+        public void setViewRoundOver(){
             appView.getGamePage().setDealerRoundOver(gameState.getDealer());
-            appView.getGamePage().enableRoundInProgressButtons(false);
             appView.getGamePage().getBetBeforeRoundButton().setEnabled(true);
+            appView.getGamePage().enableRoundInProgressButtons(false);
+
         }
 
 
@@ -186,7 +183,8 @@ public class AppController {
                         // If it is the player's go, enable the round in progress buttons
                         if (gameState.getActivePlayer().getID() == sessionID) {
                             appView.getGamePage().enableRoundInProgressButtons(true);
-                        } else {
+                        }
+                        else {
                             appView.getGamePage().enableRoundInProgressButtons(false);
                         }
                     }
@@ -206,7 +204,7 @@ public class AppController {
 
                     // If the round is over, reset the game
                     if (gameState.isRoundOver()) {
-                        setViewRounndOver();
+                        setViewRoundOver();
                     } else {
                         changePlayerView();
                     }
@@ -217,6 +215,10 @@ public class AppController {
             return null;
 
         }
+    }
+
+    public static void main(String[] args) {
+        new AppController();
     }
 }
 
