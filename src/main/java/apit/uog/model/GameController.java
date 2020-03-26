@@ -5,8 +5,12 @@ import main.java.apit.uog.server.Server;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameController implements Runnable {
 
+/**
+ * As the game's logic is held server side, the GameController Class is responsible for manipulating the model
+ * in response to instructions from the client, and then returning the updated information to the client.
+ */
+public class GameController implements Runnable {
 
     private final GameState gameState;
     private Server server;
@@ -31,13 +35,17 @@ public class GameController implements Runnable {
         running = false;
     }
 
+    /**
+     * Deals the cards and starts the game. The startGame method also creates and starts a thread (gameLoopThread) that
+     * controls the game logic (whose turn it is etc.).
+     */
     public void startGame() {
         gameState.getDealer().dealCardsToPlayers();
         gameState.setRoundOver(false);
         gameState.setRoundInProgress(true);
         gameLoop = new GameLoop(this);
-        Thread t2 = new Thread(gameLoop);
-        t2.start();
+        Thread gameLoopThread = new Thread(gameLoop);
+        gameLoopThread.start();
         sendGameState();
     }
 
@@ -62,7 +70,7 @@ public class GameController implements Runnable {
         }
         sendGameState();
 
-        gameState.getActivePlayers().forEach((key, player) -> {
+        gameState.getActivePlayers().forEach((key, player) -> {  // Every player in active player is returned to their original state, effectively resetting the game for the next hand
             player.returnHandToDealer();
             player.setReady(false);
             player.setStanding(false);
@@ -72,8 +80,6 @@ public class GameController implements Runnable {
 
         gameState.getDealer().returnCardsToDeck();
         gameState.setRoundOver(false);
-
-
     }
 
     public void setPlayerReady(int id, boolean ready) {
@@ -119,10 +125,11 @@ public class GameController implements Runnable {
         while (running) {
             if (checkPlayersReady()) {
                 startGame();
-                gameState.getActivePlayers().forEach((key, value) -> setPlayerReady(key, false));
+                gameState.getActivePlayers().forEach((key, value) -> setPlayerReady(key, false)); // Iterates across all connected players
+                // to see whether they have place their bets and are ready to start a new round.
             }
             try {
-                Thread.sleep(1000); // Checks every 1 second
+                Thread.sleep(500); // Checks every .5 second
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -130,11 +137,14 @@ public class GameController implements Runnable {
 
     }
 
+    /**
+     * Iterates across all connected players to see whether they have place their bets and are ready to start a new round.
+     * @return boolean. If all bets placed this is true, false otherwise.
+     */
     public boolean checkPlayersReady() {
         List<Player> list = new ArrayList<>(gameState.getActivePlayers().values());
-
         if (list.size() < 2) {
-            return false;
+            return false; // If there is only one player, the game will not start.
         }
 
         // TODO: Add error message informing the player they can't play unless there is more than 2 players.

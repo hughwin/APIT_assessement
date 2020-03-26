@@ -11,12 +11,13 @@ public class GameLoop implements Runnable {
 
     public GameLoop(GameController gameController) {
         this.gameController = gameController;
-        playersInRound = new Vector<>(gameController.getGameState().getActivePlayers().values());
+        playersInRound = new Vector<>(gameController.getGameState().getActivePlayers().values()); // Allows new clients to join whilst the game is in progress
+        // and not interrupt or cause issues for the current round.
     }
 
     public void terminate() {
         running = false;
-    }
+    } // Not used, but included for completion.
 
     public void removePlayerFromRound(int id) {
         Player toBeRemoved = null;
@@ -25,7 +26,6 @@ public class GameLoop implements Runnable {
                 toBeRemoved = player;
             }
         }
-
         playersInRound.remove(toBeRemoved);
         gameController.setActivePlayer(playersInRound.get(activePlayerIndex));
         gameController.sendGameState();
@@ -33,37 +33,38 @@ public class GameLoop implements Runnable {
 
     @Override
     public void run() {
-        gameController.setActivePlayer(playersInRound.get(activePlayerIndex));
-        while (activePlayerIndex < playersInRound.size() || playersInRound.size() < 2) {
-            System.out.println(activePlayerIndex + " " + playersInRound.get(activePlayerIndex).getName());
-            System.err.println(activePlayerIndex + " " + playersInRound.get(activePlayerIndex).getName());
+        while (running) {
+            gameController.setActivePlayer(playersInRound.get(activePlayerIndex));
+            while (activePlayerIndex < playersInRound.size() || playersInRound.size() < 2) {
+                System.out.println(activePlayerIndex + " " + playersInRound.get(activePlayerIndex).getName());
+                System.err.println(activePlayerIndex + " " + playersInRound.get(activePlayerIndex).getName());
 
-            playRound(playersInRound.get(activePlayerIndex));
-            try {
-                Thread.sleep(350); // Stops the swing interface madly flickering.
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        System.out.println("Ending!");
-
-        int dealerScore = gameController.getGameState().getDealer().getDealerScore();
-
-        for (Player player : playersInRound) {
-            if (!player.isBust()) {
-                if (dealerScore > 21 && player.totalOfHand() < 21) {
-                    gameController.setWinner(player);
-                } else if (dealerScore < player.totalOfHand()) {
-                    gameController.setWinner(player);
+                playRound(playersInRound.get(activePlayerIndex));
+                try {
+                    Thread.sleep(350); // Stops the swing interface madly flickering.
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
 
+            System.out.println("Ending!");
+
+            int dealerScore = gameController.getGameState().getDealer().getDealerScore();
+
+            for (Player player : playersInRound) {
+                if (!player.isBust()) {
+                    if (dealerScore > 21 && player.totalOfHand() < 21) {
+                        gameController.setWinner(player);
+                    } else if (dealerScore < player.totalOfHand()) {
+                        gameController.setWinner(player);
+                    }
+                }
+
+            }
+
+            gameController.endRound();
+            terminate();
         }
-
-        gameController.endRound();
-
-        terminate();
     }
 
 
@@ -83,7 +84,6 @@ public class GameLoop implements Runnable {
             player.setStanding(true);
             activePlayerIndex++;
         }
-        gameController.sendGameState();
     }
 }
 

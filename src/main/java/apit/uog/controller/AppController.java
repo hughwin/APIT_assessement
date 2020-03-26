@@ -46,6 +46,9 @@ public class AppController {
             e.printStackTrace();
         }
     }
+    /*
+    ~~~ Methods to communicate with the server ~~~
+     */
 
     public void quitGame() {
         try {
@@ -76,9 +79,9 @@ public class AppController {
         boolean isInt = true;
 
         try {
-            Integer.parseInt(betAmount);
+            Integer.parseInt(betAmount); // tries to convert the bet amount into an int.
         } catch (NumberFormatException e) {
-            isInt = false;
+            isInt = false;  // If an exception is generated, the bet is not an int.
         }
 
         if (!isInt) {
@@ -116,8 +119,13 @@ public class AppController {
         public void changePlayerView() {
             for (PlayerView playerView : appView.getGamePage().getPlayerViews()) {
 
-                playerView.setBalanceLabelText(gameState.getActivePlayers().get(playerView.getPlayerID()).getBalance() + "");
-                playerView.setCardsLabelText(gameState.getActivePlayers().get(playerView.getPlayerID()).getHand().toString());
+                String playerName = gameState.getActivePlayers().get(playerView.getPlayerID()).getName();
+                String playerScore = gameState.getActivePlayers().get(playerView.getPlayerID()).getHand().toString();
+                String playerBalance = gameState.getActivePlayers().get(playerView.getPlayerID()).getBalance() + "";
+                String playerHand = gameState.getActivePlayers().get(playerView.getPlayerID()).getHand().toString();
+
+                playerView.setBalanceLabelText(playerBalance);
+                playerView.setCardsLabelText(playerHand);
 
                 if (gameState.getActivePlayers().get(playerView.getPlayerID()).isReady()) {
                     playerView.setReadyLabelText("Ready!");
@@ -126,22 +134,22 @@ public class AppController {
                 }
 
                 if (gameState.getActivePlayers().get(playerView.getPlayerID()).isStanding()) {
-                    playerView.setReadyLabelText(gameState.getActivePlayers().get(playerView.getPlayerID()).getName() +
-                            " is standing with a score of " + gameState.getActivePlayers().get(playerView.getPlayerID()).totalOfHand());
+                    playerView.setReadyLabelText(playerName +
+                            " is standing with a score of " + playerScore);
                 }
 
                 if (gameState.getActivePlayers().get(playerView.getPlayerID()).isBust()) {
-                    playerView.setReadyLabelText(gameState.getActivePlayers().get(playerView.getPlayerID()).getName() +
-                            " is bust with a score of " + gameState.getActivePlayers().get(playerView.getPlayerID()).totalOfHand());
+                    playerView.setReadyLabelText(playerName +
+                            " is bust with a score of " + playerScore);
                 }
 
                 if (gameState.getActivePlayers().get(playerView.getPlayerID()).isWinner()) {
-                    playerView.setReadyLabelText(gameState.getActivePlayers().get(playerView.getPlayerID()).getName() +
-                            " has won with a score of " + gameState.getActivePlayers().get(playerView.getPlayerID()).totalOfHand());
+                    playerView.setReadyLabelText(playerName +
+                            " has won with a score of " + playerScore);
                 }
                 if (gameState.isRoundOver() && !gameState.getActivePlayers().get(playerView.getPlayerID()).isWinner()){
-                    playerView.setReadyLabelText(gameState.getActivePlayers().get(playerView.getPlayerID()).getName() +
-                            " has lost their stake with a score of " + gameState.getActivePlayers().get(playerView.getPlayerID()).totalOfHand());
+                    playerView.setReadyLabelText(playerName +
+                            " has lost their stake with a score of " + playerScore);
                 }
 
             }

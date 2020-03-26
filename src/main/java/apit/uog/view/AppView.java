@@ -13,30 +13,27 @@ public class AppView extends JFrame {
 
     private static final String WINDOW_TITLE = "Twenty One";
     private AppController appController;
-    WindowListener exitListener = new WindowAdapter() {
-
-        @Override
-        public void windowClosing(WindowEvent e) {
-            int confirm = JOptionPane.showOptionDialog(
-                    null, "Are You Sure to Close Application?",
-                    "Exit Confirmation", JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE, null, null, null);
-            if (confirm == 0) {
-                appController.quitGame();
-                try {
-                    AppView.this.wait(1000);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-    };
     private CardLayout cardLayout = new CardLayout();
     private JPanel mainPanel = new JPanel(cardLayout);
     private GamePage gamePage;
 
     public AppView(AppController appController) {
         super();
+        WindowListener exitListener = new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int confirm = JOptionPane.showOptionDialog(
+                        null, "Are You Sure to Close Application?",
+                        "Exit Confirmation", JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE, null, null, null);
+                if (confirm == 0) {
+                    appController.quitGame();
+                    System.exit(0);
+                }
+            }
+        };
+        this.addWindowListener(exitListener);
+
         this.appController = appController;
         setTitle(WINDOW_TITLE);
         setSize(600, 400);
@@ -46,23 +43,6 @@ public class AppView extends JFrame {
         gamePage = new GamePage(appController);
         mainPanel.add(gamePage, "game");
         setVisible(true);
-
-        WindowListener exitListener = new WindowAdapter() {
-
-            @Override
-            public void windowClosing(WindowEvent e) {
-                int confirm = JOptionPane.showOptionDialog(
-                        null, "Are you sure you want to quit?",
-                        "Exit Confirmation", JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE, null, null, null);
-                if (confirm == 0) {
-                    appController.quitGame();
-                    System.exit(0);
-                }
-            }
-        };
-
-        this.addWindowListener(exitListener);
 
     }
 

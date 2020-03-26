@@ -1,6 +1,5 @@
 package main.java.apit.uog.server;
 
-import main.java.apit.uog.controller.AppController;
 import main.java.apit.uog.model.GameController;
 import main.java.apit.uog.model.GameState;
 import main.java.apit.uog.model.Player;
@@ -13,16 +12,20 @@ import java.util.Vector;
 // Server class 
 public class Server implements Runnable {
 
-    private int PORT;
+    private final int PORT;
     private ServerSocket server;
-    private Vector<ClientRunner> clients = new Vector<>(); // Thread safe. Could be changed to ArrayList
-    private GameController gameController;
+    private Vector<ClientRunner> clients = new Vector<>(); // Thread safer. Could be changed to ArrayList
+    private final GameController gameController;
     private int id;
     private Thread readyThread;
 
+    /**
+     * Server listens for new connections from clients,
+     * and the controls creation of ClientRunner instances to handle the connections.
+     * @param port that the server runs on.
+     */
     public Server(int port) {
         PORT = port;
-
         gameController = new GameController(this);
         readyThread = new Thread(gameController);
         readyThread.start();
@@ -69,11 +72,11 @@ public class Server implements Runnable {
         while (true) {
             Socket clientSocket;
             try {
-                clientSocket = server.accept();
+                clientSocket = server.accept(); // Accepts new connections
                 System.out.println("New client connected!");
                 ClientRunner client = new ClientRunner(clientSocket, this, id);
-                clients.add(client);
-                id++;
+                clients.add(client); // Adds clients to the Vector containing the clients
+                id++; // Increments id by one.
                 new Thread(client).start();
             } catch (IOException e) {
                 e.printStackTrace();

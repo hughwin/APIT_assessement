@@ -10,7 +10,10 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 
-// Server class 
+/**
+ * The ClientRunner class handles the connecting clients,
+ * and controls the input and output of data to each client
+ */
 public class ClientRunner implements Runnable {
 
     private final int ID;
@@ -21,6 +24,12 @@ public class ClientRunner implements Runnable {
     private Player player;
 
 
+    /**
+     *
+     * @param s Socket
+     * @param parent Server class instance that creates the ClientRunner
+     * @param id unique id of the individual ClientRunner instance
+     */
     public ClientRunner(Socket s, Server parent, int id) {
         this.s = s;
         this.parent = parent;
@@ -33,6 +42,11 @@ public class ClientRunner implements Runnable {
         }
     }
 
+    /**
+     * Writes to the outputStream the gameState object, which effectively is the
+     * current status of the game in progress.
+     * @param gameState - current gameState (representation) of the game.
+     */
     public void updateGameState(GameState gameState) {
         try {
             outputStream.writeObject(gameState);
@@ -43,9 +57,10 @@ public class ClientRunner implements Runnable {
     }
 
     /**
-     * Sends an integer representing the unique id of the client back to the client's local instance.
-     * By maintaining a sessionID in AppController, the game is able to extract pertinent information from
-     * that instance from the returned GameState data.
+     * Sends the unique id of the ClientRunner / Player back to the client.
+     * By maintaining a sessionID in AppController, the game is able to extract
+     * pertinent information from that instance from the returned GameState data.
+     * @param id of the client.
      */
     public void updateLocalSessionId(int id) {
         try {
@@ -57,21 +72,23 @@ public class ClientRunner implements Runnable {
 
 
     @Override
+    /**
+     * Implementation of the Runnable interface. Continuously listens to the
+     * ClientRunner's inputStream for new data being sent to the client.
+     */
     public void run() {
-
-        // receive changes
         try {
             Object input;
             while ((input = inputStream.readObject()) != null) {
                 if (input instanceof Player) {
                     player = (Player) input;
                     System.out.println("Hello " + player.getName() + "!");
-                    player.setID(ID);
-                    parent.addPlayer(ID, player);
+                    player.setID(ID); //Sets the id of the player to the id of the ClientRunner
+                    parent.addPlayer(ID, player); // adds a new Player to the list of players
                 }
                 if (input instanceof String) {
                     String command = (String) input;
-                    String[] commandArray = command.split(" ");
+                    String[] commandArray = command.split(" "); // Splits the String into an based on spaces.
 
                     if (commandArray[0].equals("quit")) {
                         this.parent.removePlayer(ID);

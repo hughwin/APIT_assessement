@@ -7,7 +7,6 @@ public class Player implements Serializable {
 
     private String name;
     private ArrayList<Card> hand;
-    private ArrayList<Card> placedCards;
     private int balance;
     private int bet;
     private int ID;
@@ -17,13 +16,13 @@ public class Player implements Serializable {
     private boolean winner = false;
 
     /**
-     * The Player class contains the object representation of each individual Player.
+     * The Player class contains the object representation of each individual Player. The class has many
+     * variables to indicate what the current state of the Player is in the game.
      */
     public Player(String name) {
         this.name = name;
         this.hand = new ArrayList<>();
-        this.placedCards = new ArrayList<>();
-        this.balance = 100; // High stakes!
+        this.balance = 100; // Sets the initial balance to 100. High stakes!
     }
 
     public void dealCard(Card c) {
@@ -82,7 +81,7 @@ public class Player implements Serializable {
         for (Card card : hand) total += card.getValue();
         if (total > 21) {
             for (Card card : hand) {
-                if (card.getValue() == Deck.Rank.ACE.getValue()) total -= 10;
+                if (card.getValue() == Deck.Rank.ACE.getValue()) total -= 10; // If the value of the hand is > 21, the aces in the hand are worth 1.
             }
         }
         return total;

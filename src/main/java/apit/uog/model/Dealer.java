@@ -4,15 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Dealer class is responsible for controlling the Cards (dealing them out / collecting them back in)
+ */
+
 public class Dealer implements Serializable {
 
     private Deck deck;
     private HashMap<Integer, Player> activePlayers;
     private ArrayList<Card> hand;
-
-    public Deck getDeck() {
-        return deck;
-    }
 
     public Dealer(HashMap<Integer, Player> activePlayers) {
         this.activePlayers = activePlayers;
@@ -21,10 +21,14 @@ public class Dealer implements Serializable {
         deck.shuffle();
     }
 
+    public Deck getDeck() {
+        return deck;
+    }
+
     public void dealCardsToPlayers() {
-        for (int i = 0; i < 2; i++) {
-            hand.add(deck.getTopCard());
-            activePlayers.forEach((key, value) -> value.dealCard(deck.getTopCard()));
+        for (int i = 0; i < 2; i++) { // Deals two cards each
+            hand.add(deck.getTopCard()); // Deals a card to the dealer.
+            activePlayers.forEach((key, value) -> value.dealCard(deck.getTopCard())); // Deals a card to each player
         }
     }
 
@@ -46,7 +50,7 @@ public class Dealer implements Serializable {
 
     public void returnCardsToDeck(){
         deck.addCardsBackToDeck(hand);
-        hand.clear();
+        hand.clear(); // Clears the dealer's hand.
     }
 
 }
