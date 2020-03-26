@@ -24,7 +24,7 @@ public class GameLoop implements Runnable {
         for (Player player : playersInRound) {
             if (player.getID() == id) {
                 toBeRemoved = player;
-                if(id == playersInRound.size() -1){
+                if(id == (playersInRound.size() -1)){
                     gameController.endRound();
                 }
             }
@@ -39,14 +39,13 @@ public class GameLoop implements Runnable {
             playRound(playersInRound.get(activePlayerIndex));
 
             try {
-                Thread.sleep(500); // Stops the swing interface madly flickering.
+                Thread.sleep(350); // Stops the swing interface madly flickering.
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
 
         int dealerScore = gameController.getGameState().getDealer().getDealerScore();
-        System.out.println("Dealer score: " + dealerScore);
 
         for (Player player : playersInRound) {
             if (!player.isBust()) {
@@ -60,12 +59,6 @@ public class GameLoop implements Runnable {
         }
 
         gameController.endRound();
-
-        try {
-            Thread.sleep(2000); // Allows the results to be shown for 5 seconds before the game moves on.
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         terminate();
     }
