@@ -53,6 +53,7 @@ public class AppController {
     public void quitGame() {
         try {
             objectOutputStream.writeObject("quit");
+            server.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -175,6 +176,8 @@ public class AppController {
 
                     gameState = (GameState) input;
 
+                    System.out.println("Getting data");
+                    System.err.println("Getting data");
 
                     // Create new player view if a player joins
                     if (gameState.getActivePlayers().size() != numberOfPlayers) {

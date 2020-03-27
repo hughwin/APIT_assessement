@@ -36,10 +36,10 @@ public class GameLoop implements Runnable {
         while (running) {
             gameController.setActivePlayer(playersInRound.get(activePlayerIndex));
             while (activePlayerIndex < playersInRound.size() || playersInRound.size() < 2) {
+
                 System.out.println(activePlayerIndex + " " + playersInRound.get(activePlayerIndex).getName());
                 System.err.println(activePlayerIndex + " " + playersInRound.get(activePlayerIndex).getName());
-
-                playRound(playersInRound.get(activePlayerIndex));
+                    playRound(playersInRound.get(activePlayerIndex));
                 try {
                     Thread.sleep(350); // Stops the swing interface madly flickering.
                 } catch (InterruptedException e) {

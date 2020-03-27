@@ -3,6 +3,7 @@ package main.java.apit.uog.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Dealer class is responsible for controlling the Cards (dealing them out / collecting them back in)
@@ -11,10 +12,10 @@ import java.util.HashMap;
 public class Dealer implements Serializable {
 
     private Deck deck;
-    private HashMap<Integer, Player> activePlayers;
+    private ConcurrentHashMap<Integer, Player> activePlayers;
     private ArrayList<Card> hand;
 
-    public Dealer(HashMap<Integer, Player> activePlayers) {
+    public Dealer(ConcurrentHashMap<Integer, Player> activePlayers) {
         this.activePlayers = activePlayers;
         this.hand = new ArrayList<>();
         deck = new Deck();

@@ -1,7 +1,7 @@
 package main.java.apit.uog.model;
 
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class's function is to act as an containing class for Player classes in
@@ -11,14 +11,14 @@ import java.util.HashMap;
 public class GameState implements Serializable {
 
     private final Dealer dealer;
-    private final HashMap<Integer, Player> activePlayers;
+    private ConcurrentHashMap<Integer, Player> activePlayers;
     private boolean roundInProgress = false;
     private boolean roundOver;
     private Player activePlayer;
 
 
     public GameState() {
-        this.activePlayers = new HashMap<>();
+        this.activePlayers = new ConcurrentHashMap<>();
         this.dealer = new Dealer(activePlayers);
     }
 
@@ -30,7 +30,7 @@ public class GameState implements Serializable {
         roundInProgress = inProgress;
     }
 
-    public HashMap<Integer, Player> getActivePlayers() {
+    public ConcurrentHashMap<Integer, Player> getActivePlayers() {
         return activePlayers;
     }
 
