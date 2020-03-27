@@ -19,10 +19,9 @@ public class ClientRunner implements Runnable {
 
 
     /**
-     *
-     * @param s Socket
+     * @param s      Socket
      * @param parent Server class instance that creates the ClientRunner
-     * @param id unique id of the individual ClientRunner instance
+     * @param id     unique id of the individual ClientRunner instance
      */
     public ClientRunner(Socket s, Server parent, int id) {
         this.s = s;
@@ -39,6 +38,7 @@ public class ClientRunner implements Runnable {
     /**
      * Writes to the outputStream the gameState object, which effectively is the
      * current status of the game in progress.
+     *
      * @param gameState - current gameState (representation) of the game.
      */
     public void updateGameState(GameState gameState) {
@@ -54,6 +54,7 @@ public class ClientRunner implements Runnable {
      * Sends the unique id of the ClientRunner / Player back to the client.
      * By maintaining a sessionID in AppController, the game is able to extract
      * pertinent information from that instance from the returned GameState data.
+     *
      * @param id of the client.
      */
     public void updateLocalSessionId(int id) {

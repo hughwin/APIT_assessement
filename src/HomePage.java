@@ -3,8 +3,7 @@ import java.awt.*;
 
 public class HomePage extends JPanel {
 
-    private static final String TITLE = "<html><h1><strong><i>Twenty One</i></strong></h1><hr></html>";
-    // extra space necessary to stop it looking strange
+    private static final String TITLE = "<html><h1><strong><i>Twenty One</i></strong></h1><hr></html>"; // extra space necessary to stop it looking strange
     private static final String SUB_TITLE = "<html><i>Please select an option below! </i><html>";
 
     private Client client;

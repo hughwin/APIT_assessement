@@ -2,8 +2,8 @@ import java.util.Vector;
 
 public class GameLoop implements Runnable {
 
-    private volatile boolean running = true;
     private final GameController gameController;
+    private volatile boolean running = true;
     private Vector<Player> playersInRound;
     private int activePlayerIndex = 0;
 
@@ -34,18 +34,13 @@ public class GameLoop implements Runnable {
         while (running) {
             gameController.setActivePlayer(playersInRound.get(activePlayerIndex));
             while (activePlayerIndex < playersInRound.size() || playersInRound.size() < 2) {
-
-                System.out.println(activePlayerIndex + " " + playersInRound.get(activePlayerIndex).getName());
-                System.err.println(activePlayerIndex + " " + playersInRound.get(activePlayerIndex).getName());
-                    playRound(playersInRound.get(activePlayerIndex));
+                playRound(playersInRound.get(activePlayerIndex));
                 try {
                     Thread.sleep(350); // Stops the swing interface madly flickering.
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-
-            System.out.println("Ending!");
 
             int dealerScore = gameController.getGameState().getDealer().getDealerScore();
 

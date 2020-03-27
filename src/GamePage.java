@@ -1,11 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
-
 import java.util.ArrayList;
 
 public class GamePage extends JPanel {
 
-    private ArrayList<PlayerView> playerViews = new ArrayList<>();
     private final JPanel buttonPanel = new JPanel();
     private final JButton hitButton = new JButton("Hit");
     private final JButton standButton = new JButton("Stand");
@@ -13,11 +11,12 @@ public class GamePage extends JPanel {
     private final JPanel outputPanel = new JPanel();
     private final JLabel dealerLabel = new JLabel("Dealer's hand: ");
     private final JLabel dealerScore = new JLabel("Dealer's score: ");
-    private final  JLabel playerTurnLabel = new JLabel();
+    private final JLabel playerTurnLabel = new JLabel();
     private final JLabel scoreLabel = new JLabel();
     private final String SCORE_STRING = "Score: ";
     private final String HAND_SRING = "hand: ";
     private final String DEALER_STRING = "Dealer's ";
+    private ArrayList<PlayerView> playerViews = new ArrayList<>();
 
 
     public GamePage(Client client) {
@@ -25,7 +24,7 @@ public class GamePage extends JPanel {
         setLayout(new BorderLayout());
 
         JPanel infoBar = new JPanel();
-        infoBar.setLayout(new GridLayout(0,2));
+        infoBar.setLayout(new GridLayout(0, 2));
         infoBar.add(playerTurnLabel);
         infoBar.add(scoreLabel);
 
@@ -119,14 +118,16 @@ public class GamePage extends JPanel {
         scoreLabel.setText(SCORE_STRING + score + "");
     }
 
-    public void setDealerScore(int score){ dealerScore.setText(SCORE_STRING + score);}
+    public void setDealerScore(int score) {
+        dealerScore.setText(SCORE_STRING + score);
+    }
 
     public void setFirstCard(Card card) {
         dealerLabel.setText(DEALER_STRING + HAND_SRING + card.toString());
         dealerScore.setText(DEALER_STRING + SCORE_STRING + card.getValue());
     }
 
-    public void setDealerRoundOver(Dealer dealer){
+    public void setDealerRoundOver(Dealer dealer) {
         dealerLabel.setText(DEALER_STRING + HAND_SRING + dealer.getHand().toString());
         dealerScore.setText(DEALER_STRING + SCORE_STRING + dealer.getDealerScore());
     }
@@ -135,12 +136,12 @@ public class GamePage extends JPanel {
         return playerViews;
     }
 
-    public void revalidateAndRepaint(){
+    public void revalidateAndRepaint() {
         revalidate();
         repaint();
     }
 
-    public void clearPlayerArea(){
+    public void clearPlayerArea() {
         outputPanel.removeAll();
         playerViews.clear();
     }

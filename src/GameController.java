@@ -63,7 +63,7 @@ public class GameController implements Runnable {
         gameState.setActivePlayer(null);
         gameState.setRoundInProgress(false);
         gameState.setRoundOver(true);
-        if (gameState.getDealer().getDealerScore() < 16){
+        if (gameState.getDealer().getDealerScore() < 16) {
             gameState.getDealer().getHand().add(gameState.getDealer().getDeck().getTopCard()); // Adds an extra card to the dealer's hand if score us under 16.
         }
         sendGameState();
@@ -101,7 +101,7 @@ public class GameController implements Runnable {
         sendGameState();
     }
 
-    public void setWinner(Player player){
+    public void setWinner(Player player) {
         player.setWinner(true);
         sendGameState();
     }
@@ -136,6 +136,7 @@ public class GameController implements Runnable {
 
     /**
      * Iterates across all connected players to see whether they have place their bets and are ready to start a new round.
+     *
      * @return boolean. If all bets placed this is true, false otherwise.
      */
     public boolean checkPlayersReady() {

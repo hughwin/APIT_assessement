@@ -40,13 +40,13 @@ public class Dealer implements Serializable {
 
     public int getDealerScore() {
         int total = 0;
-        for(Card card : hand){
+        for (Card card : hand) {
             total += card.getValue();
         }
         return total;
     }
 
-    public void returnCardsToDeck(){
+    public void returnCardsToDeck() {
         deck.addCardsBackToDeck(hand);
         hand.clear(); // Clears the dealer's hand.
     }

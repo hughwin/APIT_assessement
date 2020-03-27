@@ -7,11 +7,12 @@ import java.net.Socket;
 
 public class Client {
 
-    private AppView appView;
+    private final AppView appView;
+    private final GamePage gamePage;
     private Socket server;
-    private int PORT = 8888;
+    private final static int PORT = 8888;
+    private final static String LOCALHOST = "127.0.0.1";
     private int sessionID = -1;
-    private String LOCALHOST = "127.0.0.1";
     private ObjectOutputStream objectOutputStream;
     private GameState gameState;
     private int numberOfPlayers;
@@ -22,19 +23,22 @@ public class Client {
      */
     public Client() {
         appView = new AppView(this);
+        gamePage = appView.getGamePage();
     }
+
+    /*
+    ~~~ Methods to communicate with the server ~~~
+     */
 
     public static void main(String[] args) {
         new Client();
     }
-    /*
-    ~~~ Methods to communicate with the server ~~~
-     */
 
     /**
      * Starts the game. Changes the view to the game page and connects to the server. Also creates a ReadWorker object
      * which is then executed allowing manipulation of the swing GUI away from the event dispatch thread. Importantly, a Player
      * object is sent to the server.
+     *
      * @param name name of the player. This is entered when the game starts and is required so a player
      *             can see how they are doing.
      */
@@ -126,35 +130,38 @@ public class Client {
         public void changePlayerView() {
             for (PlayerView playerView : appView.getGamePage().getPlayerViews()) {
 
-                String playerName = gameState.getActivePlayers().get(playerView.getPlayerID()).getName();
-                String playerScore = gameState.getActivePlayers().get(playerView.getPlayerID()).getHand().toString();
-                String playerBalance = gameState.getActivePlayers().get(playerView.getPlayerID()).getBalance() + "";
-                String playerHand = gameState.getActivePlayers().get(playerView.getPlayerID()).getHand().toString();
+                Player player = gameState.getActivePlayers().get(playerView.getPlayerID());
+
+                String playerName = player.getName();
+                String playerScore = player.toString();
+                String playerBalance = player + "";
+                String playerHand = player.getHand().toString();
 
                 playerView.setBalanceLabelText(playerBalance);
                 playerView.setCardsLabelText(playerHand);
 
-                if (gameState.getActivePlayers().get(playerView.getPlayerID()).isReady()) {
+
+                if (player.isReady()) {
                     playerView.setReadyLabelText("Ready!");
                 } else {
                     playerView.setReadyLabelText("");
                 }
 
-                if (gameState.getActivePlayers().get(playerView.getPlayerID()).isStanding()) {
+                if (player.isStanding()) {
                     playerView.setReadyLabelText(playerName +
                             " is standing with a score of " + playerScore);
                 }
 
-                if (gameState.getActivePlayers().get(playerView.getPlayerID()).isBust()) {
+                if (player.isBust()) {
                     playerView.setReadyLabelText(playerName +
                             " is bust with a score of " + playerScore);
                 }
 
-                if (gameState.getActivePlayers().get(playerView.getPlayerID()).isWinner()) {
+                if (player.isWinner()) {
                     playerView.setReadyLabelText(playerName +
                             " has won with a score of " + playerScore);
                 }
-                if (gameState.isRoundOver() && !gameState.getActivePlayers().get(playerView.getPlayerID()).isWinner()){
+                if (gameState.isRoundOver() && !player.isWinner()) {
                     playerView.setReadyLabelText(playerName +
                             " has lost their stake with a score of " + playerScore);
                 }
@@ -163,7 +170,7 @@ public class Client {
 
         }
 
-        public void setViewRoundOver(){
+        public void setViewRoundOver() {
             appView.getGamePage().setDealerRoundOver(gameState.getDealer());
             appView.getGamePage().getBetBeforeRoundButton().setEnabled(true);
             appView.getGamePage().enableRoundInProgressButtons(false);
@@ -173,6 +180,7 @@ public class Client {
         /**
          * The doInBackGround method is a worker thread. Updates the GUI in the background away from the Event Dispatch Thread.
          * The purpose of this thread, is to listen to the server, and update the GUI accordingly.
+         *
          * @return null
          */
 
@@ -188,26 +196,23 @@ public class Client {
 
                         gameState = (GameState) input;
 
-                        System.out.println("Getting data");
-                        System.err.println("Getting data");
-
                         // Create new player view if a player joins
                         if (gameState.getActivePlayers().size() != numberOfPlayers) {
                             numberOfPlayers = gameState.getActivePlayers().size();
-                            appView.getGamePage().clearPlayerArea();
-                            gameState.getActivePlayers().forEach((key, player) -> appView.getGamePage().addPlayerToView(player));
+                            gamePage.clearPlayerArea();
+                            gameState.getActivePlayers().forEach((key, player) -> gamePage.addPlayerToView(player));
                         }
 
                         // If the active player is not null, set it to the active player and show the player's score.
                         if (gameState.getActivePlayer() != null) {
-                            appView.getGamePage().setScoreLabel(gameState.getActivePlayers().get(sessionID).totalOfHand());
-                            appView.getGamePage().setPlayerTurnLabelText(gameState.getActivePlayer().getName());
+                            gamePage.setScoreLabel(gameState.getActivePlayers().get(sessionID).totalOfHand());
+                            gamePage.setPlayerTurnLabelText(gameState.getActivePlayer().getName());
 
                             // If it is the player's go, enable the round in progress buttons
                             if (gameState.getActivePlayer().getID() == sessionID) {
-                                appView.getGamePage().enableRoundInProgressButtons(true);
+                                gamePage.enableRoundInProgressButtons(true);
                             } else {
-                                appView.getGamePage().enableRoundInProgressButtons(false);
+                                gamePage.enableRoundInProgressButtons(false);
                             }
                         }
 
@@ -216,11 +221,11 @@ public class Client {
 
                             //Show only first card if game is in progress.
                             if (gameState.isRoundInProgress()) {
-                                appView.getGamePage().setFirstCard(gameState.getDealer().getHand().get(0));
-                                appView.getGamePage().setDealerScore(gameState.getDealer().getHand().get(0).getValue());
+                                gamePage.setFirstCard(gameState.getDealer().getHand().get(0));
+                                gamePage.setDealerScore(gameState.getDealer().getHand().get(0).getValue());
                             }
                             if (gameState.isRoundOver()) {
-                                appView.getGamePage().setDealerRoundOver(gameState.getDealer());
+                                gamePage.setDealerRoundOver(gameState.getDealer());
                             }
                         }
 
@@ -234,7 +239,7 @@ public class Client {
                     // Refreshes the gamepage.
                     appView.getGamePage().revalidateAndRepaint();
                 }
-            }catch (IOException | ClassNotFoundException e){
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
             return null;

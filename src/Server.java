@@ -7,15 +7,16 @@ import java.util.Vector;
 public class Server implements Runnable {
 
     private final int PORT;
+    private final GameController gameController;
     private ServerSocket server;
     private Vector<ClientRunner> clients = new Vector<>(); // Thread safer. Could be changed to ArrayList
-    private final GameController gameController;
     private int id;
     private Thread readyThread;
 
     /**
      * Server listens for new connections from clients,
      * and the controls creation of ClientRunner instances to handle the connections.
+     *
      * @param port that the server runs on.
      */
     public Server(int port) {
@@ -29,6 +30,16 @@ public class Server implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
             gameController.terminate();
+        }
+    }
+
+    public static void main(String[] args) {
+        Thread t = new Thread(new Server(8888)); // Connection will immediately fail if server is already running.
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -78,16 +89,6 @@ public class Server implements Runnable {
 
         }
 
-    }
-
-    public static void main(String[] args) {
-        Thread t = new Thread(new Server(8888)); // Connection will immediately fail if server is already running.
-        t.start();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
 }
