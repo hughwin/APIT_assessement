@@ -1,7 +1,3 @@
-package main.java.apit.uog.view;
-
-import main.java.apit.uog.controller.AppController;
-
 import javax.swing.*;
 import java.awt.*;
 

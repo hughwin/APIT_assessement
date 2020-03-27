@@ -1,10 +1,3 @@
-package main.java.apit.uog.view;
-
-import main.java.apit.uog.controller.AppController;
-import main.java.apit.uog.model.Card;
-import main.java.apit.uog.model.Dealer;
-import main.java.apit.uog.model.Player;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -12,6 +5,7 @@ import java.util.ArrayList;
 
 public class GamePage extends JPanel {
 
+    private ArrayList<PlayerView> playerViews = new ArrayList<>();
     private final JPanel buttonPanel = new JPanel();
     private final JButton hitButton = new JButton("Hit");
     private final JButton standButton = new JButton("Stand");
@@ -21,7 +15,6 @@ public class GamePage extends JPanel {
     private final JLabel dealerScore = new JLabel("Dealer's score: ");
     private final  JLabel playerTurnLabel = new JLabel();
     private final JLabel scoreLabel = new JLabel();
-    private ArrayList<PlayerView> playerViews = new ArrayList<>();
     private final String SCORE_STRING = "Score: ";
     private final String HAND_SRING = "hand: ";
     private final String DEALER_STRING = "Dealer's ";

@@ -1,9 +1,3 @@
-package main.java.apit.uog.server;// Java implementation of  Server side
-// It contains two classes : Server and ClientHandler 
-
-import main.java.apit.uog.model.GameState;
-import main.java.apit.uog.model.Player;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

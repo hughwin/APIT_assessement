@@ -1,7 +1,3 @@
-package main.java.apit.uog.view;
-
-import main.java.apit.uog.controller.AppController;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -27,7 +23,7 @@ public class AppView extends JFrame {
                         "Exit Confirmation", JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE, null, null, null);
                 if (confirm == 0) {
-                    appController.quitGame();
+                    appController.quitGame(); // Handles the removal of the client from the server.
                     System.exit(0);
                 }
             }

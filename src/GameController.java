@@ -1,7 +1,3 @@
-package main.java.apit.uog.model;
-
-import main.java.apit.uog.server.Server;
-
 import java.util.ArrayList;
 import java.util.List;
 

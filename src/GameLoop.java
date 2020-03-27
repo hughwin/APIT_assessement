@@ -1,5 +1,3 @@
-package main.java.apit.uog.model;
-
 import java.util.Vector;
 
 public class GameLoop implements Runnable {

@@ -1,5 +1,3 @@
-package main.java.apit.uog.model;
-
 import java.io.Serializable;
 
 /**
