@@ -20,7 +20,7 @@ public class GamePage extends JPanel {
     private final String DEALER_STRING = "Dealer's ";
 
 
-    public GamePage(AppController appController) {
+    public GamePage(Client client) {
 
         setLayout(new BorderLayout());
 
@@ -65,19 +65,19 @@ public class GamePage extends JPanel {
 
         hitButton.addActionListener(actionEvent -> {
             enableRoundInProgressButtons(false);
-            appController.hit();
+            client.hit();
         });
         buttonPanel.add(hitButton);
 
         standButton.addActionListener(actionEvent -> {
             enableRoundInProgressButtons(false);
-            appController.stand();
+            client.stand();
         });
 
         betBeforeRoundButton.addActionListener(actionEvent -> {
             String betAmount = JOptionPane.showInputDialog("Place your bet", "Bet amount");
             betBeforeRoundButton.setEnabled(false);
-            appController.placeBet(betAmount);
+            client.placeBet(betAmount);
         });
 
     }

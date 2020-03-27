@@ -5,7 +5,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 
-public class AppController {
+public class Client {
 
     private AppView appView;
     private Socket server;
@@ -16,18 +16,28 @@ public class AppController {
     private GameState gameState;
     private int numberOfPlayers;
 
-
-    public AppController() {
+    /**
+     * The purpose of the Client class is to act as a controller for the user. Its primary function is to create the GUI.
+     * Once the user has clicked on "Play game" the startGame method is called and the client connects to the server.
+     */
+    public Client() {
         appView = new AppView(this);
     }
 
     public static void main(String[] args) {
-        new AppController();
+        new Client();
     }
     /*
     ~~~ Methods to communicate with the server ~~~
      */
 
+    /**
+     * Starts the game. Changes the view to the game page and connects to the server. Also creates a ReadWorker object
+     * which is then executed allowing manipulation of the swing GUI away from the event dispatch thread. Importantly, a Player
+     * object is sent to the server.
+     * @param name name of the player. This is entered when the game starts and is required so a player
+     *             can see how they are doing.
+     */
     public void startGame(String name) {
         try {
             appView.setPageView("game");
