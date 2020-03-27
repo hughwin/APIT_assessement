@@ -90,7 +90,6 @@ public class GamePage extends JPanel {
     }
 
     public void addPlayerToView(Player player) {
-        playerViews.clear();
         PlayerView pv = new PlayerView(player);
         playerViews.add(pv);
         outputPanel.add(pv);
@@ -146,6 +145,11 @@ public class GamePage extends JPanel {
     public void revalidateAndRepaint(){
         revalidate();
         repaint();
+    }
+
+    public void clearPlayerArea(){
+        outputPanel.removeAll();
+        playerViews.clear();
     }
 }
 

@@ -8,7 +8,9 @@ import java.util.List;
 
 /**
  * As the game's logic is held server side, the GameController Class is responsible for manipulating the model
- * in response to instructions from the client, and then returning the updated information to the client.
+ * in response to instructions from the client, and then returning the updated information to the client. apart from sendGameState,
+ * none of the methods are synchronized. This is because the methods that call them are synchronised. This prevents a race condition from
+ * occurring.
  */
 public class GameController implements Runnable {
 
@@ -27,7 +29,7 @@ public class GameController implements Runnable {
         return gameState;
     }
 
-    public void sendGameState() {
+    public synchronized void sendGameState() {
         server.sendGameState(gameState);
     }
 
@@ -114,7 +116,7 @@ public class GameController implements Runnable {
     }
 
 
-    public void setActivePlayer(Player player) {
+    public synchronized void setActivePlayer(Player player) {
         gameState.setActivePlayer(player);
         sendGameState();
     }
@@ -123,10 +125,9 @@ public class GameController implements Runnable {
     @Override
     public void run() {
         while (running) {
-            if (checkPlayersReady()) {
+            if (checkPlayersReady()) { // Iterates across all connected players to see whether they have place their bets and are ready to start a new round.
                 startGame();
-                gameState.getActivePlayers().forEach((key, value) -> setPlayerReady(key, false)); // Iterates across all connected players
-                // to see whether they have place their bets and are ready to start a new round.
+                gameState.getActivePlayers().forEach((key, value) -> setPlayerReady(key, false)); // Sets Players ready back to false.
             }
             try {
                 Thread.sleep(500); // Checks every .5 second

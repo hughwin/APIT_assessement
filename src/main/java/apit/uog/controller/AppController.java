@@ -29,6 +29,12 @@ public class AppController {
         appView = new AppView(this);
     }
 
+    public static void main(String[] args) {
+        new AppController();
+    }
+    /*
+    ~~~ Methods to communicate with the server ~~~
+     */
 
     public void startGame(String name) {
         try {
@@ -36,7 +42,7 @@ public class AppController {
             System.out.println("Starting client!");
             server = new Socket(LOCALHOST, PORT);
 
-            ReadWorker rw = new ReadWorker(server, this);
+            ReadWorker rw = new ReadWorker(server);
             rw.execute();
 
             objectOutputStream = new ObjectOutputStream(server.getOutputStream());
@@ -46,14 +52,10 @@ public class AppController {
             e.printStackTrace();
         }
     }
-    /*
-    ~~~ Methods to communicate with the server ~~~
-     */
 
     public void quitGame() {
         try {
             objectOutputStream.writeObject("quit");
-            server.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -101,15 +103,17 @@ public class AppController {
         }
     }
 
+    /**
+     * To avoid the GUI freezing, the ReadWorker class is responsible for setting up the ObjectInputStream
+     * used to listen to data being sent from
+     */
     private class ReadWorker extends SwingWorker<Void, Void> {
 
-        private final AppController parent;
         private Socket socket;
         private ObjectInputStream inputStream = null;
 
-        public ReadWorker(Socket socket, AppController parent) {
+        public ReadWorker(Socket socket) {
             this.socket = socket;
-            this.parent = parent;
             try {
                 inputStream = new ObjectInputStream(this.socket.getInputStream());
             } catch (IOException e) {
@@ -164,72 +168,75 @@ public class AppController {
 
         }
 
+        /**
+         * The doInBackGround method is a worker thread. Updates the GUI in the background away from the Event Dispatch Thread.
+         * The purpose of this thread, is to listen to the server, and update the GUI accordingly.
+         * @return null
+         */
 
         @Override
-        protected Void doInBackground() throws Exception {
+        protected Void doInBackground() {
             System.out.println("Started swing worker!");
             Object input;
-            while ((input = inputStream.readObject()) != null) {
-                if (input instanceof Integer) {
-                    sessionID = (int) input;
-                } else {
-
-                    gameState = (GameState) input;
-
-                    System.out.println("Getting data");
-                    System.err.println("Getting data");
-
-                    // Create new player view if a player joins
-                    if (gameState.getActivePlayers().size() != numberOfPlayers) {
-                        numberOfPlayers = gameState.getActivePlayers().size();
-                        appView.getGamePage().getOutPutPanel().removeAll();
-                        gameState.getActivePlayers().forEach((key, player) -> appView.getGamePage().addPlayerToView(player));
-                    }
-
-                    // If the active player is not null, set it to the active player and show the player's score.
-                    if (gameState.getActivePlayer() != null) {
-                        appView.getGamePage().setScoreLabel(gameState.getActivePlayers().get(sessionID).totalOfHand());
-                        appView.getGamePage().setPlayerTurnLabelText(gameState.getActivePlayer().getName());
-
-                        // If it is the player's go, enable the round in progress buttons
-                        if (gameState.getActivePlayer().getID() == sessionID) {
-                            appView.getGamePage().enableRoundInProgressButtons(true);
-                        }
-                        else {
-                            appView.getGamePage().enableRoundInProgressButtons(false);
-                        }
-                    }
-
-                    // Show the dealer's hand if they have cards
-                    if (!gameState.getDealer().getHand().isEmpty()) {
-
-                        //Show only first card if game is in progress.
-                        if (gameState.isRoundInProgress()) {
-                            appView.getGamePage().setFirstCard(gameState.getDealer().getHand().get(0));
-                            appView.getGamePage().setDealerScore(gameState.getDealer().getHand().get(0).getValue());
-                        }
-                        if (gameState.isRoundOver()) {
-                            appView.getGamePage().setDealerRoundOver(gameState.getDealer());
-                        }
-                    }
-
-                    // If the round is over, reset the game
-                    if (gameState.isRoundOver()) {
-                        setViewRoundOver();
+            try {
+                while ((input = inputStream.readObject()) != null) {
+                    if (input instanceof Integer) {
+                        sessionID = (int) input;
                     } else {
-                        changePlayerView();
+
+                        gameState = (GameState) input;
+
+                        System.out.println("Getting data");
+                        System.err.println("Getting data");
+
+                        // Create new player view if a player joins
+                        if (gameState.getActivePlayers().size() != numberOfPlayers) {
+                            numberOfPlayers = gameState.getActivePlayers().size();
+                            appView.getGamePage().clearPlayerArea();
+                            gameState.getActivePlayers().forEach((key, player) -> appView.getGamePage().addPlayerToView(player));
+                        }
+
+                        // If the active player is not null, set it to the active player and show the player's score.
+                        if (gameState.getActivePlayer() != null) {
+                            appView.getGamePage().setScoreLabel(gameState.getActivePlayers().get(sessionID).totalOfHand());
+                            appView.getGamePage().setPlayerTurnLabelText(gameState.getActivePlayer().getName());
+
+                            // If it is the player's go, enable the round in progress buttons
+                            if (gameState.getActivePlayer().getID() == sessionID) {
+                                appView.getGamePage().enableRoundInProgressButtons(true);
+                            } else {
+                                appView.getGamePage().enableRoundInProgressButtons(false);
+                            }
+                        }
+
+                        // Show the dealer's hand if they have cards
+                        if (!gameState.getDealer().getHand().isEmpty()) {
+
+                            //Show only first card if game is in progress.
+                            if (gameState.isRoundInProgress()) {
+                                appView.getGamePage().setFirstCard(gameState.getDealer().getHand().get(0));
+                                appView.getGamePage().setDealerScore(gameState.getDealer().getHand().get(0).getValue());
+                            }
+                            if (gameState.isRoundOver()) {
+                                appView.getGamePage().setDealerRoundOver(gameState.getDealer());
+                            }
+                        }
+
+                        // If the round is over, reset the game
+                        if (gameState.isRoundOver()) {
+                            setViewRoundOver();
+                        } else {
+                            changePlayerView();
+                        }
                     }
+                    // Refreshes the gamepage.
+                    appView.getGamePage().revalidateAndRepaint();
                 }
-                // Refreshes the gamepage.
-                appView.getGamePage().revalidateAndRepaint();
+            }catch (IOException | ClassNotFoundException e){
+                e.printStackTrace();
             }
             return null;
-
         }
-    }
-
-    public static void main(String[] args) {
-        new AppController();
     }
 }
 
