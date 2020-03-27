@@ -17,8 +17,8 @@ import java.net.Socket;
 public class ClientRunner implements Runnable {
 
     private final int ID;
-    private Socket s;
-    private Server parent;
+    private final Socket s;
+    private final Server parent;
     private ObjectInputStream inputStream = null;
     private ObjectOutputStream outputStream = null;
     private Player player;

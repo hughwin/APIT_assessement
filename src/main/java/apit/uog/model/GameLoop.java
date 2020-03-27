@@ -5,7 +5,7 @@ import java.util.Vector;
 public class GameLoop implements Runnable {
 
     private volatile boolean running = true;
-    private GameController gameController;
+    private final GameController gameController;
     private Vector<Player> playersInRound;
     private int activePlayerIndex = 0;
 

@@ -12,10 +12,10 @@ import java.awt.event.WindowListener;
 public class AppView extends JFrame {
 
     private static final String WINDOW_TITLE = "Twenty One";
-    private AppController appController;
-    private CardLayout cardLayout = new CardLayout();
-    private JPanel mainPanel = new JPanel(cardLayout);
-    private GamePage gamePage;
+    private final AppController appController;
+    private final CardLayout cardLayout = new CardLayout();
+    private final JPanel mainPanel = new JPanel(cardLayout);
+    private final GamePage gamePage;
 
     public AppView(AppController appController) {
         super();

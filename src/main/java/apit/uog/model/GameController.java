@@ -15,7 +15,7 @@ import java.util.List;
 public class GameController implements Runnable {
 
     private final GameState gameState;
-    private Server server;
+    private final Server server;
     private volatile boolean running = true;
     private GameLoop gameLoop;
 

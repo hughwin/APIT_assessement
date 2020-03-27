@@ -7,18 +7,17 @@ import java.awt.*;
 
 public class PlayerView extends JPanel {
 
-    private JLabel readyLabel;
-    private JLabel nameLabel;
-    private JLabel cardsLabel;
-    private JLabel balanceLabel;
-    private int  playerID;
+    private final JLabel readyLabel;
+    private final JLabel cardsLabel;
+    private final JLabel balanceLabel;
+    private final int  playerID;
 
     public PlayerView(Player player) {
 
         setLayout(new GridLayout(4,1));
         this.playerID = player.getID();
 
-        nameLabel = new JLabel("Name: " + player.getName());
+        JLabel nameLabel = new JLabel("Name: " + player.getName());
         balanceLabel = new JLabel("Balance: " + player.getBalance());
         readyLabel = new JLabel("");
         add(readyLabel);

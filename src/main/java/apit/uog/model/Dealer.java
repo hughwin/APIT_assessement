@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Dealer implements Serializable {
 
-    private Deck deck;
+    private final Deck deck;
     private ConcurrentHashMap<Integer, Player> activePlayers;
     private ArrayList<Card> hand;
 
@@ -27,7 +27,7 @@ public class Dealer implements Serializable {
     }
 
     public void dealCardsToPlayers() {
-        for (int i = 0; i < 2; i++) { // Deals two cards each
+        for (int i = 0; i < 2; i++) { // Loops twice
             hand.add(deck.getTopCard()); // Deals a card to the dealer.
             activePlayers.forEach((key, value) -> value.dealCard(deck.getTopCard())); // Deals a card to each player
         }

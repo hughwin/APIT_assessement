@@ -12,17 +12,15 @@ import java.util.ArrayList;
 
 public class GamePage extends JPanel {
 
-    private JPanel buttonPanel = new JPanel();
-    private JButton hitButton = new JButton("Hit");
-    private JButton standButton = new JButton("Stand");
-    private JButton betBeforeRoundButton = new JButton("Bet");
-    private JPanel outputPanel = new JPanel();
-    private JPanel dealerPanel = new JPanel();
-    private JLabel dealerLabel = new JLabel("Dealer's hand: ");
-    private JLabel dealerScore = new JLabel("Dealer's score: ");
-    private JLabel playerTurnLabel = new JLabel();
-    private JLabel scoreLabel = new JLabel();
-    private JPanel infoBar = new JPanel();
+    private final JPanel buttonPanel = new JPanel();
+    private final JButton hitButton = new JButton("Hit");
+    private final JButton standButton = new JButton("Stand");
+    private final JButton betBeforeRoundButton = new JButton("Bet");
+    private final JPanel outputPanel = new JPanel();
+    private final JLabel dealerLabel = new JLabel("Dealer's hand: ");
+    private final JLabel dealerScore = new JLabel("Dealer's score: ");
+    private final  JLabel playerTurnLabel = new JLabel();
+    private final JLabel scoreLabel = new JLabel();
     private ArrayList<PlayerView> playerViews = new ArrayList<>();
     private final String SCORE_STRING = "Score: ";
     private final String HAND_SRING = "hand: ";
@@ -33,6 +31,7 @@ public class GamePage extends JPanel {
 
         setLayout(new BorderLayout());
 
+        JPanel infoBar = new JPanel();
         infoBar.setLayout(new GridLayout(0,2));
         infoBar.add(playerTurnLabel);
         infoBar.add(scoreLabel);
@@ -50,6 +49,7 @@ public class GamePage extends JPanel {
         JPanel centrePanel = new JPanel();
         centrePanel.setLayout(new GridLayout(2, 1));
 
+        JPanel dealerPanel = new JPanel();
         dealerPanel.setLayout(new BoxLayout(dealerPanel, BoxLayout.Y_AXIS));
 
         dealerLabel.setHorizontalAlignment(SwingConstants.CENTER);

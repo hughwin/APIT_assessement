@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Player implements Serializable {
 
-    private String name;
+    private final String name;
     private ArrayList<Card> hand;
     private int balance;
     private int bet;
