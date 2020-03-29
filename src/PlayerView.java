@@ -1,7 +1,3 @@
-package main.java.apit.uog.view;
-
-import main.java.apit.uog.model.Player;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,11 +6,11 @@ public class PlayerView extends JPanel {
     private final JLabel readyLabel;
     private final JLabel cardsLabel;
     private final JLabel balanceLabel;
-    private final int  playerID;
+    private final int playerID;
 
     public PlayerView(Player player) {
 
-        setLayout(new GridLayout(4,1));
+        setLayout(new GridLayout(4, 1));
         this.playerID = player.getID();
 
         JLabel nameLabel = new JLabel("Name: " + player.getName());

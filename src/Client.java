@@ -1,11 +1,3 @@
-package main.java.apit.uog.controller;
-
-
-import main.java.apit.uog.model.GameState;
-import main.java.apit.uog.model.Player;
-import main.java.apit.uog.view.AppView;
-import main.java.apit.uog.view.PlayerView;
-
 import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,26 +5,41 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 
-public class AppController {
+public class Client {
 
-    private AppView appView;
+    private final AppView appView;
+    private final GamePage gamePage;
     private Socket server;
-    private int PORT = 8888;
+    private final static int PORT = 8888;
+    private final static String LOCALHOST = "127.0.0.1";
     private int sessionID = -1;
-    private String LOCALHOST = "127.0.0.1";
     private ObjectOutputStream objectOutputStream;
     private GameState gameState;
     private int numberOfPlayers;
 
-
-    public AppController() {
+    /**
+     * The purpose of the Client class is to act as a controller for the user. Its primary function is to create the GUI.
+     * Once the user has clicked on "Play game" the startGame method is called and the client connects to the server.
+     */
+    public Client() {
         appView = new AppView(this);
+        gamePage = appView.getGamePage();
     }
 
     public static void main(String[] args) {
-        new AppController();
+        new Client();
     }
-    /*
+
+    /**
+     * Starts the game. Changes the view to the game page and connects to the server. Also creates a ReadWorker object
+     * which is then executed allowing manipulation of the swing GUI away from the event dispatch thread. Importantly, a Player
+     * object is sent to the server.
+     *
+     * @param name name of the player. This is entered when the game starts and is required so a player
+     *             can see how they are doing.
+     */
+
+        /*
     ~~~ Methods to communicate with the server ~~~
      */
 
@@ -124,53 +131,66 @@ public class AppController {
         public void changePlayerView() {
             for (PlayerView playerView : appView.getGamePage().getPlayerViews()) {
 
-                String playerName = gameState.getActivePlayers().get(playerView.getPlayerID()).getName();
-                String playerScore = gameState.getActivePlayers().get(playerView.getPlayerID()).getHand().toString();
-                String playerBalance = gameState.getActivePlayers().get(playerView.getPlayerID()).getBalance() + "";
-                String playerHand = gameState.getActivePlayers().get(playerView.getPlayerID()).getHand().toString();
+                System.out.println(gameState.isRoundOver());
 
-                playerView.setBalanceLabelText(playerBalance);
+                Player player = gameState.getActivePlayers().get(playerView.getPlayerID());
+
+                String playerName = player.getName();
+                String playerScore = player.totalOfHand() + "";
+                int playerBalance = player.getBalance();
+                String playerHand = player.getHand().toString();
+
+                playerView.setBalanceLabelText(playerBalance + "");
                 playerView.setCardsLabelText(playerHand);
 
-                if (gameState.getActivePlayers().get(playerView.getPlayerID()).isReady()) {
+
+                if (player.isReady()) {
                     playerView.setReadyLabelText("Ready!");
                 } else {
                     playerView.setReadyLabelText("");
                 }
 
-                if (gameState.getActivePlayers().get(playerView.getPlayerID()).isStanding()) {
+                if (player.isStanding()) {
                     playerView.setReadyLabelText(playerName +
                             " is standing with a score of " + playerScore);
                 }
 
-                if (gameState.getActivePlayers().get(playerView.getPlayerID()).isBust()) {
+                if (player.isBust()) {
                     playerView.setReadyLabelText(playerName +
                             " is bust with a score of " + playerScore);
                 }
 
-                if (gameState.getActivePlayers().get(playerView.getPlayerID()).isWinner()) {
+                if (player.isWinner()) {
                     playerView.setReadyLabelText(playerName +
                             " has won with a score of " + playerScore);
                 }
-                if (gameState.isRoundOver() && !gameState.getActivePlayers().get(playerView.getPlayerID()).isWinner()){
+                if (gameState.isRoundOver() && !player.isWinner()) {
                     playerView.setReadyLabelText(playerName +
                             " has lost their stake with a score of " + playerScore);
+                }
+                if (gameState.isRoundOver() && playerBalance == 0){
+                    System.out.println("Player broke!");
+                    playerView.setBalanceLabelText(playerName +
+                            " has no money remaining! They will be thrown out of the game!");
+                    gamePage.getBetBeforeRoundButton().setEnabled(false);
+                    quitGame(); // Throws broke cheapskates with no money out of the game!
                 }
 
             }
 
         }
 
-        public void setViewRoundOver(){
-            appView.getGamePage().setDealerRoundOver(gameState.getDealer());
-            appView.getGamePage().getBetBeforeRoundButton().setEnabled(true);
-            appView.getGamePage().enableRoundInProgressButtons(false);
-
+        public void setViewRoundOver() {
+            gamePage.setPlayerTurnLabelText("Your name: " + gameState.getActivePlayers().get(sessionID).getName());
+            gamePage.setDealerRoundOver(gameState.getDealer());
+            gamePage.getBetBeforeRoundButton().setEnabled(true);
+            gamePage.enableRoundInProgressButtons(false);
         }
 
         /**
          * The doInBackGround method is a worker thread. Updates the GUI in the background away from the Event Dispatch Thread.
          * The purpose of this thread, is to listen to the server, and update the GUI accordingly.
+         *
          * @return null
          */
 
@@ -186,26 +206,23 @@ public class AppController {
 
                         gameState = (GameState) input;
 
-                        System.out.println("Getting data");
-                        System.err.println("Getting data");
-
                         // Create new player view if a player joins
                         if (gameState.getActivePlayers().size() != numberOfPlayers) {
                             numberOfPlayers = gameState.getActivePlayers().size();
-                            appView.getGamePage().clearPlayerArea();
-                            gameState.getActivePlayers().forEach((key, player) -> appView.getGamePage().addPlayerToView(player));
+                            gamePage.clearPlayerArea();
+                            gameState.getActivePlayers().forEach((key, player) -> gamePage.addPlayerToView(player));
                         }
 
                         // If the active player is not null, set it to the active player and show the player's score.
                         if (gameState.getActivePlayer() != null) {
-                            appView.getGamePage().setScoreLabel(gameState.getActivePlayers().get(sessionID).totalOfHand());
-                            appView.getGamePage().setPlayerTurnLabelText(gameState.getActivePlayer().getName());
+                            gamePage.setScoreLabel(gameState.getActivePlayers().get(sessionID).totalOfHand());
+                            gamePage.setPlayerTurnLabelText(gameState.getActivePlayer().getName()+"'s turn");
 
                             // If it is the player's go, enable the round in progress buttons
                             if (gameState.getActivePlayer().getID() == sessionID) {
-                                appView.getGamePage().enableRoundInProgressButtons(true);
+                                gamePage.enableRoundInProgressButtons(true);
                             } else {
-                                appView.getGamePage().enableRoundInProgressButtons(false);
+                                gamePage.enableRoundInProgressButtons(false);
                             }
                         }
 
@@ -214,25 +231,24 @@ public class AppController {
 
                             //Show only first card if game is in progress.
                             if (gameState.isRoundInProgress()) {
-                                appView.getGamePage().setFirstCard(gameState.getDealer().getHand().get(0));
-                                appView.getGamePage().setDealerScore(gameState.getDealer().getHand().get(0).getValue());
+                                gamePage.setFirstCard(gameState.getDealer().getHand().get(0));
+                                gamePage.setDealerScore(gameState.getDealer().getHand().get(0).getValue());
                             }
                             if (gameState.isRoundOver()) {
-                                appView.getGamePage().setDealerRoundOver(gameState.getDealer());
+                                gamePage.setDealerRoundOver(gameState.getDealer());
                             }
                         }
 
                         // If the round is over, reset the game
                         if (gameState.isRoundOver()) {
                             setViewRoundOver();
-                        } else {
-                            changePlayerView();
                         }
+                            changePlayerView();
                     }
                     // Refreshes the gamepage.
                     appView.getGamePage().revalidateAndRepaint();
                 }
-            }catch (IOException | ClassNotFoundException e){
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
             return null;

@@ -1,13 +1,5 @@
-package main.java.apit.uog.view;
-
-import main.java.apit.uog.controller.AppController;
-import main.java.apit.uog.model.Card;
-import main.java.apit.uog.model.Dealer;
-import main.java.apit.uog.model.Player;
-
 import javax.swing.*;
 import java.awt.*;
-
 import java.util.ArrayList;
 
 public class GamePage extends JPanel {
@@ -19,20 +11,20 @@ public class GamePage extends JPanel {
     private final JPanel outputPanel = new JPanel();
     private final JLabel dealerLabel = new JLabel("Dealer's hand: ");
     private final JLabel dealerScore = new JLabel("Dealer's score: ");
-    private final  JLabel playerTurnLabel = new JLabel();
+    private final JLabel playerTurnLabel = new JLabel();
     private final JLabel scoreLabel = new JLabel();
-    private ArrayList<PlayerView> playerViews = new ArrayList<>();
     private final String SCORE_STRING = "Score: ";
     private final String HAND_SRING = "hand: ";
     private final String DEALER_STRING = "Dealer's ";
+    private ArrayList<PlayerView> playerViews = new ArrayList<>();
 
 
-    public GamePage(AppController appController) {
+    public GamePage(Client client) {
 
         setLayout(new BorderLayout());
 
         JPanel infoBar = new JPanel();
-        infoBar.setLayout(new GridLayout(0,2));
+        infoBar.setLayout(new GridLayout(0, 2));
         infoBar.add(playerTurnLabel);
         infoBar.add(scoreLabel);
 
@@ -72,19 +64,19 @@ public class GamePage extends JPanel {
 
         hitButton.addActionListener(actionEvent -> {
             enableRoundInProgressButtons(false);
-            appController.hit();
+            client.hit();
         });
         buttonPanel.add(hitButton);
 
         standButton.addActionListener(actionEvent -> {
             enableRoundInProgressButtons(false);
-            appController.stand();
+            client.stand();
         });
 
         betBeforeRoundButton.addActionListener(actionEvent -> {
             String betAmount = JOptionPane.showInputDialog("Place your bet", "Bet amount");
             betBeforeRoundButton.setEnabled(false);
-            appController.placeBet(betAmount);
+            client.placeBet(betAmount);
         });
 
     }
@@ -105,7 +97,7 @@ public class GamePage extends JPanel {
 
     public void setPlayerTurnLabelText(String activePlayer) {
         playerTurnLabel.setVisible(true);
-        playerTurnLabel.setText(activePlayer + "'s turn");
+        playerTurnLabel.setText(activePlayer);
     }
 
     public JPanel getOutPutPanel() {
@@ -126,14 +118,16 @@ public class GamePage extends JPanel {
         scoreLabel.setText(SCORE_STRING + score + "");
     }
 
-    public void setDealerScore(int score){ dealerScore.setText(SCORE_STRING + score);}
+    public void setDealerScore(int score) {
+        dealerScore.setText(SCORE_STRING + score);
+    }
 
     public void setFirstCard(Card card) {
         dealerLabel.setText(DEALER_STRING + HAND_SRING + card.toString());
         dealerScore.setText(DEALER_STRING + SCORE_STRING + card.getValue());
     }
 
-    public void setDealerRoundOver(Dealer dealer){
+    public void setDealerRoundOver(Dealer dealer) {
         dealerLabel.setText(DEALER_STRING + HAND_SRING + dealer.getHand().toString());
         dealerScore.setText(DEALER_STRING + SCORE_STRING + dealer.getDealerScore());
     }
@@ -142,12 +136,12 @@ public class GamePage extends JPanel {
         return playerViews;
     }
 
-    public void revalidateAndRepaint(){
+    public void revalidateAndRepaint() {
         revalidate();
         repaint();
     }
 
-    public void clearPlayerArea(){
+    public void clearPlayerArea() {
         outputPanel.removeAll();
         playerViews.clear();
     }

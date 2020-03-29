@@ -1,11 +1,10 @@
-package main.java.apit.uog.model;
-
 import java.util.Vector;
 
 public class GameLoop implements Runnable {
 
-    private volatile boolean running = true;
+    public static final int TWENTY_ONE = 21; // constant
     private final GameController gameController;
+    private volatile boolean running = true;
     private Vector<Player> playersInRound;
     private int activePlayerIndex = 0;
 
@@ -36,10 +35,7 @@ public class GameLoop implements Runnable {
         while (running) {
             gameController.setActivePlayer(playersInRound.get(activePlayerIndex));
             while (activePlayerIndex < playersInRound.size() || playersInRound.size() < 2) {
-
-                System.out.println(activePlayerIndex + " " + playersInRound.get(activePlayerIndex).getName());
-                System.err.println(activePlayerIndex + " " + playersInRound.get(activePlayerIndex).getName());
-                    playRound(playersInRound.get(activePlayerIndex));
+                playRound(playersInRound.get(activePlayerIndex));
                 try {
                     Thread.sleep(350); // Stops the swing interface madly flickering.
                 } catch (InterruptedException e) {
@@ -47,14 +43,20 @@ public class GameLoop implements Runnable {
                 }
             }
 
-            System.out.println("Ending!");
-
             int dealerScore = gameController.getGameState().getDealer().getDealerScore();
+
+            if (dealerScore < 16) {
+                dealerScore += gameController.getGameState().getDealer().hit().getValue();
+                // Adds an extra card to the dealer's hand if score us under 16.
+            }
+
 
             for (Player player : playersInRound) {
                 if (!player.isBust()) {
-                    if (dealerScore > 21 && player.totalOfHand() < 21) {
+                    if (dealerScore > TWENTY_ONE && player.totalOfHand() < TWENTY_ONE) {
                         gameController.setWinner(player);
+                    } else if (dealerScore == player.totalOfHand()) {
+                        player.returnBet();
                     } else if (dealerScore < player.totalOfHand()) {
                         gameController.setWinner(player);
                     }
@@ -72,11 +74,11 @@ public class GameLoop implements Runnable {
 
         gameController.setActivePlayer(player);
 
-        if (player.totalOfHand() == 21) {
+        if (player.totalOfHand() == TWENTY_ONE) {
             player.setWinner(true);
             activePlayerIndex++;
         }
-        if (player.totalOfHand() > 21) {
+        if (player.totalOfHand() > TWENTY_ONE) {
             gameController.playerExceeded21(player);
             activePlayerIndex++;
         }
