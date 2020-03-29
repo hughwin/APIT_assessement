@@ -130,14 +130,16 @@ public class Client {
         public void changePlayerView() {
             for (PlayerView playerView : appView.getGamePage().getPlayerViews()) {
 
+                System.out.println(gameState.isRoundOver());
+
                 Player player = gameState.getActivePlayers().get(playerView.getPlayerID());
 
                 String playerName = player.getName();
-                String playerScore = player.toString();
-                String playerBalance = player + "";
+                String playerScore = player.totalOfHand() + "";
+                int playerBalance = player.getBalance();
                 String playerHand = player.getHand().toString();
 
-                playerView.setBalanceLabelText(playerBalance);
+                playerView.setBalanceLabelText(playerBalance + "");
                 playerView.setCardsLabelText(playerHand);
 
 
@@ -165,16 +167,23 @@ public class Client {
                     playerView.setReadyLabelText(playerName +
                             " has lost their stake with a score of " + playerScore);
                 }
+                if (gameState.isRoundOver() && playerBalance == 0){
+                    System.out.println("Player broke!");
+                    playerView.setBalanceLabelText(playerName +
+                            " has no money remaining! ");
+                    gamePage.getBetBeforeRoundButton().setEnabled(false);
+                    quitGame();
+                }
 
             }
 
         }
 
         public void setViewRoundOver() {
-            appView.getGamePage().setDealerRoundOver(gameState.getDealer());
-            appView.getGamePage().getBetBeforeRoundButton().setEnabled(true);
-            appView.getGamePage().enableRoundInProgressButtons(false);
-
+            gamePage.setPlayerTurnLabelText("Your name: " + gameState.getActivePlayers().get(sessionID).getName());
+            gamePage.setDealerRoundOver(gameState.getDealer());
+            gamePage.getBetBeforeRoundButton().setEnabled(true);
+            gamePage.enableRoundInProgressButtons(false);
         }
 
         /**
@@ -206,7 +215,7 @@ public class Client {
                         // If the active player is not null, set it to the active player and show the player's score.
                         if (gameState.getActivePlayer() != null) {
                             gamePage.setScoreLabel(gameState.getActivePlayers().get(sessionID).totalOfHand());
-                            gamePage.setPlayerTurnLabelText(gameState.getActivePlayer().getName());
+                            gamePage.setPlayerTurnLabelText(gameState.getActivePlayer().getName()+"'s turn");
 
                             // If it is the player's go, enable the round in progress buttons
                             if (gameState.getActivePlayer().getID() == sessionID) {
@@ -232,9 +241,8 @@ public class Client {
                         // If the round is over, reset the game
                         if (gameState.isRoundOver()) {
                             setViewRoundOver();
-                        } else {
-                            changePlayerView();
                         }
+                            changePlayerView();
                     }
                     // Refreshes the gamepage.
                     appView.getGamePage().revalidateAndRepaint();

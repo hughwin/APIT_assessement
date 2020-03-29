@@ -2,6 +2,7 @@ import java.util.Vector;
 
 public class GameLoop implements Runnable {
 
+    public static final int TWENTY_ONE = 21; // constant
     private final GameController gameController;
     private volatile boolean running = true;
     private Vector<Player> playersInRound;
@@ -46,8 +47,10 @@ public class GameLoop implements Runnable {
 
             for (Player player : playersInRound) {
                 if (!player.isBust()) {
-                    if (dealerScore > 21 && player.totalOfHand() < 21) {
+                    if (dealerScore > TWENTY_ONE && player.totalOfHand() < TWENTY_ONE) {
                         gameController.setWinner(player);
+                    } else if (dealerScore == player.totalOfHand()) {
+                        player.returnBet();
                     } else if (dealerScore < player.totalOfHand()) {
                         gameController.setWinner(player);
                     }
@@ -65,11 +68,11 @@ public class GameLoop implements Runnable {
 
         gameController.setActivePlayer(player);
 
-        if (player.totalOfHand() == 21) {
+        if (player.totalOfHand() == TWENTY_ONE) {
             player.setWinner(true);
             activePlayerIndex++;
         }
-        if (player.totalOfHand() > 21) {
+        if (player.totalOfHand() > TWENTY_ONE) {
             gameController.playerExceeded21(player);
             activePlayerIndex++;
         }

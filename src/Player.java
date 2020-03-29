@@ -104,4 +104,8 @@ public class Player implements Serializable {
         balance += (bet * 2);
         bet = 0;
     }
+
+    public void returnBet(){
+        balance += bet;
+    }
 }

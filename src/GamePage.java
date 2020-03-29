@@ -97,7 +97,7 @@ public class GamePage extends JPanel {
 
     public void setPlayerTurnLabelText(String activePlayer) {
         playerTurnLabel.setVisible(true);
-        playerTurnLabel.setText(activePlayer + "'s turn");
+        playerTurnLabel.setText(activePlayer);
     }
 
     public JPanel getOutPutPanel() {
