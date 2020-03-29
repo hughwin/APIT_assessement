@@ -64,9 +64,7 @@ public class GameController implements Runnable {
         gameState.setActivePlayer(null);
         gameState.setRoundInProgress(false);
         System.err.println(gameState.isRoundOver());
-        if (gameState.getDealer().getDealerScore() < 16) {
-            gameState.getDealer().getHand().add(gameState.getDealer().getDeck().getTopCard()); // Adds an extra card to the dealer's hand if score us under 16.
-        }
+
         sendGameState();
 
         gameState.getActivePlayers().forEach((key, player) -> {  // Every player in active player is returned to their original state, effectively resetting the game for the next hand

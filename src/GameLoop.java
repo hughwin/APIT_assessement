@@ -45,6 +45,12 @@ public class GameLoop implements Runnable {
 
             int dealerScore = gameController.getGameState().getDealer().getDealerScore();
 
+            if (dealerScore < 16) {
+                dealerScore += gameController.getGameState().getDealer().hit().getValue();
+                // Adds an extra card to the dealer's hand if score us under 16.
+            }
+
+
             for (Player player : playersInRound) {
                 if (!player.isBust()) {
                     if (dealerScore > TWENTY_ONE && player.totalOfHand() < TWENTY_ONE) {

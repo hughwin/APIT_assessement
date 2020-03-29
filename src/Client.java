@@ -26,10 +26,6 @@ public class Client {
         gamePage = appView.getGamePage();
     }
 
-    /*
-    ~~~ Methods to communicate with the server ~~~
-     */
-
     public static void main(String[] args) {
         new Client();
     }
@@ -42,6 +38,11 @@ public class Client {
      * @param name name of the player. This is entered when the game starts and is required so a player
      *             can see how they are doing.
      */
+
+        /*
+    ~~~ Methods to communicate with the server ~~~
+     */
+
     public void startGame(String name) {
         try {
             appView.setPageView("game");
@@ -170,9 +171,9 @@ public class Client {
                 if (gameState.isRoundOver() && playerBalance == 0){
                     System.out.println("Player broke!");
                     playerView.setBalanceLabelText(playerName +
-                            " has no money remaining! ");
+                            " has no money remaining! They will be thrown out of the game!");
                     gamePage.getBetBeforeRoundButton().setEnabled(false);
-                    quitGame();
+                    quitGame(); // Throws broke cheapskates with no money out of the game!
                 }
 
             }
