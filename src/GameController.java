@@ -5,7 +5,8 @@ import java.util.List;
 /**
  * As the game's logic is held server side, the GameController Class is responsible for manipulating the model
  * in response to instructions from the client, and then returning the updated information to the client. apart from sendGameState,
- * none of the methods are synchronized. This is because the methods that call them are synchronised. This prevents a race condition from
+ * none of the methods are synchronized. This is because the methods that call them are synchronised in Server or are otherwise thread
+ * safe in their implementation (using data structures that prevent concurrent modification etc).
  * occurring.
  */
 public class GameController implements Runnable {
