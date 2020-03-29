@@ -19,7 +19,8 @@ public class ClientRunner implements Runnable {
 
 
     /**
-     * @param s      Socket
+     * Constructor for the ClientRunner class. Creates an ObjectOutput stream and an ObjectInputStream.
+     * @param s      Socket to receive / send instructions
      * @param parent Server class instance that creates the ClientRunner
      * @param id     unique id of the individual ClientRunner instance
      */
@@ -67,7 +68,7 @@ public class ClientRunner implements Runnable {
 
 
     @Override
-    /**
+    /*
      * Implementation of the Runnable interface. Continuously listens to the
      * ClientRunner's inputStream for new data being sent to the client.
      */
