@@ -57,7 +57,7 @@ public class GameLoop implements Runnable {
                         gameController.setWinner(player);
                     } else if (dealerScore == player.totalOfHand()) {
                         player.returnBet();
-                    } else if (dealerScore < player.totalOfHand()) {
+                    } else if (dealerScore < player.totalOfHand() || dealerScore > TWENTY_ONE) {
                         gameController.setWinner(player);
                     }
                 }

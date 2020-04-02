@@ -86,6 +86,9 @@ public class GameController implements Runnable {
 
     public void placeBet(int id, int betAmount) {
         gameState.getActivePlayers().get(id).betOnRound(betAmount);
+        if(gameState.isRoundOver()){
+            gameState.setRoundOver(false);
+        }
         gameState.getActivePlayers().get(id).setReady(true);
         sendGameState();
     }
