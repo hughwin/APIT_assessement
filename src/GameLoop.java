@@ -5,7 +5,7 @@ public class GameLoop implements Runnable {
     public static final int TWENTY_ONE = 21; // constant
     private final GameController gameController;
     private volatile boolean running = true;
-    private Vector<Player> playersInRound;
+    private final Vector<Player> playersInRound;
     private int activePlayerIndex = 0;
 
     public GameLoop(GameController gameController) {
@@ -16,7 +16,7 @@ public class GameLoop implements Runnable {
 
     public void terminate() {
         running = false;
-    } // Not used, but included for completion.
+    }
 
     public void removePlayerFromRound(int id) {
         Player toBeRemoved = null;
@@ -57,6 +57,7 @@ public class GameLoop implements Runnable {
                         gameController.setWinner(player);
                     } else if (dealerScore == player.totalOfHand()) {
                         player.returnBet();
+                        gameController.setWinner(player); // Not exactly "winning", but they do not lose their stake.
                     } else if (dealerScore < player.totalOfHand() || dealerScore > TWENTY_ONE) {
                         gameController.setWinner(player);
                     }

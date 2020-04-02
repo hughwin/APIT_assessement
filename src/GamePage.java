@@ -78,7 +78,6 @@ public class GamePage extends JPanel {
         betBeforeRoundButton.addActionListener(actionEvent -> {
             String betAmount = JOptionPane.showInputDialog("Place your bet", "Bet amount");
             client.placeBet(betAmount);
-            betBeforeRoundButton.setEnabled(false);
         });
 
     }

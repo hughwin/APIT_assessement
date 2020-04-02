@@ -7,7 +7,6 @@ import java.util.List;
  * in response to instructions from the client, and then returning the updated information to the client. apart from sendGameState,
  * none of the methods are synchronized. This is because the methods that call them are synchronised in Server or are otherwise thread
  * safe in their implementation (using data structures that prevent concurrent modification etc).
- * occurring.
  */
 public class GameController implements Runnable {
 
@@ -49,9 +48,9 @@ public class GameController implements Runnable {
     }
 
 
-    public void addPlayer(int id, Player player) {
-        gameState.getActivePlayers().put(id, player);
-        sendGameState();
+    public void addPlayer(int id, Player player) { // Can be called by more than one thread at the same time.
+        gameState.getActivePlayers().put(id, player);           // Despite using a threadsafe data structure StackOverFlow said it was best practice to make
+        sendGameState();                                        // this syncronized as well.
     }
 
     public void removePlayer(int id) {

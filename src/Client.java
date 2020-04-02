@@ -42,7 +42,6 @@ public class Client {
         /*
     ~~~ Methods to communicate with the server ~~~
      */
-
     public void startGame(String name) {
         try {
             appView.setPageView("game");
@@ -95,7 +94,7 @@ public class Client {
         }
 
         if (!isInt) {
-            appView.getGamePage().badBetPlaced();
+            gamePage.badBetPlaced();
             return;
         }
         int betInt = Integer.parseInt(betAmount);
@@ -104,6 +103,7 @@ public class Client {
         } else {
             try {
                 objectOutputStream.writeObject("bet " + betAmount);
+                gamePage.getBetBeforeRoundButton().setEnabled(false);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -147,38 +147,34 @@ public class Client {
                 } else {
                     playerView.setReadyLabelText("");
                 }
-                if (gameState.isRoundOver()) {
-                    if (player.isStanding()) {
-                        playerView.setReadyLabelText(playerName +
-                                " is standing with a score of " + playerScore);
-                    }
-
-                    if (player.isBust()) {
-                        playerView.setReadyLabelText(playerName +
-                                " is bust with a score of " + playerScore);
-                    }
-
-                    if (player.isWinner()) {
-                        playerView.setReadyLabelText(playerName +
-                                " has won with a score of " + playerScore);
-                    }
-                    if (gameState.isRoundOver()) {
-                        if (!player.isWinner()) {
-                            playerView.setReadyLabelText(playerName +
-                                    " has lost their stake with a score of " + playerScore);
-                        }
-                        if (playerBalance == 0) {
-                            System.out.println("Player broke!");
-                            playerView.setBalanceLabelText(playerName +
-                                    " has no money remaining! They will be thrown out of the game!");
-                            gamePage.getBetBeforeRoundButton().setEnabled(false);
-                            quitGame(); // Throws broke cheapskates with no money out of the game!
-                        }
-                    }
+                if (player.isStanding()) {
+                    playerView.setReadyLabelText(playerName +
+                            " is standing with a score of " + playerScore);
                 }
 
-            }
+                if (player.isBust()) {
+                    playerView.setReadyLabelText(playerName +
+                            " is bust with a score of " + playerScore);
+                }
 
+                if (player.isWinner()) {
+                    playerView.setReadyLabelText(playerName +
+                            " has won with a score of " + playerScore);
+                }
+                if (gameState.isRoundOver()) {
+                    if (!player.isWinner()) {
+                        playerView.setReadyLabelText(playerName +
+                                " has lost their stake with a score of " + playerScore);
+                    }
+                    if (playerBalance == 0) {
+                        System.out.println("Player broke!");
+                        playerView.setBalanceLabelText(playerName +
+                                " has no money remaining! They will be thrown out of the game!");
+                        gamePage.getBetBeforeRoundButton().setEnabled(false);
+                        quitGame(); // Throws broke cheapskates with no money out of the game!
+                    }
+                }
+            }
         }
 
         public void setViewRoundOver() {
@@ -217,7 +213,7 @@ public class Client {
                         // If the active player is not null, set it to the active player and show the player's score.
                         if (gameState.getActivePlayer() != null) {
                             gamePage.setScoreLabel(gameState.getActivePlayers().get(sessionID).totalOfHand());
-                            gamePage.setPlayerTurnLabelText(gameState.getActivePlayer().getName()+"'s turn");
+                            gamePage.setPlayerTurnLabelText(gameState.getActivePlayer().getName() + "'s turn");
 
                             // If it is the player's go, enable the round in progress buttons
                             if (gameState.getActivePlayer().getID() == sessionID) {
@@ -245,7 +241,7 @@ public class Client {
                         if (gameState.isRoundOver()) {
                             setViewRoundOver();
                         }
-                            changePlayerView();
+                        changePlayerView();
                     }
                     // Refreshes the gamepage.
                     appView.getGamePage().revalidateAndRepaint();

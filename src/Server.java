@@ -9,7 +9,7 @@ public class Server implements Runnable {
     private final int PORT;
     private final GameController gameController;
     private ServerSocket server;
-    private Vector<ClientRunner> clients = new Vector<>(); // Thread safer. Could be changed to ArrayList
+    private Vector<ClientRunner> clients = new Vector<>(); // Thread safe. Could be changed to ArrayList
     private int id;
     private Thread readyThread;
 
