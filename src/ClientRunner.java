@@ -46,8 +46,8 @@ public class ClientRunner implements Runnable {
             outputStream.reset();
         } catch (IOException e) {
             System.out.println("Something went wrong... Disconnecting client " + ID);
-            e.printStackTrace();
             this.parent.removePlayer(ID);
+            e.printStackTrace();
         }
     }
 

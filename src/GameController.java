@@ -142,11 +142,9 @@ public class GameController implements Runnable {
      */
     public boolean checkPlayersReady() {
         List<Player> list = new ArrayList<>(gameState.getActivePlayers().values());
-        if (list.size() < 2) {
+        if (list.size() < 1) {
             return false; // If there is only one player, the game will not start.
         }
-
-        // TODO: Add error message informing the player they can't play unless there is more than 2 players.
 
         for (Player player : list) {
             if (!player.isReady()) {
