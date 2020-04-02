@@ -66,17 +66,19 @@ public class GamePage extends JPanel {
             enableRoundInProgressButtons(false);
             client.hit();
         });
+        hitButton.setMultiClickThreshhold(500); // Hackish way of not allowing multiple clicks and multiple cards before the server realises what is going on.
         buttonPanel.add(hitButton);
 
         standButton.addActionListener(actionEvent -> {
             enableRoundInProgressButtons(false);
             client.stand();
         });
+        standButton.setMultiClickThreshhold(500);
 
         betBeforeRoundButton.addActionListener(actionEvent -> {
             String betAmount = JOptionPane.showInputDialog("Place your bet", "Bet amount");
-            betBeforeRoundButton.setEnabled(false);
             client.placeBet(betAmount);
+            betBeforeRoundButton.setEnabled(false);
         });
 
     }

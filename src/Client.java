@@ -231,6 +231,7 @@ public class Client {
 
                             //Show only first card if game is in progress.
                             if (gameState.isRoundInProgress()) {
+                                gamePage.getBetBeforeRoundButton().setEnabled(false);
                                 gamePage.setFirstCard(gameState.getDealer().getHand().get(0));
                                 gamePage.setDealerScore(gameState.getDealer().getHand().get(0).getValue());
                             }

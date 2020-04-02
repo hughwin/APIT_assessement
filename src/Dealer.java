@@ -46,6 +46,10 @@ public class Dealer implements Serializable {
         return total;
     }
 
+    public void takeExtraCard(){
+        hand.add(hit());
+    }
+
     public void returnCardsToDeck() {
         deck.addCardsBackToDeck(hand);
         hand.clear(); // Clears the dealer's hand.

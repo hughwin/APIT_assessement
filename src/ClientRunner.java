@@ -1,6 +1,4 @@
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
 
@@ -47,7 +45,9 @@ public class ClientRunner implements Runnable {
             outputStream.writeObject(gameState);
             outputStream.reset();
         } catch (IOException e) {
+            System.out.println("Something went wrong... Disconnecting client " + ID);
             e.printStackTrace();
+            this.parent.removePlayer(ID);
         }
     }
 
@@ -105,7 +105,7 @@ public class ClientRunner implements Runnable {
 
                 }
             }
-        } catch (Exception e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
