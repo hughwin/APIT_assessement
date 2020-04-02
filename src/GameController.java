@@ -113,8 +113,10 @@ public class GameController implements Runnable {
     }
 
 
-    public synchronized void setActivePlayer(Player player) {
-        gameState.setActivePlayer(player);
+    public void setActivePlayer(Player player) {
+        synchronized (this) {
+            gameState.setActivePlayer(player);
+        }
         sendGameState();
     }
 

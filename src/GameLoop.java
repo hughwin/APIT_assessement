@@ -75,6 +75,7 @@ public class GameLoop implements Runnable {
 
         gameController.setActivePlayer(player);
 
+
         if (player.totalOfHand() == TWENTY_ONE) {
             player.setWinner(true);
             activePlayerIndex++;

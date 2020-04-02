@@ -74,7 +74,7 @@ public class Player implements Serializable {
         this.standing = standing;
     }
 
-    public int totalOfHand() {
+    public synchronized int totalOfHand() { // Synchronised to prevent catastrophic Server failure occasionally on quit.
         int total = 0;
         for (Card card : hand) total += card.getValue();
         if (total > 21) {
