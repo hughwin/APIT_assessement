@@ -108,4 +108,8 @@ public class Player implements Serializable {
     public void returnBet(){
         balance += bet;
     }
+
+    public int getBet() {
+        return bet;
+    }
 }

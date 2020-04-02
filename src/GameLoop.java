@@ -10,8 +10,8 @@ public class GameLoop implements Runnable {
 
     public GameLoop(GameController gameController) {
         this.gameController = gameController;
-        playersInRound = new Vector<>(gameController.getGameState().getActivePlayers().values()); // Allows new clients to join whilst the game is in progress
-        // and not interrupt or cause issues for the current round.
+        playersInRound = new Vector<>(gameController.getGameState().getActivePlayers().values()); // Different vectors for players in round and ActivePlayers
+        // designed as to not interrupt or cause issues for the current round.
     }
 
     public void terminate() {
@@ -47,7 +47,7 @@ public class GameLoop implements Runnable {
 
             if (dealerScore < 16) {
                 gameController.getGameState().getDealer().takeExtraCard();
-                // Adds an extra card to the dealer's hand if score us under 16.
+                // Adds an extra card to the dealer's hand if score is under 16.
             }
 
 

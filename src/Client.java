@@ -131,8 +131,6 @@ public class Client {
         public void changePlayerView() {
             for (PlayerView playerView : appView.getGamePage().getPlayerViews()) {
 
-                System.out.println(gameState.isRoundOver());
-
                 Player player = gameState.getActivePlayers().get(playerView.getPlayerID());
 
                 String playerName = player.getName();
@@ -149,31 +147,34 @@ public class Client {
                 } else {
                     playerView.setReadyLabelText("");
                 }
+                if (gameState.isRoundOver()) {
+                    if (player.isStanding()) {
+                        playerView.setReadyLabelText(playerName +
+                                " is standing with a score of " + playerScore);
+                    }
 
-                if (player.isStanding()) {
-                    playerView.setReadyLabelText(playerName +
-                            " is standing with a score of " + playerScore);
-                }
+                    if (player.isBust()) {
+                        playerView.setReadyLabelText(playerName +
+                                " is bust with a score of " + playerScore);
+                    }
 
-                if (player.isBust()) {
-                    playerView.setReadyLabelText(playerName +
-                            " is bust with a score of " + playerScore);
-                }
-
-                if (player.isWinner()) {
-                    playerView.setReadyLabelText(playerName +
-                            " has won with a score of " + playerScore);
-                }
-                if (gameState.isRoundOver() && !player.isWinner()) {
-                    playerView.setReadyLabelText(playerName +
-                            " has lost their stake with a score of " + playerScore);
-                }
-                if (gameState.isRoundOver() && playerBalance == 0){
-                    System.out.println("Player broke!");
-                    playerView.setBalanceLabelText(playerName +
-                            " has no money remaining! They will be thrown out of the game!");
-                    gamePage.getBetBeforeRoundButton().setEnabled(false);
-                    quitGame(); // Throws broke cheapskates with no money out of the game!
+                    if (player.isWinner()) {
+                        playerView.setReadyLabelText(playerName +
+                                " has won with a score of " + playerScore);
+                    }
+                    if (gameState.isRoundOver()) {
+                        if (!player.isWinner()) {
+                            playerView.setReadyLabelText(playerName +
+                                    " has lost their stake with a score of " + playerScore);
+                        }
+                        if (playerBalance == 0) {
+                            System.out.println("Player broke!");
+                            playerView.setBalanceLabelText(playerName +
+                                    " has no money remaining! They will be thrown out of the game!");
+                            gamePage.getBetBeforeRoundButton().setEnabled(false);
+                            quitGame(); // Throws broke cheapskates with no money out of the game!
+                        }
+                    }
                 }
 
             }
